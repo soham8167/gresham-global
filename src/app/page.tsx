@@ -3,9 +3,7 @@ import About from "@/components/layout/home/About";
 export default function HomePage() {
   return (
     <main>
-      {/* ═══════════════════════════════════════════
-          HERO SECTION — Video background
-      ═══════════════════════════════════════════ */}
+      {/* HERO SECTION — Video background*/}
       <section className="relative w-full min-h-[420px] md:min-h-[500px] lg:min-h-[520px] flex items-center overflow-hidden bg-black">
 
         {/* Background video */}
