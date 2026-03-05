@@ -1,4 +1,10 @@
+import Image from "next/image";
 import About from "@/components/layout/home/About";
+import Whychoose from "@/components/layout/home/Whychoose";
+import Ourcommitment from "@/components/layout/home/Ourcommitment";
+import Ourvalues from "@/components/layout/home/Ourvalues";
+import Articals from "@/components/layout/home/Articals";
+import OurPartner from "@/components/layout/home/Ourpartner";
 
 export default function HomePage() {
   return (
@@ -35,6 +41,12 @@ export default function HomePage() {
 
       </section>
       <About/>
+
+       <Whychoose/>
+       <Ourcommitment/>
+       <Ourvalues/>
+       <Articals/>
+       <OurPartner/>
     </main>
   );
 }

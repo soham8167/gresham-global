@@ -31,16 +31,16 @@ export default function Footer() {
       </div>
 
       {/* NEWSLETTER BANNER*/}
-      <div className="relative z-10">
+      <div className="relative z-10 ">
         <Container>
           <div className="
             relative -top-10
             bg-white text-black rounded-[32px]
-            border border-gray-200
+            border 
             shadow-[0_12px_48px_rgba(0,0,0,0.22)]
             px-10 py-7
             flex flex-col md:flex-row items-center justify-between gap-6
-            max-w-5xl mx-auto
+            max-w-5xl mx-auto 
           ">
             <h3 className="text-[22px] font-extrabold text-red-600 whitespace-nowrap">
               Subscribe to our Newsletter
