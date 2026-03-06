@@ -89,7 +89,6 @@ const slideVariants = {
 
 
 
-
 const CenterCard = ({ partner }: { partner: Partner }) => {
   const [expanded, setExpanded] = useState(false);
   const isLong = partner.quote.length > PREVIEW_LENGTH;
