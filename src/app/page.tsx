@@ -5,6 +5,7 @@ import Ourcommitment from "@/components/layout/home/Ourcommitment";
 import Ourvalues from "@/components/layout/home/Ourvalues";
 import Articals from "@/components/layout/home/Articals";
 import OurPartner from "@/components/layout/home/Ourpartner";
+import Services from "@/components/layout/home/Services";
 
 export default function HomePage() {
   return (
@@ -41,7 +42,7 @@ export default function HomePage() {
 
       </section>
       <About/>
-
+      <Services/>
        <Whychoose/>
        <Ourcommitment/>
        <Ourvalues/>

@@ -13,7 +13,7 @@ interface Partner {
   personName: string;
   personTitle: string;
   universityName: string;
-  universityLogo: string;
+  universityLogo: string; 
 }
 
 // ─── Data 
@@ -325,13 +325,13 @@ const OurPartner = () => {
             absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 z-30
             flex items-center justify-center
             w-9 h-9 sm:w-11 sm:h-11
-            rounded-full
-            border-2 border-[#E8192C] text-[#E8192C]
-            bg-[#111111]/40 hover:bg-[#E8192C] hover:text-white
+            
+             text-red-500
+          
             transition-all duration-200 cursor-pointer shadow-lg
           "
         >
-          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <svg className="w-7 h-7 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth={4.5} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
@@ -344,13 +344,11 @@ const OurPartner = () => {
             absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 z-30
             flex items-center justify-center
             w-9 h-9 sm:w-11 sm:h-11
-            rounded-full
-            border-2 border-[#E8192C] text-[#E8192C]
-            bg-[#111111]/40 hover:bg-[#E8192C] hover:text-white
+             text-red-500
             transition-all duration-200 cursor-pointer shadow-lg
           "
         >
-          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+          <svg className="w-7 h-7 sm:w-5 sm:h-5" fill="none" stroke="currentColor" strokeWidth={4.5} viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </button>
