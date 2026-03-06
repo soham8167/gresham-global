@@ -71,7 +71,7 @@ const mediaCards: Article[] = [
 const newsCards: Article[] = [
   {
     id: 1,
-    image: "/images/home/articals/news1.jpg",
+    image: "/images/home/articals/news1.webp",
     sourceColor: "#E8192C",
     title: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus eum numquam facere praesentium consequatur dolores!",
     href: "#",
