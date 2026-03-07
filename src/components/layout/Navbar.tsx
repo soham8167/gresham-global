@@ -32,7 +32,7 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* ================= DESKTOP NAV ================= */}
+        {/* DESKTOP NAV  */}
         <nav className="hidden md:flex items-center">
 
           <div className="flex items-center divide-x divide-gray-800">
@@ -49,7 +49,7 @@ export default function Navbar() {
 
                   {item.children && (
                     <ChevronDown
-                      size={14}
+                      size={16}
                       className="mt-[2px] transition-transform duration-200 group-hover:rotate-180"
                     />
                   )}
