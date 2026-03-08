@@ -13,7 +13,7 @@ export const navigation: NavItem[] = [
     label: "Services",
     children: [
       { label: "Research & Assessment", href: "/services/research-assessment" },
-      { label: "In-Country Representation", href: "/services/country-representation" },
+      { label: "In-Country Representation", href: "/services/in-country-representation" },
       { label: "Academic Collaborations", href: "/services/academic-collaborations" },
       {label:"Admission Compliance", href:"/services/admission-compliance"},
       {label:"Strategic Marketing", href:"/services/strategic-marketing"},

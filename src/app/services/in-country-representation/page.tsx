@@ -63,9 +63,9 @@ const page = () => {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
             <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-6xl mt-14 leading-tight">
-              Research and
+              In-Country
               <br />
-              Assessment
+              Representation
             </h1>
           </div>
         </div>
