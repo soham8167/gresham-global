@@ -74,10 +74,10 @@ const Services = () => {
         {/* cards grid */}
         <div className="grid md:grid-cols-3 gap-10">
           {services.map((service, index) => (
-            <div key={index} className="group [perspective:1000px] h-[280px] w-[400px]">
+            <div key={index} className="group perspective-[1000px] h-70 w-100">
               <div className="relative h-full w-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                 {/* FRONT CARD */}
-                <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-lg [backface-visibility:hidden]">
+                <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-lg backface-visibility:hidden">
                   <Image
                     src={service.image}
                     alt={service.title}
@@ -89,7 +89,7 @@ const Services = () => {
                   <div className="absolute inset-0 bg-black/60"></div>
 
                   {/* title */}
-                 <h3 className="absolute bottom-6 left-6 text-white text-3xl font-semibold whitespace-pre-line max-w-[200px] leading-tight">
+                 <h3 className="absolute bottom-6 left-6 text-white text-3xl font-semibold whitespace-pre-line max-w-50 leading-tight">
                 {service.title}
             </h3>
 

@@ -14,7 +14,7 @@ interface Partner {
   personTitle: string;
   universityName: string;
   universityLogo: string; 
-}
+} 
 
 // ─── Data 
 
