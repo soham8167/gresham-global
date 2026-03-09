@@ -5,12 +5,11 @@ import { Share2 } from "lucide-react";
 // ─── Types 
 interface NewsItem {
   id: number;
-  title: string; 
+  title: string;
   excerpt: string;
-  date: string;
-  mainImage: string;       
-  publicationLogo: string; 
-  publicationAlt: string;  
+  mainImage: string;
+  date: string;       
+  publicationAlt: string;
   slug: string;
 }
 
@@ -20,9 +19,8 @@ const newsItems: NewsItem[] = [
     id: 1,
     title: "GACC 2025 by Gresham Global Focuses on Future Proof Career",
     excerpt:"Gresham Global successfully hosted the second edition of its high-impact conference, the Gresham Annual",
-    date: "March 05, 2026",
     mainImage: "/images/media/media1.png",
-    publicationLogo: "/images/media/logo1.png",
+    date: "March 05, 2026",
     publicationAlt: "Business Standard",
     slug: "q4-results-2026",
   },
@@ -30,9 +28,8 @@ const newsItems: NewsItem[] = [
     id: 2,
     title: "Unis and agencies work to leverage Bangladeshi market",
     excerpt:"As the number of Bangladeshi students pursuing education abroad continues to grow, universities and recruitment agencies",
-    date: "February 28, 2026",
     mainImage: "/images/media/media2.png",
-    publicationLogo: "/images/media/logo2.png",
+    date: "March 05, 2026",
     publicationAlt: "The Print",
     slug: "global-expansion-2026",
   },
@@ -40,42 +37,12 @@ const newsItems: NewsItem[] = [
     id: 3,
     title: "Gresham Global Strengthens South Asia Education Networks",
     excerpt:"With the success of its inaugural event in Bangladesh, Gresham Global is now set to expand the Gresham Connect initiative",
-    date: "February 20, 2026",
     mainImage: "/images/media/media3.png",
-    publicationLogo: "/images/media/logo3.png",
+    date: "Janury 05, 2026",
     publicationAlt: "Economic Times",
     slug: "innovation-award-2026",
   },
-  {
-    id: 4,
-    title: "Gresham Global Simplifies Growth in South Asia for",
-    excerpt:"The international higher education landscape is evolving rapidly, and South Asia has emerged as a critical region for student recruitment, institutional",
-    date: "February 10, 2026",
-    mainImage: "/images/media/media4.png",
-    publicationLogo: "/images/media/logo4.svg",
-    publicationAlt: "Hindustan Times",
-    slug: "strategic-alliance-2026",
-  },
-  {
-    id: 5,
-    title: "Studying abroad – disease or an opportunity? Let’s break",
-    excerpt:"The honourable vice president of India, Jagdeep Dhankar, recently described the trend of students studying abroad as a ",
-    date: "January 30, 2026",
-    mainImage: "/images/media/media5.png",
-    publicationLogo: "/images/media/logo5.png",
-    publicationAlt: "NDTV",
-    slug: "csr-initiative-2026",
-  },
-  {
-    id: 6,
-    title: "Gresham Global Becomes South Asia Representative for",
-    excerpt:"Gresham Global is excited to announce its recent partnership with the University of Guelph, further solidifying its global presence",
-    date: "January 18, 2026",
-    mainImage: "/images/media/media6.webp",
-    publicationLogo: "/images/media/logo6.svg",
-    publicationAlt: "Mint",
-    slug: "platform-launch-2026",
-  },
+
   
 ];
 
@@ -110,7 +77,7 @@ function ImgPlaceholder({
 // ─── News Card 
 function NewsCard({ item }: { item: NewsItem }) {
   return (
-    <div className=" group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2  ">
+    <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300 ">
 
       {/* 1. Main Image (top) */}
       <div className="relative w-full h-52 flex-shrink-0 overflow-hidden">
@@ -125,34 +92,14 @@ function NewsCard({ item }: { item: NewsItem }) {
           <ImgPlaceholder className="absolute inset-0" iconSize={44} />
         )}
       </div>
-
-      {/* 2. Date */}
-      <div className="px-5 pt-4 pb-0">
+<div className="px-5 pt-4 pb-0">
         <p className="text-xs text-gray-400 font-medium tracking-wide">
           {item.date}
         </p>
       </div>
 
-      {/* 3. Publication Logo Image */}
-      <div className="px-5 pt-3 pb-0">
-        <div className="relative h-9 w-36 overflow-hidden rounded">
-          {item.publicationLogo ? (
-            <Image
-              src={item.publicationLogo}
-              alt={item.publicationAlt}
-              fill
-              className="object-contain object-left"
-            />
-          ) : (
-            /* Fallback: styled text badge that mimics a publication logo */
-            <div className="h-full w-full bg-gray-100 border border-gray-200 rounded flex items-center justify-center px-3">
-              <span className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest truncate">
-                {item.publicationAlt}
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
+
+      
 
       {/* 4. Title */}
       <div className="px-5 pt-3">
@@ -167,6 +114,7 @@ function NewsCard({ item }: { item: NewsItem }) {
           {item.excerpt}
         </p>
       </div>
+     
 
       {/* 6. Divider + Read More + Share */}
       <div className="px-5 pt-4 pb-5 mt-auto">
@@ -209,7 +157,7 @@ const page = () => {
           <div className="absolute inset-0 flex items-center">
             <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
               <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">
-                Media
+               Events
               </h1>
             </div>
           </div>
@@ -224,7 +172,7 @@ const page = () => {
           ))}
         </div>
       </section>
-        
+
     </main>
   );
 };

@@ -28,7 +28,7 @@ const About = () => {
               About Us
             </h2>
 
-            <p className="text-[15px] sm:text-[16px] text-gray-600 leading-7 mb-5">
+            <p className="text-[15px] sm:text-[16px] lg:text-[18px] text-gray-600 leading-7 mb-5">
               We deliver comprehensive solutions to ensure your university's success,
               from establishing in-country representation and driving strategic market
               development to executing on-the-ground initiatives and streamlining
@@ -37,7 +37,7 @@ const About = () => {
               expertise and understanding of the South Asia region.
             </p>
 
-            <p className="text-[15px] sm:text-[16px] text-gray-600 leading-7">
+            <p className="text-[15px] sm:text-[16px] lg:text-[18px] text-gray-600 leading-7">
               Our approach turns your international goals into measurable results,
               connecting you with a diverse and talented student diaspora while helping
               establish a lasting presence in one of the world's fastest-growing

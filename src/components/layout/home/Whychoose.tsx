@@ -12,14 +12,14 @@ export default function Whychoose() {
               Why Choose Us?
             </h2>
 
-            <p className="text-gray-600 text-[15px] sm:text-[16px] leading-7 mb-5">
+            <p className="text-gray-600 text-[15px] sm:text-[16px] lg:text-[18px] leading-7 mb-5">
               We understand that every university is unique, and entering the
               dynamic South Asian market requires a bespoke approach. Rather
               than applying generic strategies, we take the time to understand
               your vision, strengths, and objectives.
             </p>
 
-            <p className="text-gray-600 text-[15px] sm:text-[16px] leading-7">
+            <p className="text-gray-600 text-[15px] sm:text-[16px] lg:text-[18px] leading-7">
               Our tailored solutions are built around your specific goals—
               whether it’s forging meaningful partnerships, creating bespoke
               marketing campaigns, elevating your institution’s profile, or

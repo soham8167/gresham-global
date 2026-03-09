@@ -38,7 +38,7 @@ export default function Footer() {
             bg-white text-black rounded-[32px]
             border 
             shadow-[0_12px_48px_rgba(0,0,0,0.22)]
-            px-10 py-7
+            px-25 py-5
             flex flex-col md:flex-row items-center justify-between gap-6
             max-w-5xl mx-auto 
           ">
@@ -92,9 +92,9 @@ export default function Footer() {
                   <MapPin size={15} className="text-gray-300" />
                 </span>
                 <address className="not-italic leading-6">
-                  806 – 808, The Epicentre,<br />
+                  806 - 808, The Epicentre,<br />
                   Wadhwa, Off Eastern Freeway,<br />
-                  Chembur, Mumbai – 400 088,<br />
+                  Chembur, Mumbai - 400 088,<br />
                   Maharashtra, INDIA.
                 </address>
               </li>

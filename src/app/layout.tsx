@@ -2,6 +2,13 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { Poppins } from "next/font/google";
+
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300","400","500","600","700"],
+});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="font-sans antialiased bg-white text-gray-900">
+     <body className={`${poppins.className} font-sans antialiased bg-white text-gray-900`}>
         <Navbar />
         {children}
         <Footer />

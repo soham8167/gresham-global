@@ -33,7 +33,7 @@ export default function HomePage() {
             <h1 className="text-[48px] sm:text-[58px] lg:text-[68px] font-extrabold leading-[1.05] text-red-600 tracking-tight">
               Your Global<br />Growth Partner
             </h1>
-            <p className="mt-6 text-[15px] sm:text-[16px] lg:text-[17px] text-white/90 leading-7 font-normal max-w-[480px]">
+            <p className="mt-6 text-[15px] sm:text-[16px] lg:text-[20px] text-white/90 leading-7 font-normal max-w-[480px]">
               We are an in-country representative specialist firm for higher education
               institutions looking to expand their reach in India and South Asia
             </p>
