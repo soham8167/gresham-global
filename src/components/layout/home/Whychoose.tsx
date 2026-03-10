@@ -30,7 +30,7 @@ export default function Whychoose() {
 
           {/* RIGHT IMAGE */}
           <div className="w-full lg:w-[45%] relative">
-            <div className="relative w-full h-[320px] sm:h-[360px] md:h-[420px] lg:h-[460px] translate-x-0 lg:translate-x-12">
+            <div className="relative w-full h-80 sm:h-90 md:h-105 lg:h-115 translate-x-0 lg:translate-x-12">
               <Image
                 src="/images/home/whychoose.webp"
                 alt="Why Choose Us - Gresham Global"

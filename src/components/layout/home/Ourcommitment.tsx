@@ -19,7 +19,7 @@ const Ourcommitment = () => {
         </p>
 
         {/* TIMELINE IMAGE */}
-        <div className="relative w-full mt-16 h-[200px] sm:h-[260px] md:h-[320px] lg:h-[380px] xl:h-[420px]">
+        <div className="relative w-full mt-16 h-50 sm:h-65 md:h-80 lg:h-95 xl:h-105">
           <Image
             src="/images/home/Group.webp"
             alt="Our Commitment - Gresham Global"

@@ -55,7 +55,7 @@ function WhyCard({ card }: { card: (typeof whyCards)[0] }) {
     ">
       {/* Icon box */}
       <div className="
-        w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0
+        w-12 h-12 rounded-lg bg-gray-100 flex items-center justify-center shrink-0
         group-hover:bg-white/90 transition-colors duration-300
       ">
         {card.icon ? (
@@ -102,7 +102,7 @@ const page = () => {
     <main className="min-h-screen bg-white">
 
       {/* ── Hero Banner: Full-width image, dark overlay left, text on left ── */}
-      <section className="relative w-full h-[320px] sm:h-[380px] md:h-[440px] lg:h-[500px] overflow-hidden">
+      <section className="relative w-full h-80 sm:h-95 md:h-110 lg:h-125 overflow-hidden">
         {/* Background image */}
         <Image
           src="/images/media/media1.png"
@@ -113,7 +113,7 @@ const page = () => {
         />
 
         {/* Dark gradient overlay — strong on left, fades right */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/85 via-black/50 to-transparent" />
 
         {/* Text content — bottom-left aligned */}
         <div className="absolute inset-0 flex items-end pb-12 sm:pb-14 md:pb-16">

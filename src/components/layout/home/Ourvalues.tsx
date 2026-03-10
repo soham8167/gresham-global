@@ -37,7 +37,7 @@ const Ourvalues = () => {
       <div className="flex flex-col lg:flex-row">
 
         {/* LEFT IMAGE */}
-        <div className="relative w-full lg:w-[40%] h-[420px] sm:h-[520px] lg:h-auto">
+        <div className="relative w-full lg:w-[40%] h-105 sm:h-130 lg:h-auto">
           <Image
             src="/images/home/our-values.webp"
             alt="Our Values - Gresham Global"
@@ -64,7 +64,7 @@ const Ourvalues = () => {
 
             {/* ICON + TITLE */}
             <div className="flex items-center gap-6">
-              <div className="w-[90px] h-[90px] rounded-full bg-red-600 flex items-center justify-center">
+              <div className="w-22.5 h-22.5 rounded-full bg-red-600 flex items-center justify-center">
                 <Image
                   src={item.icon}
                   alt={item.title}
@@ -79,7 +79,7 @@ const Ourvalues = () => {
             </div>
 
             {/* DESCRIPTION */}
-            <p className="text-gray-600 text-[15px] leading-relaxed mt-3 max-w-[300px]">
+            <p className="text-gray-600 text-[15px] leading-relaxed mt-3 max-w-75">
               {item.text}
             </p>
 
@@ -89,13 +89,13 @@ const Ourvalues = () => {
     </div>
 
     {/* RIGHT COLUMN */}
-    <div className="flex flex-col gap-12 mt-[20px]">
+    <div className="flex flex-col gap-12 mt-5">
       {rightValues.map((item, index) => (
         <div key={index}>
 
           {/* ICON + TITLE */}
           <div className="flex items-center gap-6">
-            <div className="w-[90px] h-[90px] rounded-full bg-red-600 flex items-center justify-center">
+            <div className="w-22.5 h-22.5 rounded-full bg-red-600 flex items-center justify-center">
               <Image
                 src={item.icon}
                 alt={item.title}
@@ -110,7 +110,7 @@ const Ourvalues = () => {
           </div>
 
           {/* DESCRIPTION */}
-          <p className="text-gray-600 text-[15px] leading-relaxed mt-3  max-w-[300px]">
+          <p className="text-gray-600 text-[15px] leading-relaxed mt-3  max-w-75">
             {item.text}
           </p>
 

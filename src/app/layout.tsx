@@ -20,6 +20,7 @@ export const metadata = {
   description: "Professional Corporate Website",
 };
 
+
 export default function RootLayout({
   children,
 }: {

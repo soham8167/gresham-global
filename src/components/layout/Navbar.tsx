@@ -50,7 +50,7 @@ export default function Navbar() {
                   {item.children && (
                     <ChevronDown
                       size={16}
-                      className="mt-[2px] transition-transform duration-200 group-hover:rotate-180"
+                      className="mt-0.5 transition-transform duration-200 group-hover:rotate-180"
                     />
                   )}
                 </div>

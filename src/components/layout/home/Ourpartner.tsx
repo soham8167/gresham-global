@@ -98,7 +98,7 @@ const CenterCard = ({ partner }: { partner: Partner }) => {
       : partner.quote.slice(0, PREVIEW_LENGTH).trimEnd() + " ...";
 
   return (
-    <div className="bg-white rounded-3xl shadow-2xl p-7 sm:p-9 lg:p-10 flex flex-col h-full max-w-[850px] mx-auto">
+    <div className="bg-white rounded-3xl shadow-2xl p-7 sm:p-9 lg:p-10 flex flex-col h-full max-w-212.5 mx-auto">
 
       {/* Quote */}
       <div className="flex-1 mb-4">
@@ -124,7 +124,7 @@ const CenterCard = ({ partner }: { partner: Partner }) => {
         {/* Left: circular avatar + name + title */}
         <div className="flex items-center gap-4 sm:gap-6">
           {/* Circular avatar — large, with white ring */}
-          <div className="relative w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] lg:w-[210px] lg:h-[210px] rounded-full overflow-hidden flex-shrink-0 ring-4 ring-gray-200 shadow-md bg-gray-100">
+          <div className="relative w-20 h-20 sm:w-25 sm:h-25 lg:w-52.5 lg:h-52.5 rounded-full overflow-hidden shrink-0 ring-4 ring-gray-200 shadow-md bg-gray-100">
             <Image
               src={partner.personImage}
               alt={partner.personName}
@@ -144,7 +144,7 @@ const CenterCard = ({ partner }: { partner: Partner }) => {
         </div>
 
         {/* Right: circular university logo */}
-        <div className="relative flex-shrink-0 w-[80px] h-[80px] sm:w-[110px] sm:h-[110px] lg:w-[230px] lg:h-[130px] rounded-full overflow-hidden bg-gray-100">
+        <div className="relative shrink-0 w-20 h-20 sm:w-27.5 sm:h-27.5 lg:w-57.5 lg:h-32.5 rounded-full overflow-hidden bg-gray-100">
           <Image
             src={partner.universityLogo}
             alt={partner.universityName}
@@ -200,7 +200,7 @@ const PeekCard = ({
       <div className="mt-4">
         {side === "left" ? (
           /* Left: horizontal university logo */
-          <div className="relative w-full h-[45px] sm:h-[55px]">
+          <div className="relative w-full h-11.25 sm:h-13.75">
             <Image
               src={partner.universityLogo}
               alt={partner.universityName}
@@ -212,7 +212,7 @@ const PeekCard = ({
         ) : (
           /* Right: person circular image — partially visible */
           <div className="flex justify-end">
-            <div className="relative w-[60px] h-[60px] sm:w-[80px] sm:h-[80px] rounded-full overflow-hidden ring-2 ring-gray-300 bg-gray-200">
+            <div className="relative w-15 h-15 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-gray-300 bg-gray-200">
               <Image
                 src={partner.personImage}
                 alt={partner.personName}

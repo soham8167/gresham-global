@@ -35,7 +35,7 @@ export default function Footer() {
         <Container>
           <div className="
             relative -top-10
-            bg-white text-black rounded-[32px]
+            bg-white text-black rounded-4xl
             border 
             shadow-[0_12px_48px_rgba(0,0,0,0.22)]
             px-25 py-5
@@ -49,7 +49,7 @@ export default function Footer() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 md:w-[340px] border border-gray-300 border-r-0 rounded-l-lg px-5 py-3.5 text-sm text-gray-700 focus:outline-none"
+                className="flex-1 md:w-85 border border-gray-300 border-r-0 rounded-l-lg px-5 py-3.5 text-sm text-gray-700 focus:outline-none"
               />
               <button className="bg-red-600 hover:bg-red-700 transition text-white text-sm font-bold px-7 py-3.5 rounded-r-lg whitespace-nowrap">
                 Subscribe Now
@@ -160,7 +160,7 @@ export default function Footer() {
                         <ChevronRight
                           size={14}
                           className={`
-                            flex-shrink-0 transition-transform duration-200
+                            shrink-0 transition-transform duration-200
                             ${isActive ? "text-red-500" : "text-gray-400"}
                             ${isOpen ? "rotate-90" : ""}
                           `}

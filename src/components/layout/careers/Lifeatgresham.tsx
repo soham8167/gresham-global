@@ -147,7 +147,7 @@ export default function LifeAtGresham() {
                     style={{ width: `${(100 / VISIBLE) / trackWidthMultiple}%` }}
                     className="px-2 sm:px-3 box-border"
                   >
-                    <div className="life-img-tile relative h-[220px] sm:h-[260px] md:h-[300px] rounded-2xl overflow-hidden bg-gray-200">
+                    <div className="life-img-tile relative h-55 sm:h-65 md:h-75 rounded-2xl overflow-hidden bg-gray-200">
                       <Image
                         src={img.src}
                         alt={img.alt}

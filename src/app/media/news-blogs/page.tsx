@@ -123,7 +123,7 @@ const blogsItems: NewsItem[] = [
 // ─── Image Placeholder 
 function ImgPlaceholder({ className, iconSize = 40 }: { className?: string; iconSize?: number }) {
   return (
-    <div className={`bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}>
+    <div className={`bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}>
       <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="#c4c9d0" strokeWidth="1.2">
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
@@ -138,7 +138,7 @@ function NewsCard({ item }: { item: NewsItem }) {
   return (
     <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 duration-300">
       {/* 1. Main Image */}
-      <div className="relative w-full h-52 flex-shrink-0 overflow-hidden">
+      <div className="relative w-full h-52 shrink-0 overflow-hidden">
         {item.mainImage ? (
           <Image src={item.mainImage} alt={item.title} fill className="object-cover" />
         ) : (
@@ -240,7 +240,7 @@ const page = () => {
 
       {/* ── Banner */}
       <section>
-        <div className="relative w-full h-[250px] sm:h-[320px] md:h-[400px] lg:h-[450px] overflow-hidden">
+        <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
           <Image
             src="/images/about/about-bannerimg.webp"
             alt="About Banner"
@@ -248,7 +248,7 @@ const page = () => {
             priority
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
           <div className="absolute inset-0 flex items-center">
             <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
               <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">

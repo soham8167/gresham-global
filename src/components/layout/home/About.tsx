@@ -10,7 +10,7 @@ const About = () => {
 
           {/* ── Left : Image ── */}
           <div className="w-full lg:w-[45%] shrink-0">
-            <div className="relative w-full aspect-[4/3] lg:aspect-[4/3] max-w-[550px] mx-auto lg:mx-0 overflow-hidden rounded-2xl right-10">
+            <div className="relative w-full aspect-4/3 lg:aspect-4/3 max-w-137.5 mx-auto lg:mx-0 overflow-hidden rounded-2xl right-10">
               <Image
                 src="/images/home/abouthome.webp"
                 alt="About Us — Gresham Global team"

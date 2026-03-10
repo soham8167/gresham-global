@@ -77,7 +77,7 @@ const page = () => {
     <section>
 
       {/* ── Hero Banner ── */}
-      <div className="relative w-full h-[250px] sm:h-[320px] md:h-[400px] lg:h-[450px] overflow-hidden">
+      <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
         <Image
           src="/images/about/about-bannerimg.webp"
           alt="About Banner"
@@ -85,7 +85,7 @@ const page = () => {
           priority
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
             <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-6xl mt-14 leading-tight">
@@ -120,13 +120,13 @@ const page = () => {
               key={title}
               className="rounded-2xl border border-[#C0193A]/30 bg-white p-7 sm:p-9 flex flex-col gap-5 transition-shadow duration-300 hover:shadow-[0_4px_32px_0_rgba(192,25,58,0.12)]"
             >
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <Image
                   src={icon}
                   alt={title}
                   height={80}
                   width={80}
-                  className="w-[70px] h-[70px] sm:w-[80px] sm:h-[80px]"
+                  className="w-17.5 h-17.5 sm:w-20 sm:h-20"
                 />
               </div>
               <h3 className="font-bold text-[#C0193A] text-xl sm:text-[1.3rem] leading-snug">
@@ -153,7 +153,7 @@ const page = () => {
               <Link
                 key={href}
                 href={href}
-                className="group flex items-center justify-between gap-4 bg-white border border-gray-200 rounded-xl px-5 py-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(20%-16px)] min-w-[180px] transition-all duration-300 hover:bg-[#C0193A] hover:border-[#C0193A]"
+                className="group flex items-center justify-between gap-4 bg-white border border-gray-200 rounded-xl px-5 py-5 w-full sm:w-[calc(50%-10px)] lg:w-[calc(20%-16px)] min-w-45 transition-all duration-300 hover:bg-[#C0193A] hover:border-[#C0193A]"
               >
                 {/* Service name */}
                 <span className="font-semibold text-gray-900 text-[0.95rem] leading-snug group-hover:text-white transition-colors duration-300">
@@ -161,7 +161,7 @@ const page = () => {
                 </span>
 
                 {/* Arrow in red circle — replace src with your actual arrow image */}
-                <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#C0193A] group-hover:bg-white flex items-center justify-center transition-colors duration-300">
+                <span className="shrink-0 w-9 h-9 rounded-full bg-[#C0193A] group-hover:bg-white flex items-center justify-center transition-colors duration-300">
                   <Image
                     src="/images/services/right-up.svg"
                     alt=""

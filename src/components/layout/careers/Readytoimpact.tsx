@@ -9,7 +9,7 @@ export default function ReadyToImpact() {
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-10">
 
           {/* ── LEFT: circle frame with image ── */}
-          <div className="relative flex-shrink-0 w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] md:w-[420px] md:h-[420px] lg:w-[480px] lg:h-[580px] ">
+          <div className="relative shrink-0 w-70 h-70 sm:w-90 sm:h-90 md:w-105 md:h-105 lg:w-120 lg:h-145 ">
 
 
 

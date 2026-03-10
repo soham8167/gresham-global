@@ -32,7 +32,7 @@ const page = () => {
     <section>
 
       {/* ── Banner ── */}
-      <div className="relative w-full h-[250px] sm:h-[320px] md:h-[400px] lg:h-[450px] overflow-hidden">
+      <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
         <Image
           src="/images/about/about-bannerimg.webp"
           alt="About Banner"
@@ -40,7 +40,7 @@ const page = () => {
           priority
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
             <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">
@@ -64,7 +64,7 @@ const page = () => {
 
               {/* Address */}
               <div className="flex items-start gap-4">
-                <div className="w-22 h-22 rounded-xl bg-white   flex items-center justify-center flex-shrink-0">
+                <div className="w-22 h-22 rounded-xl bg-white   flex items-center justify-center shrink-0">
                   <Image
                     src="/images/contact/Group1.png"
                     alt="Address"
@@ -73,7 +73,7 @@ const page = () => {
                     className="object-contain"
                   />
                 </div>
-                <p className="text-[15px] text-gray-700 leading-relaxed font-medium">
+                <p className="text-[15px] text-gray-700 leading-relaxed font-medium hover:text-red-600">
                   806 - 808, The Epicentre,<br />
                   Wadhwa, Off Eastern<br />
                   Freeway, Chembur,<br />
@@ -84,7 +84,7 @@ const page = () => {
 
               {/* Phone */}
               <div className="flex items-center gap-4">
-                <div className="w-22 h-22 rounded-xl bg-white flex items-center justify-center flex-shrink-0">
+                <div className="w-22 h-22 rounded-xl bg-white flex items-center justify-center shrink-0">
                   <Image
                     src="/images/contact/icon2.svg"
                     alt="Phone"
@@ -93,12 +93,12 @@ const page = () => {
                     className="object-contain"
                   />
                 </div>
-                <span className="text-[15px] text-gray-700 font-medium">+91 9773911384</span>
+                <span className="text-[15px] text-gray-700 font-medium hover:text-red-600">+91 9773911384</span>
               </div>
 
               {/* Email */}
               <div className="flex items-center gap-4">
-                <div className="w-22 h-22 rounded-xl bg-white flex items-center justify-center flex-shrink-0">
+                <div className="w-22 h-22 rounded-xl bg-white flex items-center justify-center shrink-0">
                   <Image
                     src="/images/contact/icon3.svg"
                     alt="Email"
@@ -107,12 +107,12 @@ const page = () => {
                     className="object-contain"
                   />
                 </div>
-                <span className="text-[15px] text-gray-700 font-medium">contact@gresham.world</span>
+                <span className="text-[15px] text-gray-700 font-medium hover:text-red-600">contact@gresham.world</span>
               </div>
             </div>
 
             {/* ── COL 2: Google Map ── */}
-            <div className="w-full h-[360px] sm:h-[420px] md:h-full min-h-[380px] rounded-2xl overflow-hidden shadow-md">
+            <div className="w-full h-90 sm:h-105 md:h-full min-h-95 rounded-2xl overflow-hidden shadow-md">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.360536425326!2d72.90795297466455!3d19.04787955285579!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c8ed89588c29%3A0xba83964829b13797!2sGresham%20Global%20consultancy%20LLP!5e0!3m2!1sen!2sin!4v1773127753408!5m2!1sen!2sin"
                 width="100%"

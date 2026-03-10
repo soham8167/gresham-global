@@ -46,13 +46,13 @@ function useVisibleCount(): number {
 }
 
 const ArticleCard = ({ article }: { article: Article }) => (
-  <div className="flex flex-col h-full bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden flex-shrink-0">
-    <div className="relative w-full h-[170px] sm:h-[190px] md:h-[200px] overflow-hidden rounded-t-2xl bg-gray-100">
+  <div className="flex flex-col h-full bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden shrink-0">
+    <div className="relative w-full h-42.5 sm:h-47.5 md:h-50 overflow-hidden rounded-t-2xl bg-gray-100">
       <Image src={article.image} alt={article.title} fill className="object-cover" sizes="(max-width:640px) 100vw,(max-width:1024px) 50vw,(max-width:1280px) 33vw,25vw" />
     </div>
     <div className="flex flex-col gap-3 p-4 sm:p-5 flex-1">
       {article.sourceLogo && (
-        <div className="relative w-[120px] sm:w-[140px] md:w-[160px] h-[30px] sm:h-[34px] md:h-[38px]">
+        <div className="relative w-30 sm:w-35 md:w-40 h-7.5 sm:h-8.5 md:h-9.5">
           <Image src={article.sourceLogo} alt="publication logo" fill className="object-contain object-left" sizes="160px" />
         </div>
       )}
@@ -80,7 +80,7 @@ const Carousel = ({ cards }: { cards: Article[] }) => {
   const total = cards.length;
   const visibleCount = useVisibleCount();
 
-  // ── Single-argument wrap — closes over `total` ─────────────────────────────
+  // ── Single-argument wrap — closes over `total` 
   const wrap = (i: number) => ((i % total) + total) % total;
 
   const [rawIndex, setRawIndex] = useState(BUFFER * total);
@@ -121,10 +121,10 @@ const Carousel = ({ cards }: { cards: Article[] }) => {
   const prev = () => go(rawIndex - 1);
   const next = () => go(rawIndex + 1);
 
-  // ── dotClick: no second arg to wrap ───────────────────────────────────────
+  // ── dotClick: no second arg to wrap 
   const dotClick = (i: number) => {
-    const current = wrap(rawIndex);          // ✅ single arg
-    const forward = wrap(i - current);       // ✅ single arg
+    const current = wrap(rawIndex);          
+    const forward = wrap(i - current);       
     const backward = total - forward;
     go(rawIndex + (forward <= backward ? forward : -backward));
   };
@@ -180,7 +180,7 @@ const Articles = () => {
 
   return (
     <section className="w-full bg-[#eef0f3] py-12 sm:py-14 lg:py-20">
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-14">
+      <div className="max-w-350 mx-auto px-6 sm:px-8 lg:px-14">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
             Articles & Resources

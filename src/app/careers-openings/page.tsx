@@ -1,6 +1,5 @@
-"use client";
+import Image from "next/image"
 
-import Link from "next/link";
 
 interface Job {
   id: number;
@@ -33,20 +32,11 @@ const jobs: Job[] = [
   },
   {
     id: 3,
-    title: "Associate Representative – Canadian University",
+    title: "Associate Representative - Canadian University",
     university: "A Canadian University",
     location: "Mumbai Based",
     jobType: "Full time | On-Site",
-    workEx: "3 – 5 years",
-    applyLink: "#",
-  },
-  {
-    id: 3,
-    title: "Associate Representative – Canadian University",
-    university: "A Canadian University",
-    location: "Mumbai Based",
-    jobType: "Full time | On-Site",
-    workEx: "3 – 5 years",
+    workEx: "3 - 5 years",
     applyLink: "#",
   },
 ];
@@ -102,32 +92,33 @@ function JobCard({ job }: { job: Job }) {
   );
 }
 
-export default function CurrentOpenings() {
+const page = () => {
   return (
-    <section className="bg-gray-100 py-16 md:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
-
-        {/* ── Header: title left, red View All button right ── */}
-        <div className="flex items-center justify-between mb-8 md:mb-10">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight">
-            Current Openings
-          </h2>
-          <Link
-            href="/careers-openings"
-            className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-6 py-3 rounded-lg transition-colors duration-300 shrink-0"
-          >
-            View All
-          </Link>
-        </div>
-
-        {/* ── 3-card grid ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+    <section>
+       <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
+              <Image
+                src="/images/about/about-bannerimg.webp"
+                alt="About Banner"
+                fill
+                priority
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
+              <div className="absolute inset-0 flex items-center">
+                <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
+                  <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">
+                    Careers Opening
+                  </h1>
+                </div>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
           {jobs.map((job) => (
             <JobCard key={job.id} job={job} />
           ))}
         </div>
-
-      </div>
     </section>
-  );
+  )
 }
+
+export default page
