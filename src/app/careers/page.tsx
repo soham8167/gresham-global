@@ -1,3 +1,6 @@
+import CurrentOpenings from "@/components/layout/careers/Currentopenings";
+import LifeAtGresham from "@/components/layout/careers/Lifeatgresham";
+import ReadyToImpact from "@/components/layout/careers/Readytoimpact";
 import Ourvalues from "@/components/layout/home/Ourvalues";
 import Image from "next/image";
 
@@ -130,7 +133,7 @@ const page = () => {
         </div>
       </section>
 
-      {/* ── Why Work With Us ───────────────────────────────────────────────── */}
+      {/* ── Why Work With Us */}
       <section className="bg-gray-50 py-16 md:py-24">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
 
@@ -162,6 +165,9 @@ const page = () => {
 </section>
 
 <Ourvalues/>
+<LifeAtGresham/>
+<CurrentOpenings/>
+<ReadyToImpact/>
     </main>
   );
 };

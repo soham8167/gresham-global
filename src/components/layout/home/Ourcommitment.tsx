@@ -12,7 +12,7 @@ const Ourcommitment = () => {
         </h2>
 
         {/* DESCRIPTION */}
-        <p className="mt-6 text-gray-600 text-[15px] sm:text-[16px] leading-7 lg:text-[18px] max-w-3xl mx-auto">
+        <p className="mt-6 text-gray-600 text-[15px] sm:text-[16px] leading-7 lg:text-[18px] max-w-6xl mx-auto">
           We prioritise understanding your institution’s unique landscape,
           ensuring our tailored strategies drive brand growth and cultivate
           regional success in India and South Asia.

@@ -77,7 +77,7 @@ function ImgPlaceholder({
 // ─── News Card 
 function NewsCard({ item }: { item: NewsItem }) {
   return (
-    <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300 ">
+    <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:-translate-y-2 transition-shadow duration-300 ">
 
       {/* 1. Main Image (top) */}
       <div className="relative w-full h-52 flex-shrink-0 overflow-hidden">
