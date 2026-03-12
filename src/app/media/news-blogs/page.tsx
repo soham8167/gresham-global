@@ -292,6 +292,9 @@ import { Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBlogs } from "@/lib/api";
 
+
+const CMS_URL = "https://gresham-global-cms.onrender.com";
+
 interface NewsItem {
   id: string;
   title: string;
@@ -445,7 +448,7 @@ function TabToggle({
 
 export default function Page() {
 
-  const [activeTab, setActiveTab] = useState<"news" | "blogs">("news");
+  const [activeTab, setActiveTab] = useState<"news" | "blogs">("news"); 
 
   const { data, isLoading } = useQuery({
     queryKey: ["newsBlogs"],
@@ -453,15 +456,17 @@ export default function Page() {
   });
 
   const items: NewsItem[] =
-    data?.docs?.map((item: any) => ({
-      id: item.id,
-      title: item.title,
-      excerpt: item.excerpt,
-      date: new Date(item.date).toDateString(),
-      mainImage: item.mainImage?.url || "",
-      slug: item.slug,
-      type: item.type,
-    })) || [];
+  data?.docs?.map((item: any) => ({
+    id: item.id,
+    title: item.title,
+    excerpt: item.excerpt,
+    date: new Date(item.date).toDateString(),
+    mainImage: item.mainImage?.url
+      ? `${CMS_URL}${item.mainImage.url}`
+      : "",
+    slug: item.slug,
+    type: item.type,
+  })) || [];
 
   const displayItems = items.filter((item) => item.type === activeTab);
 

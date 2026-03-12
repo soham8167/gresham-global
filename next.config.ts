@@ -3,22 +3,18 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      // Local Payload CMS (development)
       {
         protocol: "http",
         hostname: "localhost",
         port: "3001",
-        pathname: "/media",
+        pathname: "/media/**",
       },
-
-      // Render Payload CMS (production)
       {
         protocol: "https",
         hostname: "gresham-global-cms.onrender.com",
-        pathname: "/media",
+        pathname: "/media/**",
       },
     ],
-
     dangerouslyAllowLocalIP: true,
   },
 };
