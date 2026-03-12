@@ -348,7 +348,7 @@ function NewsCard({ item }: { item: NewsItem }) {
         <hr className="border-gray-200 mb-4" />
         <div className="flex items-center justify-between">
           <Link
-            href={`/media/${item.slug}`}
+            href={`${item.slug}`}
             className="inline-block bg-red-700 text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded"
           >
             Read More
