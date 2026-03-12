@@ -1,6 +1,6 @@
 export const fetchMediaNews = async () => {
   //const res = await fetch("http://localhost:3001/api/media-news");
-  const res = await fetch("https://gresham-global-cms.onrender.com/api/media");
+  const res = await fetch("https://gresham-global-cms.onrender.com/api/media-news");
 
   if (!res.ok) {
     throw new Error("Failed to fetch media news"); 
