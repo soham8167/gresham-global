@@ -1,85 +1,259 @@
+// import Image from "next/image";
+// import Link from "next/link";
+// import { Share2 } from "lucide-react";
+
+
+// // ─── Types 
+// interface NewsItem {
+//   id: number;
+//   title: string; 
+//   excerpt: string;
+//   date: string;
+//   mainImage: string;       
+//   publicationLogo: string; 
+//   slug: string;
+// }
+
+// // ─── Mock Data 
+// const newsItems: NewsItem[] = [
+//   {
+//     id: 1,
+//     title: "GACC 2025 by Gresham Global Focuses on Future Proof Career",
+//     excerpt:"Gresham Global successfully hosted the second edition of its high-impact conference, the Gresham Annual",
+//     date: "March 05, 2026",
+//     mainImage: "/images/media/media1.png",
+//     publicationLogo: "/images/media/logo1.png",
+//     slug: "q4-results-2026",
+//   },
+//   {
+//     id: 2,
+//     title: "Unis and agencies work to leverage Bangladeshi market",
+//     excerpt:"As the number of Bangladeshi students pursuing education abroad continues to grow, universities and recruitment agencies",
+//     date: "February 28, 2026",
+//     mainImage: "/images/media/media2.png",
+//     publicationLogo: "/images/media/logo2.png",
+//     slug: "global-expansion-2026",
+//   },
+//   {
+//     id: 3,
+//     title: "Gresham Global Strengthens South Asia Education Networks",
+//     excerpt:"With the success of its inaugural event in Bangladesh, Gresham Global is now set to expand the Gresham Connect initiative",
+//     date: "February 20, 2026",
+//     mainImage: "/images/media/media3.png",
+//     publicationLogo: "/images/media/logo3.png",
+//     slug: "innovation-award-2026",
+//   },
+//   {
+//     id: 4,
+//     title: "Gresham Global Simplifies Growth in South Asia for",
+//     excerpt:"The international higher education landscape is evolving rapidly, and South Asia has emerged as a critical region for student recruitment, institutional",
+//     date: "February 10, 2026",
+//     mainImage: "/images/media/media4.png",
+//     publicationLogo: "/images/media/logo4.svg",
+//     slug: "strategic-alliance-2026",
+//   },
+//   {
+//     id: 5,
+//     title: "Studying abroad – disease or an opportunity? Let’s break",
+//     excerpt:"The honourable vice president of India, Jagdeep Dhankar, recently described the trend of students studying abroad as a ",
+//     date: "January 30, 2026",
+//     mainImage: "/images/media/media5.png",
+//     publicationLogo: "/images/media/logo5.png",
+//     slug: "csr-initiative-2026",
+//   },
+//   {
+//     id: 6,
+//     title: "Gresham Global Becomes South Asia Representative for",
+//     excerpt:"Gresham Global is excited to announce its recent partnership with the University of Guelph, further solidifying its global presence",
+//     date: "January 18, 2026",
+//     mainImage: "/images/media/media6.webp",
+//     publicationLogo: "/images/media/logo6.svg",
+//     slug: "platform-launch-2026",
+//   },
+  
+// ];
+
+// // ─── Image Placeholder 
+// function ImgPlaceholder({
+//   className,
+//   iconSize = 40,
+// }: {
+//   className?: string;
+//   iconSize?: number;
+// }) {
+//   return (
+//     <div
+//       className={`bg-linear-to-br from-gray-200 to-gray-300  flex items-center justify-center ${className ?? ""}`}
+//     >
+//       <svg
+//         width={iconSize}
+//         height={iconSize}
+//         viewBox="0 0 24 24"
+//         fill="none"
+//         stroke="#c4c9d0"
+//         strokeWidth="1.2"
+//       >
+//         <rect x="3" y="3" width="18" height="18" rx="2" />
+//         <circle cx="8.5" cy="8.5" r="1.5" />
+//         <polyline points="21 15 16 10 5 21" />
+//       </svg>
+//     </div>
+//   );
+// }
+
+// // ─── News Card 
+// function NewsCard({ item }: { item: NewsItem }) {
+//   return (
+//     <div className=" group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2  ">
+
+//       {/* 1. Main Image (top) */}
+//       <div className="relative w-full h-52 shrink-0 overflow-hidden">
+//         {item.mainImage ? (
+//           <Image
+//             src={item.mainImage}
+//             alt={item.title}
+//             fill
+//             className="object-cover"
+//           />
+//         ) : (
+//           <ImgPlaceholder className="absolute inset-0" iconSize={44} />
+//         )}
+//       </div>
+
+//       {/* 2. Date */}
+//       <div className="px-5 pt-4 pb-0">
+//         <p className="text-xs text-gray-400 font-medium tracking-wide">
+//           {item.date}
+//         </p>
+//       </div>
+
+//       {/* 3. Publication Logo Image */}
+//       <div className="px-5 pt-3 pb-0">
+//         <div className="relative h-9 w-36 overflow-hidden rounded">
+//           {item.publicationLogo ? (
+//             <Image
+//               src={item.publicationLogo}
+//               alt="image not found"
+//               fill
+//               className="object-contain object-left"
+//             />
+//           ) : (
+//             /* Fallback: styled text badge that mimics a publication logo */
+//             <div className="h-full w-full bg-gray-100 border border-gray-200 rounded flex items-center justify-center px-3">
+              
+//             </div>
+//           )}
+//         </div>
+//       </div>
+
+//       {/* 4. Title */}
+//       <div className="px-5 pt-3">
+//         <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2  transition-colors duration-300">
+//           {item.title}
+//         </h3>
+//       </div>
+
+//       {/* 5. Excerpt */}
+//       <div className="px-5 pt-2 flex-1">
+//         <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
+//           {item.excerpt}
+//         </p>
+//       </div>
+
+//       {/* 6. Divider + Read More + Share */}
+//       <div className="px-5 pt-4 pb-5 mt-auto">
+//         <hr className="border-gray-200 mb-4" />
+//         <div className="flex items-center justify-between">
+//           <Link
+//             href={`/media/${item.slug}`}
+//             className="inline-block bg-red-700 text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded transition-colors duration-300"
+//           >
+//             Read More
+//           </Link>
+//           <button
+//             aria-label="Share"
+//             className="flex items-center justify-center w-9 h-9 rounded-full cursor-pointer text-gray-400 transition-colors duration-300"
+//           >
+//             <Share2 size={25} />
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
+// // ─── Main Page 
+// const page = () => {
+//   return (
+//     <main className="min-h-screen bg-gray-50">
+
+//       {/* ── Banner */}
+//       <section>
+//         <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
+//           <Image
+//             src="/images/about/about-bannerimg.webp"
+//             alt="About Banner"
+//             fill
+//             priority
+//             className="object-cover object-center"
+//           />
+//           <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
+//           <div className="absolute inset-0 flex items-center">
+//             <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
+//               <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">
+//                 Media
+//               </h1>
+//             </div>
+//           </div>
+//         </div>
+//       </section>
+
+//       {/* ── Cards Grid */}
+//       <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 md:py-20 ">
+//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ">
+//           {newsItems.map((item) => (
+//             <NewsCard key={item.id} item={item} />
+//           ))}
+//         </div>
+//       </section>
+        
+//     </main>
+//   );
+// };
+
+// export default page;
+
+
+
+
+
+
+
+
+
+
+
+
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Share2 } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMediaNews } from "@/lib/api";
 
-// ─── Types 
+// ─── Types
 interface NewsItem {
   id: number;
-  title: string; 
+  title: string;
   excerpt: string;
   date: string;
-  mainImage: string;       
-  publicationLogo: string; 
-  publicationAlt: string;  
+  mainImage: string;
+  publicationLogo: string;
   slug: string;
 }
 
-// ─── Mock Data 
-const newsItems: NewsItem[] = [
-  {
-    id: 1,
-    title: "GACC 2025 by Gresham Global Focuses on Future Proof Career",
-    excerpt:"Gresham Global successfully hosted the second edition of its high-impact conference, the Gresham Annual",
-    date: "March 05, 2026",
-    mainImage: "/images/media/media1.png",
-    publicationLogo: "/images/media/logo1.png",
-    publicationAlt: "Business Standard",
-    slug: "q4-results-2026",
-  },
-  {
-    id: 2,
-    title: "Unis and agencies work to leverage Bangladeshi market",
-    excerpt:"As the number of Bangladeshi students pursuing education abroad continues to grow, universities and recruitment agencies",
-    date: "February 28, 2026",
-    mainImage: "/images/media/media2.png",
-    publicationLogo: "/images/media/logo2.png",
-    publicationAlt: "The Print",
-    slug: "global-expansion-2026",
-  },
-  {
-    id: 3,
-    title: "Gresham Global Strengthens South Asia Education Networks",
-    excerpt:"With the success of its inaugural event in Bangladesh, Gresham Global is now set to expand the Gresham Connect initiative",
-    date: "February 20, 2026",
-    mainImage: "/images/media/media3.png",
-    publicationLogo: "/images/media/logo3.png",
-    publicationAlt: "Economic Times",
-    slug: "innovation-award-2026",
-  },
-  {
-    id: 4,
-    title: "Gresham Global Simplifies Growth in South Asia for",
-    excerpt:"The international higher education landscape is evolving rapidly, and South Asia has emerged as a critical region for student recruitment, institutional",
-    date: "February 10, 2026",
-    mainImage: "/images/media/media4.png",
-    publicationLogo: "/images/media/logo4.svg",
-    publicationAlt: "Hindustan Times",
-    slug: "strategic-alliance-2026",
-  },
-  {
-    id: 5,
-    title: "Studying abroad – disease or an opportunity? Let’s break",
-    excerpt:"The honourable vice president of India, Jagdeep Dhankar, recently described the trend of students studying abroad as a ",
-    date: "January 30, 2026",
-    mainImage: "/images/media/media5.png",
-    publicationLogo: "/images/media/logo5.png",
-    publicationAlt: "NDTV",
-    slug: "csr-initiative-2026",
-  },
-  {
-    id: 6,
-    title: "Gresham Global Becomes South Asia Representative for",
-    excerpt:"Gresham Global is excited to announce its recent partnership with the University of Guelph, further solidifying its global presence",
-    date: "January 18, 2026",
-    mainImage: "/images/media/media6.webp",
-    publicationLogo: "/images/media/logo6.svg",
-    publicationAlt: "Mint",
-    slug: "platform-launch-2026",
-  },
-  
-];
-
-// ─── Image Placeholder 
+// ─── Image Placeholder
 function ImgPlaceholder({
   className,
   iconSize = 40,
@@ -89,7 +263,9 @@ function ImgPlaceholder({
 }) {
   return (
     <div
-      className={`bg-linear-to-br from-gray-200 to-gray-300  flex items-center justify-center ${className ?? ""}`}
+      className={`bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center ${
+        className ?? ""
+      }`}
     >
       <svg
         width={iconSize}
@@ -107,12 +283,12 @@ function ImgPlaceholder({
   );
 }
 
-// ─── News Card 
+// ─── News Card
 function NewsCard({ item }: { item: NewsItem }) {
   return (
-    <div className=" group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2  ">
+    <div className="group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2">
 
-      {/* 1. Main Image (top) */}
+      {/* Main Image */}
       <div className="relative w-full h-52 shrink-0 overflow-hidden">
         {item.mainImage ? (
           <Image
@@ -126,61 +302,57 @@ function NewsCard({ item }: { item: NewsItem }) {
         )}
       </div>
 
-      {/* 2. Date */}
-      <div className="px-5 pt-4 pb-0">
+      {/* Date */}
+      <div className="px-5 pt-4">
         <p className="text-xs text-gray-400 font-medium tracking-wide">
           {item.date}
         </p>
       </div>
 
-      {/* 3. Publication Logo Image */}
-      <div className="px-5 pt-3 pb-0">
+      {/* Publication Logo */}
+      <div className="px-5 pt-3">
         <div className="relative h-9 w-36 overflow-hidden rounded">
           {item.publicationLogo ? (
             <Image
               src={item.publicationLogo}
-              alt={item.publicationAlt}
+              alt="logo"
               fill
               className="object-contain object-left"
             />
           ) : (
-            /* Fallback: styled text badge that mimics a publication logo */
-            <div className="h-full w-full bg-gray-100 border border-gray-200 rounded flex items-center justify-center px-3">
-              <span className="text-[11px] font-extrabold text-gray-500 uppercase tracking-widest truncate">
-                {item.publicationAlt}
-              </span>
-            </div>
+            <div className="h-full w-full bg-gray-100 border border-gray-200 rounded flex items-center justify-center px-3"></div>
           )}
         </div>
       </div>
 
-      {/* 4. Title */}
+      {/* Title */}
       <div className="px-5 pt-3">
-        <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2  transition-colors duration-300">
+        <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2">
           {item.title}
         </h3>
       </div>
 
-      {/* 5. Excerpt */}
+      {/* Excerpt */}
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
           {item.excerpt}
         </p>
       </div>
 
-      {/* 6. Divider + Read More + Share */}
+      {/* Read More */}
       <div className="px-5 pt-4 pb-5 mt-auto">
         <hr className="border-gray-200 mb-4" />
         <div className="flex items-center justify-between">
           <Link
             href={`/media/${item.slug}`}
-            className="inline-block bg-red-700 text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded transition-colors duration-300"
+            className="inline-block bg-red-700 text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded"
           >
             Read More
           </Link>
+
           <button
             aria-label="Share"
-            className="flex items-center justify-center w-9 h-9 rounded-full cursor-pointer text-gray-400 transition-colors duration-300"
+            className="flex items-center justify-center w-9 h-9 rounded-full cursor-pointer text-gray-400"
           >
             <Share2 size={25} />
           </button>
@@ -190,12 +362,40 @@ function NewsCard({ item }: { item: NewsItem }) {
   );
 }
 
-// ─── Main Page 
-const page = () => {
+// ─── Main Page
+export default function Page() {
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["mediaNews"],
+    queryFn: fetchMediaNews,
+  });
+
+  if (isLoading) {
+    return <p className="text-center py-20">Loading media...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center py-20">Error loading media</p>;
+  }
+
+  // Convert Payload data to your UI format
+  const newsItems: NewsItem[] =
+  data?.docs?.map((item: any) => ({
+    id: item.id,
+    title: item.title,
+    excerpt: item.excerpt,
+    date: new Date(item.date).toDateString(),
+
+    mainImage: item.mainImage?.url || "",
+    publicationLogo: item.publicationLogo?.url || "",
+
+    slug: item.slug,
+  })) || [];
+
   return (
     <main className="min-h-screen bg-gray-50">
 
-      {/* ── Banner */}
+      {/* Banner */}
       <section>
         <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
           <Image
@@ -205,7 +405,9 @@ const page = () => {
             priority
             className="object-cover object-center"
           />
+
           <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
+
           <div className="absolute inset-0 flex items-center">
             <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
               <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">
@@ -216,17 +418,17 @@ const page = () => {
         </div>
       </section>
 
-      {/* ── Cards Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 md:py-20 ">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ">
+      {/* Cards Grid */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 md:py-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
           {newsItems.map((item) => (
             <NewsCard key={item.id} item={item} />
           ))}
+
         </div>
       </section>
-        
+
     </main>
   );
-};
-
-export default page;
+}

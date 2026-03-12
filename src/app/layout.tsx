@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Poppins } from "next/font/google";
-
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -30,7 +30,9 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
      <body className={`${poppins.className} font-sans antialiased bg-white text-gray-900`}>
         <Navbar />
-        {children}
+       <ReactQueryProvider>
+    {children}
+  </ReactQueryProvider>
         <Footer />
       </body>
     </html>
