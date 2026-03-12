@@ -384,22 +384,29 @@ export default function Page() {
 
   // Convert Payload data to your UI format
   const newsItems: NewsItem[] =
-  data?.docs?.map((item: any) => ({
-    id: item.id,
-    title: item.title,
-    excerpt: item.excerpt,
-    date: new Date(item.date).toDateString(),
+  data?.docs?.map((item: any) => {
 
-   mainImage: item.mainImage?.url
-      ? `${CMS_URL}${item.mainImage.url}`
-      : "",
+    console.log("API ITEM:", item); // check full item
+    console.log("MAIN IMAGE:", item.mainImage); // check image object
+    console.log("MAIN IMAGE URL:", item.mainImage?.url); // check url
 
-    publicationLogo: item.publicationLogo?.url
-      ? `${CMS_URL}${item.publicationLogo.url}`
-      : "",
+    return {
+      id: item.id,
+      title: item.title,
+      excerpt: item.excerpt,
+      date: new Date(item.date).toDateString(),
 
-    slug: item.slug,
-  })) || [];
+      mainImage: item.mainImage?.url
+        ? `${CMS_URL}${item.mainImage.url}`
+        : "",
+
+      publicationLogo: item.publicationLogo?.url
+        ? `${CMS_URL}${item.publicationLogo.url}`
+        : "",
+
+      slug: item.slug,
+    };
+  }) || [];
 
   return (
     <main className="min-h-screen bg-gray-50">
