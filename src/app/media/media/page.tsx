@@ -396,12 +396,12 @@ export default function Page() {
       excerpt: item.excerpt,
       date: new Date(item.date).toDateString(),
 
-      mainImage: item.mainImage?.filename
-  ? `${CMS_URL}/media/${item.mainImage.filename}`
+      mainImage: item.mainImage?.url
+  ? `${CMS_URL}${item.mainImage.url}`
   : "",
 
-      publicationLogo: item.publicationLogo?.filename
-  ? `${CMS_URL}/media/${item.publicationLogo.filename}`
+      publicationLogo: item.publicationLogo?.url
+  ? `${CMS_URL}${item.publicationLogo.url}`
   : "",
 
       slug: item.slug,
