@@ -294,11 +294,12 @@ function NewsCard({ item }: { item: NewsItem }) {
       <div className="relative w-full h-52 shrink-0 overflow-hidden">
         {item.mainImage ? (
           <Image
-            src={item.mainImage}
-            alt={item.title}
-            fill
-            className="object-cover"
-          />
+  src={item.mainImage}
+  alt={item.title}
+  fill
+  className="object-cover"
+  unoptimized
+/>
         ) : (
           <ImgPlaceholder className="absolute inset-0" iconSize={44} />
         )}
@@ -316,11 +317,12 @@ function NewsCard({ item }: { item: NewsItem }) {
         <div className="relative h-9 w-36 overflow-hidden rounded">
           {item.publicationLogo ? (
             <Image
-              src={item.publicationLogo}
-              alt="logo"
-              fill
-              className="object-contain object-left"
-            />
+  src={item.publicationLogo}
+  alt="logo"
+  fill
+  className="object-contain object-left"
+  unoptimized
+/>
           ) : (
             <div className="h-full w-full bg-gray-100 border border-gray-200 rounded flex items-center justify-center px-3"></div>
           )}
