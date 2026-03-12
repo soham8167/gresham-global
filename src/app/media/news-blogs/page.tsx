@@ -293,7 +293,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBlogs } from "@/lib/api";
 
 
-const CMS_URL = "https://gresham-global-cms.onrender.com";
+//const CMS_URL = "https://gresham-global-cms.onrender.com";
 
 interface NewsItem {
   id: string;
@@ -462,7 +462,7 @@ export default function Page() {
     excerpt: item.excerpt,
     date: new Date(item.date).toDateString(),
     mainImage: item.mainImage?.url
-      ? `${CMS_URL}${item.mainImage.url}`
+      ? `${item.mainImage.url}`
       : "",
     slug: item.slug,
     type: item.type,

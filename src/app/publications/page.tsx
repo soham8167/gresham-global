@@ -327,7 +327,7 @@ export default function Page () {
     
 
     slug: item.slug,
-  })) || [];
+  })) || []; 
 
   return (
     <main className="min-h-screen bg-gray-50">
