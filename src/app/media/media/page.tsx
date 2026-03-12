@@ -242,7 +242,7 @@ import { Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMediaNews } from "@/lib/api";
 
-const CMS_URL = "https://gresham-global-cms.onrender.com";
+// const CMS_URL = "https://gresham-global-cms.onrender.com";
 
 // ─── Types
 interface NewsItem {
@@ -398,9 +398,7 @@ export default function Page() {
 
       mainImage: item.mainImage?.url ? `${item.mainImage.url}` : "",
 
-      publicationLogo: item.publicationLogo?.url
-  ? `${CMS_URL}${item.publicationLogo.url}`
-  : "",
+      publicationLogo: item.publicationLogo?.url ? `${item.publicationLogo.url}` : "",
  
       slug: item.slug,
     };
