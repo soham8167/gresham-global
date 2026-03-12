@@ -8,14 +8,14 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "3001",
-        pathname: "/media-news/**",
+        pathname: "/media/**",
       },
 
       // Render Payload CMS (production)
       {
         protocol: "https",
         hostname: "gresham-global-cms.onrender.com",
-        pathname: "/media-news/**",
+        pathname: "/media/**",
       },
     ],
 
