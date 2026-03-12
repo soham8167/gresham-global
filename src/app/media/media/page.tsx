@@ -242,6 +242,8 @@ import { Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMediaNews } from "@/lib/api";
 
+const CMS_URL = "https://gresham-global-cms.onrender.com";
+
 // ─── Types
 interface NewsItem {
   id: number;
@@ -277,7 +279,7 @@ function ImgPlaceholder({
       >
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
-        <polyline points="21 15 16 10 5 21" />
+        <polyline points="21 15 16 10 5 21" /> 
       </svg>
     </div>
   );
@@ -386,8 +388,13 @@ export default function Page() {
     excerpt: item.excerpt,
     date: new Date(item.date).toDateString(),
 
-    mainImage: item.mainImage?.url || "",
-    publicationLogo: item.publicationLogo?.url || "",
+   mainImage: item.mainImage?.url
+      ? `${CMS_URL}${item.mainImage.url}`
+      : "",
+
+    publicationLogo: item.publicationLogo?.url
+      ? `${CMS_URL}${item.publicationLogo.url}`
+      : "",
 
     slug: item.slug,
   })) || [];
