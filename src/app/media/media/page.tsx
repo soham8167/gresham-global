@@ -396,18 +396,12 @@ export default function Page() {
       excerpt: item.excerpt,
       date: new Date(item.date).toDateString(),
 
-  //     mainImage: item.mainImage?.url
-  // ? `${CMS_URL}${item.mainImage.url}`
-  // : "",
+      mainImage: item.mainImage?.url ? `${item.mainImage.url}` : "",
 
-  //     publicationLogo: item.publicationLogo?.url
-  // ? `${CMS_URL}${item.publicationLogo.url}`
-  // : "",
-
-
-  // CORRECT - url already has the full path
-mainImage: item.mainImage?.url || "",
-publicationLogo: item.publicationLogo?.url || "",
+      publicationLogo: item.publicationLogo?.url
+  ? `${CMS_URL}${item.publicationLogo.url}`
+  : "",
+ 
       slug: item.slug,
     };
   }) || [];
