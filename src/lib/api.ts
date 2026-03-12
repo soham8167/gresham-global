@@ -31,3 +31,14 @@ export const fetchPublications = async () =>{
     }
     return res.json();
 }
+
+
+
+export const fetchEvents = async () =>{
+    //const res = await fetch("http://localhost:3001/api/publications")
+    const res = await fetch("https://gresham-global-cms.onrender.com/api/events")
+    if(!res.ok){
+        throw new Error("Failed to fetch  events")
+    }
+    return res.json();
+}
