@@ -1,6 +1,6 @@
 export const fetchMediaNews = async () => {
-  //const res = await fetch("http://localhost:3001/api/media-news");
-  const res = await fetch("https://gresham-global-cms.onrender.com/api/media-news");
+  const res = await fetch("http://localhost:3001/api/media-news");
+  //const res = await fetch("https://gresham-global-cms.onrender.com/api/media-news");
 
 
   if (!res.ok) {
@@ -14,8 +14,8 @@ export const fetchMediaNews = async () => {
 
 
 export const fetchNewsBlogs = async () =>{
-    //const res = await fetch("http://localhost:3001/api/news-blogs")
-    const res = await fetch("https://gresham-global-cms.onrender.com/api/news-blogs")
+    const res = await fetch("http://localhost:3001/api/news-blogs")
+    //const res = await fetch("https://gresham-global-cms.onrender.com/api/news-blogs")
     if(!res.ok){
         throw new Error("Failed to fetch  news and blogs")
     }
@@ -25,8 +25,8 @@ export const fetchNewsBlogs = async () =>{
 
 
 export const fetchPublications = async () =>{
-    //const res = await fetch("http://localhost:3001/api/publications")
-    const res = await fetch("https://gresham-global-cms.onrender.com/api/publications")
+    const res = await fetch("http://localhost:3001/api/publications")
+   // const res = await fetch("https://gresham-global-cms.onrender.com/api/publications")
     if(!res.ok){
         throw new Error("Failed to fetch  publications")
     }
@@ -36,8 +36,8 @@ export const fetchPublications = async () =>{
 
 
 export const fetchEvents = async () =>{
-    //const res = await fetch("http://localhost:3001/api/publications")
-    const res = await fetch("https://gresham-global-cms.onrender.com/api/events")
+    const res = await fetch("http://localhost:3001/api/publications")
+    //const res = await fetch("https://gresham-global-cms.onrender.com/api/events")
     if(!res.ok){
         throw new Error("Failed to fetch  events")
     }
