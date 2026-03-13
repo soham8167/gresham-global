@@ -2,19 +2,18 @@
 // import Link from "next/link";
 // import { Share2 } from "lucide-react";
 
-
-// // ─── Types 
+// // ─── Types
 // interface NewsItem {
 //   id: number;
-//   title: string; 
+//   title: string;
 //   excerpt: string;
 //   date: string;
-//   mainImage: string;       
-//   publicationLogo: string; 
+//   mainImage: string;
+//   publicationLogo: string;
 //   slug: string;
 // }
 
-// // ─── Mock Data 
+// // ─── Mock Data
 // const newsItems: NewsItem[] = [
 //   {
 //     id: 1,
@@ -70,10 +69,10 @@
 //     publicationLogo: "/images/media/logo6.svg",
 //     slug: "platform-launch-2026",
 //   },
-  
+
 // ];
 
-// // ─── Image Placeholder 
+// // ─── Image Placeholder
 // function ImgPlaceholder({
 //   className,
 //   iconSize = 40,
@@ -101,7 +100,7 @@
 //   );
 // }
 
-// // ─── News Card 
+// // ─── News Card
 // function NewsCard({ item }: { item: NewsItem }) {
 //   return (
 //     <div className=" group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2  ">
@@ -140,7 +139,7 @@
 //           ) : (
 //             /* Fallback: styled text badge that mimics a publication logo */
 //             <div className="h-full w-full bg-gray-100 border border-gray-200 rounded flex items-center justify-center px-3">
-              
+
 //             </div>
 //           )}
 //         </div>
@@ -182,7 +181,7 @@
 //   );
 // }
 
-// // ─── Main Page 
+// // ─── Main Page
 // const page = () => {
 //   return (
 //     <main className="min-h-screen bg-gray-50">
@@ -216,23 +215,12 @@
 //           ))}
 //         </div>
 //       </section>
-        
+
 //     </main>
 //   );
 // };
 
 // export default page;
-
-
-
-
-
-
-
-
-
-
-
 
 "use client";
 
@@ -279,7 +267,7 @@ function ImgPlaceholder({
       >
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
-        <polyline points="21 15 16 10 5 21" /> 
+        <polyline points="21 15 16 10 5 21" />
       </svg>
     </div>
   );
@@ -289,17 +277,16 @@ function ImgPlaceholder({
 function NewsCard({ item }: { item: NewsItem }) {
   return (
     <div className="group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2">
-
       {/* Main Image */}
       <div className="relative w-full h-52 shrink-0 overflow-hidden">
         {item.mainImage ? (
           <Image
-  src={item.mainImage}
-  alt={item.title}
-  fill
-  className="object-cover"
-  unoptimized
-/>
+            src={item.mainImage}
+            alt={item.title}
+            fill
+            className="object-cover"
+            unoptimized
+          />
         ) : (
           <ImgPlaceholder className="absolute inset-0" iconSize={44} />
         )}
@@ -317,12 +304,12 @@ function NewsCard({ item }: { item: NewsItem }) {
         <div className="relative h-9 w-36 overflow-hidden rounded">
           {item.publicationLogo ? (
             <Image
-  src={item.publicationLogo}
-  alt="logo"
-  fill
-  className="object-contain object-left"
-  unoptimized
-/>
+              src={item.publicationLogo}
+              alt="logo"
+              fill
+              className="object-contain object-left"
+              unoptimized
+            />
           ) : (
             <div className="h-full w-full bg-gray-100 border border-gray-200 rounded flex items-center justify-center px-3"></div>
           )}
@@ -368,12 +355,12 @@ function NewsCard({ item }: { item: NewsItem }) {
 
 // ─── Main Page
 export default function Page() {
-
   const { data, isLoading, error } = useQuery({
     queryKey: ["mediaNews"],
     queryFn: fetchMediaNews,
   });
-
+  console.log("API RESPONSE DATA:", data);
+  console.log("API DOCS:", data?.docs);
   if (isLoading) {
     return <p className="text-center py-20">Loading media...</p>;
   }
@@ -384,29 +371,29 @@ export default function Page() {
 
   // Convert Payload data to your UI format
   const newsItems: NewsItem[] =
-  data?.docs?.map((item: any) => {
+    data?.docs?.map((item: any) => {
+      console.log("API ITEM:", item);
+      console.log("MAIN IMAGE:", item.mainImage);
+      console.log("MAIN IMAGE URL:", item.mainImage?.url);
 
-    console.log("API ITEM:", item); // check full item
-    console.log("MAIN IMAGE:", item.mainImage); // check image object
-    console.log("MAIN IMAGE URL:", item.mainImage?.url); // check url
+      return {
+        id: item.id,
+        title: item.title,
+        excerpt: item.excerpt,
+        date: new Date(item.date).toDateString(),
 
-    return {
-      id: item.id,
-      title: item.title,
-      excerpt: item.excerpt,
-      date: new Date(item.date).toDateString(),
+        mainImage: item.mainImage?.url ? `${item.mainImage.url}` : "",
 
-      mainImage: item.mainImage?.url ? `${item.mainImage.url}` : "",
+        publicationLogo: item.publicationLogo?.url
+          ? `${item.publicationLogo.url}`
+          : "",
 
-      publicationLogo: item.publicationLogo?.url ? `${item.publicationLogo.url}` : "",
- 
-      slug: item.slug,
-    };
-  }) || [];
+        slug: item.slug,
+      };
+    }) || [];
 
   return (
     <main className="min-h-screen bg-gray-50">
-
       {/* Banner */}
       <section>
         <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
@@ -433,14 +420,11 @@ export default function Page() {
       {/* Cards Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 md:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-
           {newsItems.map((item) => (
             <NewsCard key={item.id} item={item} />
           ))}
-
         </div>
       </section>
-
     </main>
   );
 }
