@@ -67,17 +67,17 @@ const services = [
 
 const Services = () => {
   return (
-    <section className="relative py-20 bg-gray-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+    <section className="relative  bg-gray-100 overflow-hidden">
+      <div className="max-w-7xl mx-auto  relative z-10">
         <h2 className="text-7xl font-bold text-center mb-16">Services</h2>
 
         {/* cards grid */}
-        <div className="grid md:grid-cols-3 gap-10">
+        <div className="grid md:grid-cols-3 gap-35 pr-16 relative right-8">
           {services.map((service, index) => (
-            <div key={index} className="group perspective-[1000px] h-70 w-100">
+            <div key={index} className="group perspective-[1000px] h-80 w-105">
               <div className="relative h-full w-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                 {/* FRONT CARD */}
-                <div className="absolute inset-0 rounded-2xl overflow-hidden shadow-lg backface-visibility:hidden">
+                <div className="absolute inset-1 rounded-2xl overflow-hidden shadow-lg backface-visibility:hidden">
                   <Image
                     src={service.image}
                     alt={service.title}
@@ -86,7 +86,7 @@ const Services = () => {
                   />
 
                   {/* overlay */}
-                  <div className="absolute inset-0 bg-black/60"></div>
+                  <div className="absolute inset-0 bg-black/10"></div>
 
                   {/* title */}
                  <h3 className="absolute bottom-6 left-6 text-white text-3xl font-semibold whitespace-pre-line max-w-50 leading-tight">

@@ -36,13 +36,35 @@ export const fetchPublications = async () =>{
 
 
 export const fetchEvents = async () =>{
-    const res = await fetch("http://localhost:3001/api/publications")
+    const res = await fetch("http://localhost:3001/api/events")
     //const res = await fetch("https://gresham-global-cms.onrender.com/api/events")
     if(!res.ok){
         throw new Error("Failed to fetch  events")
     }
     return res.json();
 }
+
+
+
+export const fetchJobs = async () =>{
+    const res = await fetch("http://localhost:3001/api/jobs")
+    //const res = await fetch("https://gresham-global-cms.onrender.com/api/jobs")
+    if(!res.ok){
+        throw new Error("Failed to fetch  jobs")
+    }
+    return res.json();
+}
+
+// export const fetchcareerDetails = async (id: string) => {
+//   const res = await fetch(`http://localhost:3001/api/career-details/${id}`)
+//   console.log("Status:", res.status)        
+//   if (!res.ok) throw new Error(`Failed: ${res.status}`)
+//   const json = await res.json()
+//   console.log("API Response:", json)        
+//   return json
+// }
+
+
 
 
 
