@@ -55,14 +55,14 @@ export const fetchJobs = async () =>{
     return res.json();
 }
 
-// export const fetchcareerDetails = async (id: string) => {
-//   const res = await fetch(`http://localhost:3001/api/career-details/${id}`)
-//   console.log("Status:", res.status)        
-//   if (!res.ok) throw new Error(`Failed: ${res.status}`)
-//   const json = await res.json()
-//   console.log("API Response:", json)        
-//   return json
-// }
+export const fetchcareerDetails = async (id: string) => {
+  const res = await fetch(`http://localhost:3001/api/career-details/${id}`)
+  console.log("Status:", res.status)        
+  if (!res.ok) throw new Error(`Failed: ${res.status}`)
+  const json = await res.json()
+  console.log("API Response:", json)        
+  return json
+}
 
 
 
