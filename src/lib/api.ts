@@ -1,6 +1,6 @@
 export const fetchMediaNews = async () => {
-  const res = await fetch("http://localhost:3001/api/media-news");
-  //const res = await fetch("https://gresham-global-cms.onrender.com/api/media-news");
+  //const res = await fetch("http://localhost:3001/api/media-news");
+  const res = await fetch("https://gresham-global-cms.onrender.com/api/media-news");
 
 
   if (!res.ok) {
@@ -14,8 +14,8 @@ export const fetchMediaNews = async () => {
 
 
 export const fetchNewsBlogs = async () =>{
-    const res = await fetch("http://localhost:3001/api/news-blogs")
-    //const res = await fetch("https://gresham-global-cms.onrender.com/api/news-blogs")
+    //const res = await fetch("http://localhost:3001/api/news-blogs")
+    const res = await fetch("https://gresham-global-cms.onrender.com/api/news-blogs")
     if(!res.ok){
         throw new Error("Failed to fetch  news and blogs")
     }
@@ -25,8 +25,8 @@ export const fetchNewsBlogs = async () =>{
 
 
 export const fetchPublications = async () =>{
-    const res = await fetch("http://localhost:3001/api/publications")
-   // const res = await fetch("https://gresham-global-cms.onrender.com/api/publications")
+    //const res = await fetch("http://localhost:3001/api/publications")
+    const res = await fetch("https://gresham-global-cms.onrender.com/api/publications")
     if(!res.ok){
         throw new Error("Failed to fetch  publications")
     }
@@ -36,8 +36,8 @@ export const fetchPublications = async () =>{
 
 
 export const fetchEvents = async () =>{
-    const res = await fetch("http://localhost:3001/api/events")
-    //const res = await fetch("https://gresham-global-cms.onrender.com/api/events")
+   // const res = await fetch("http://localhost:3001/api/events")
+    const res = await fetch("https://gresham-global-cms.onrender.com/api/events")
     if(!res.ok){
         throw new Error("Failed to fetch  events")
     }
@@ -47,8 +47,8 @@ export const fetchEvents = async () =>{
 
 
 export const fetchJobs = async () =>{
-    const res = await fetch("http://localhost:3001/api/jobs")
-    //const res = await fetch("https://gresham-global-cms.onrender.com/api/jobs")
+    //const res = await fetch("http://localhost:3001/api/jobs")
+    const res = await fetch("https://gresham-global-cms.onrender.com/api/jobs")
     if(!res.ok){
         throw new Error("Failed to fetch  jobs")
     }
@@ -59,13 +59,15 @@ export const fetchJobs = async () =>{
 
 
 export const fetchcareerDetails = async (id: string) => {
-  // First get the job to find its title
-  const jobRes = await fetch(`http://localhost:3001/api/jobs/${id}`)
+  
+
+  //const jobRes = await fetch(`http://localhost:3001/api/jobs/${id}`)
+  const jobRes = await fetch(`https://gresham-global-cms.onrender.com/api/jobs/${id}`)
   if (!jobRes.ok) throw new Error(`Failed: ${jobRes.status}`)
   const job = await jobRes.json()
 
   // Then find matching career-details by title
-  const detailsRes = await fetch(`http://localhost:3001/api/career-details?where[title][equals]=${encodeURIComponent(job.title)}&limit=1`)
+  const detailsRes = await fetch(`https://gresham-global-cms.onrender.com/api/career-details?where[title][equals]=${encodeURIComponent(job.title)}&limit=1`)
   if (!detailsRes.ok) throw new Error(`Failed: ${detailsRes.status}`)
   const details = await detailsRes.json()
 
