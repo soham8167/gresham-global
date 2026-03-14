@@ -53,7 +53,7 @@ const serviceCards = [
   },
   {
     icon: "/images/services/financialcomicon.svg",
-    title: "Financial Compliance",
+    title: "Financial Compliancee",
     description:
       "Navigating South Asia's complex regulatory landscape requires meticulous financial compliance. Our expertise ensures your institution adheres to local financial regulations while upholding global standards of transparency and efficiency .",
   },
@@ -195,7 +195,7 @@ const page = () => {
 
 
 
-<div
+   <div
         onClick={() => setFormOpen(false)}
         aria-hidden="true"
         className={`fixed inset-0 z-40 bg-black transition-opacity duration-300 ${

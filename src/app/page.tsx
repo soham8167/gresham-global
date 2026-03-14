@@ -21,7 +21,7 @@ export default function HomePage() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover opacity-80"
         >
-          <source src="/images/footer/footer-video.mp4" type="video/mp4" />
+          <source src="/images/home/hero-banner.mp4" type="video/mp4" />
         </video>
 
         {/* Very subtle left-to-black gradient so text stays readable */}

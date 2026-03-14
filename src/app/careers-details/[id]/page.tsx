@@ -15,7 +15,7 @@ interface AboutJobPoint {
 
 interface CareerDetail {
   title: string
-  aboutJobPoints: AboutJobPoint[]  // ✅ correct field name from API
+  aboutJobPoints: AboutJobPoint[]  //correct field name from API
 }
 
 // ─── Application Form
@@ -193,7 +193,7 @@ function Skeleton() {
 
 // ─── Main Page
 export default function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)  //  unwrap Promise in Next.js 15
+  const { id } = use(params) 
 
   const { data, isLoading, isError } = useQuery<CareerDetail>({
     queryKey: ["careerDetail", id],
@@ -243,7 +243,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               <p className="text-red-500 text-sm">Failed to load job details. Please try again.</p>
             ) : (
               <ul className="list-disc list-outside pl-5 flex flex-col gap-2">
-                {/* ✅ correct: aboutJobPoints, then item.point */}
+                {/*  correct: aboutJobPoints, then item.point */}
                 {data?.aboutJobPoints?.map((item) => (
                   <li
                     key={item.id}

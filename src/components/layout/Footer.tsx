@@ -24,7 +24,7 @@ export default function Footer() {
       {/* VIDEO BACKGROUND */}
       <div className="absolute inset-0 -z-10">
         <video autoPlay muted loop playsInline className="w-full h-full object-cover">
-          <source src="/images/footer/footer-video.mp4" type="video/mp4" />
+          <source src="/images/footer/footer.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/70" />
       </div>
@@ -217,7 +217,7 @@ export default function Footer() {
             </div>
 
             {/* ── COL 3 : Follow Us ── */}
-            <div className="lg:col-span-2 relative right-8">
+            <div className="lg:col-span-2 relative">
               <h4 className="text-[15px] font-bold text-white mb-6">Follow us</h4>
               <Link
                 href=""
@@ -288,8 +288,8 @@ export default function Footer() {
       {/* BOTTOM BAR */}
       <div className="bg-black/60 border-t border-white/10 py-5 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-gray-400">
-          <p>© {new Date().getFullYear()} Gresham Global. All rights reserved.</p>
-          <Link href="/privacy-policy" className="hover:text-white transition">Privacy Policy</Link>
+          <p className="text-lg text-white">© {new Date().getFullYear()} Gresham Global. All rights reserved.</p>
+          <Link href="/privacy-policy" className="text-white transition text-lg">Privacy Policy</Link>
         </div>
       </div>
 

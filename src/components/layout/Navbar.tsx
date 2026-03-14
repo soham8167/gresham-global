@@ -42,7 +42,7 @@ export default function Navbar() {
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-0">
 
-          <div className="flex items-center divide-x divide-gray-300">
+          <div className="flex items-center divide-x divide-gray-900">
             {navigation.map((item) => {
               const active = isItemActive(item);
 
@@ -50,7 +50,7 @@ export default function Navbar() {
                 <div key={item.label} className="relative px-4 lg:px-6 xl:px-7 group">
                   <div
                     className={`
-                      flex items-center gap-1 text-sm lg:text-base font-medium transition-colors duration-200 cursor-pointer
+                      flex items-center gap-1 text-sm lg:text-lg font-medium transition-colors duration-200 cursor-pointer
                       pb-1
                       ${active
                         ? "text-red-600 border-b-2 border-red-600"
@@ -68,7 +68,7 @@ export default function Navbar() {
 
                     {item.children && (
                       <ChevronDown
-                        size={15}
+                        size={20}
                         className="mt-0.5 shrink-0 transition-transform duration-200 group-hover:rotate-180"
                       />
                     )}
