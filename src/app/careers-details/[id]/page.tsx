@@ -4,7 +4,7 @@
 
 import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
-import { fetchcareerDetails } from "@/lib/api"
+import { fetchCareerDetails } from "@/lib/api"
 import { useState, use } from "react"
 
 // ─── Types — matched exactly to Payload CMS response
@@ -197,7 +197,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const { data, isLoading, isError } = useQuery<CareerDetail>({
     queryKey: ["careerDetail", id],
-    queryFn: () => fetchcareerDetails(id),
+    queryFn: () => fetchCareerDetails(id),
     enabled: !!id,  
   })
 
