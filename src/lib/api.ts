@@ -55,16 +55,22 @@ export const fetchJobs = async () =>{
     return res.json();
 }
 
+
+
+
 export const fetchcareerDetails = async (id: string) => {
-  const res = await fetch(`http://localhost:3001/api/career-details/${id}`)
-  console.log("Status:", res.status)        
-  if (!res.ok) throw new Error(`Failed: ${res.status}`)
-  const json = await res.json()
-  console.log("API Response:", json)        
-  return json
+  // First get the job to find its title
+  const jobRes = await fetch(`http://localhost:3001/api/jobs/${id}`)
+  if (!jobRes.ok) throw new Error(`Failed: ${jobRes.status}`)
+  const job = await jobRes.json()
+
+  // Then find matching career-details by title
+  const detailsRes = await fetch(`http://localhost:3001/api/career-details?where[title][equals]=${encodeURIComponent(job.title)}&limit=1`)
+  if (!detailsRes.ok) throw new Error(`Failed: ${detailsRes.status}`)
+  const details = await detailsRes.json()
+
+  return details?.docs?.[0] ?? null
 }
-
-
 
 
 

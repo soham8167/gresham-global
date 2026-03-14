@@ -230,7 +230,6 @@ import { Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMediaNews } from "@/lib/api";
 
-// const CMS_URL = "https://gresham-global-cms.onrender.com";
 
 // ─── Types
 interface NewsItem {
@@ -275,6 +274,7 @@ function ImgPlaceholder({
 
 // ─── News Card
 function NewsCard({ item }: { item: NewsItem }) {
+  console.log("hello is ", item.slug)
   return (
     <div className="group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2">
       {/* Main Image */}

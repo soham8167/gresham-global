@@ -1,14 +1,21 @@
+
+
 "use client"
 
 import Image from "next/image"
 import { useQuery } from "@tanstack/react-query"
 import { fetchcareerDetails } from "@/lib/api"
-import { useState } from "react"
+import { useState, use } from "react"
 
-// ─── Types
+// ─── Types — matched exactly to Payload CMS response
+interface AboutJobPoint {
+  point: string
+  id?: string
+}
+
 interface CareerDetail {
   title: string
-  aboutJob: string[]
+  aboutJobPoints: AboutJobPoint[]  // ✅ correct field name from API
 }
 
 // ─── Application Form
@@ -55,7 +62,6 @@ function ApplicationForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
-      {/* Full Name */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-800">Full Name*</label>
         <input
@@ -68,7 +74,6 @@ function ApplicationForm() {
         />
       </div>
 
-      {/* Email */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-800">Email*</label>
         <input
@@ -81,7 +86,6 @@ function ApplicationForm() {
         />
       </div>
 
-      {/* Phone Number */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-800">Phone Number*</label>
         <input
@@ -94,7 +98,6 @@ function ApplicationForm() {
         />
       </div>
 
-      {/* City */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-800">City*</label>
         <input
@@ -107,7 +110,6 @@ function ApplicationForm() {
         />
       </div>
 
-      {/* Work Experience */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-800">Work Experience*</label>
         <select
@@ -118,14 +120,13 @@ function ApplicationForm() {
           className="border border-gray-300 rounded px-3 py-2 text-sm text-gray-500 outline-none focus:border-gray-500 bg-white"
         >
           <option value="" disabled>Select Experience</option>
-          <option value="fresher">Fresher (0 years)</option>
-          <option value="1-2">1 – 2 years</option>
-          <option value="3-5">3 – 5 years</option>
-          <option value="5+">5+ years</option>
+          <option value="fresher">Fresher</option>
+          <option value="1-2">1 – 3 years</option>
+          <option value="3-5">4 – 8 years</option>
+          <option value="5+">8+ years</option>
         </select>
       </div>
 
-      {/* Tell us about yourself */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-800">Tell us about yourself*</label>
         <textarea
@@ -138,7 +139,6 @@ function ApplicationForm() {
         />
       </div>
 
-      {/* Upload CV/Resume */}
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium text-gray-800">Upload CV/Resume*</label>
         <div className="flex items-center border border-gray-300 rounded overflow-hidden">
@@ -161,12 +161,10 @@ function ApplicationForm() {
         </p>
       </div>
 
-      {/* Consent */}
       <p className="text-xs text-gray-500 text-center border border-gray-200 rounded px-4 py-3 bg-gray-50">
         By using this form you agree with the storage and handling of your data by this website.
       </p>
 
-      {/* Submit */}
       <button
         type="submit"
         disabled={loading}
@@ -194,10 +192,13 @@ function Skeleton() {
 }
 
 // ─── Main Page
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params)  //  unwrap Promise in Next.js 15
+
   const { data, isLoading, isError } = useQuery<CareerDetail>({
-    queryKey: ["careerDetail", params?.id],
-    queryFn: () => fetchcareerDetails(params?.id),
+    queryKey: ["careerDetail", id],
+    queryFn: () => fetchcareerDetails(id),
+    enabled: !!id,  
   })
 
   return (
@@ -212,10 +213,7 @@ export default function Page({ params }: { params: { id: string } }) {
           priority
           className="object-cover object-center"
         />
-        {/* Overlay */}
         <div className="absolute inset-0 bg-black/50" />
-
-        {/* Dynamic Title */}
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
             {isLoading ? (
@@ -233,7 +231,7 @@ export default function Page({ params }: { params: { id: string } }) {
       <section className="max-w-7xl mx-auto px-6 md:px-12 py-12 md:py-16">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
 
-          {/* LEFT — About the Job (dynamic) */}
+          {/* LEFT — About the Job */}
           <div className="w-full lg:w-[56%]">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-5">
               About the job:
@@ -245,12 +243,13 @@ export default function Page({ params }: { params: { id: string } }) {
               <p className="text-red-500 text-sm">Failed to load job details. Please try again.</p>
             ) : (
               <ul className="list-disc list-outside pl-5 flex flex-col gap-2">
-                {data?.aboutJob?.map((point, i) => (
+                {/* ✅ correct: aboutJobPoints, then item.point */}
+                {data?.aboutJobPoints?.map((item) => (
                   <li
-                    key={i}
+                    key={item.id}
                     className="text-gray-700 text-sm sm:text-[15px] leading-relaxed"
                   >
-                    {point}
+                    {item.point}
                   </li>
                 ))}
               </ul>
@@ -268,7 +267,7 @@ export default function Page({ params }: { params: { id: string } }) {
         </div>
       </section>
 
-      {/* ── About Us (static) */}
+      {/* ── About Us */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 pb-16">
         <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4">
           About Us:

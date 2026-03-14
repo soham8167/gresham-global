@@ -1,3 +1,9 @@
+
+
+
+
+
+
 "use client";
 
 import Link from "next/link";
@@ -5,7 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchJobs } from "@/lib/api";
 
 interface Job {
-  id: number;
+  id: string;
   title: string;
   university: string;
   location: string;
@@ -40,12 +46,12 @@ function JobCard({ job }: { job: Job }) {
       </ul>
 
       <div>
-        <a
+        <Link
           href={job.applyLink}
           className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-6 py-2.5 rounded-lg transition-colors duration-300"
         >
           Apply Now
-        </a>
+        </Link>
       </div>
 
     </div>
@@ -67,28 +73,29 @@ export default function CurrentOpenings() {
     return <p className="text-center py-10">Error loading jobs</p>;
   }
 
-  const jobs: Job[] =
-    data?.docs?.map((item: any) => ({
+  const jobs: Job[] = data?.docs?.map((item: any) => {
+    
+
+    return {
       id: item.id,
       title: item.title,
       university: item.university,
       location: item.location,
       jobType: item.jobType,
       workEx: item.workEx,
-      applyLink: item.applyLink || "careers-details",
-    })) || [];
+      //  if linked, go to career-details page; else go to general careers page
+      applyLink: `/careers-details/${item.id}`,
+    }
+  }) || [];
 
   return (
     <section className="bg-gray-100 py-16 md:py-20">
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
 
-        {/* Header */}
         <div className="flex items-center justify-between mb-8 md:mb-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900">
             Current Openings
           </h2>
-
           <Link
             href="/careers-openings"
             className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-6 py-3 rounded-lg"
@@ -97,15 +104,13 @@ export default function CurrentOpenings() {
           </Link>
         </div>
 
-        {/* Jobs Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {jobs.slice(0,3).map((job) => (
+          {jobs.slice(0, 3).map((job) => (
             <JobCard key={job.id} job={job} />
           ))}
         </div>
 
       </div>
-
     </section>
   );
 }
