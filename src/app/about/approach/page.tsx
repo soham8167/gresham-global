@@ -26,14 +26,13 @@ const Page = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // backend integration to be added later
   }
 
   return (
     <section>
 
       {/* ── Banner ── */}
-      <div className="relative w-full h-[250px] sm:h-[320px] md:h-[400px] lg:h-[450px] overflow-hidden">
+      <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
         <Image
           src="/images/about/about-bannerimg.webp"
           alt="About Banner"

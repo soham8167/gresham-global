@@ -7,8 +7,8 @@ export default function Whychoose() {
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
 
           {/* LEFT CONTENT */}
-          <div className="w-full lg:w-[55%]">
-            <h2 className="text-[36px] sm:text-[40px] lg:text-[46px] font-extrabold text-black leading-tight mb-6">
+          <div className="w-full lg:w-[85%]">
+            <h2 className="text-[36px] sm:text-[40px] lg:text-[56px] font-extrabold text-black leading-tight mb-6">
               Why Choose Us?
             </h2>
 
@@ -30,7 +30,7 @@ export default function Whychoose() {
 
           {/* RIGHT IMAGE */}
           <div className="w-full lg:w-[75%] relative">
-            <div className="relative w-full h-80 sm:h-90 md:h-105 lg:h-115 translate-x-0 lg:translate-x-14">
+            <div className="relative w-full h-80 sm:h-90 md:h-105 lg:h-115 translate-x-0 lg:translate-x-4">
               <Image
                 src="/images/home/whychoose.webp"
                 alt="Why Choose Us - Gresham Global"

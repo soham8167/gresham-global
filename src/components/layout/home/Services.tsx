@@ -73,13 +73,13 @@ const services = [
 ];
 
 const GlobeIcon = () => (
-  <span className="shrink-0 w-4 h-4 rounded-full border border-white/80 flex items-center justify-center">
+  <span className="shrink-0 w-4 h-4 rounded-full flex items-center justify-center">
     <svg
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
-      className="w-2.5 h-2.5 text-white"
+      className="w-4.5 h-4.5 text-white"
     >
       <circle cx="12" cy="12" r="10" />
       <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
@@ -96,7 +96,7 @@ const Services = () => {
         </h2>
 
         {/* ── DESKTOP grid (md and up): flip cards ── */}
-        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 ">
           {services.map((service, index) => (
             <Link key={index} href={service.href}>
               <div className="group perspective-[1000px] h-80 w-full cursor-pointer">
@@ -145,7 +145,7 @@ const Services = () => {
           ))}
         </div>
 
-        {/* ── MOBILE / TABLET list (below md): static cards, no flip ── */}
+        {/* ── MOBILE / TABLET list  ── */}
         <div className="flex flex-col gap-5 md:hidden">
           {services.map((service, index) => (
             <Link key={index} href={service.href}>
@@ -156,7 +156,7 @@ const Services = () => {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10" />
+                <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/40 to-black/10" />
                 <div className="absolute inset-0 flex flex-col justify-center px-5 py-4">
                   <h3 className="text-white text-xl sm:text-2xl font-bold mb-3 leading-tight">
                     {service.title}

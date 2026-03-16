@@ -45,6 +45,7 @@ function useVisibleCount(): number {
   return count;
 }
 
+
 const ArticleCard = ({ article }: { article: Article }) => (
   <div className="flex flex-col h-full bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden shrink-0">
     <div className="relative w-full h-42.5 sm:h-47.5 md:h-50 overflow-hidden rounded-t-2xl bg-gray-100">
@@ -179,8 +180,8 @@ const Articles = () => {
   const cards = activeTab === "media" ? mediaCards : newsCards;
 
   return (
-    <section className="w-full bg-[#eef0f3] py-12 sm:py-14 lg:py-20">
-      <div className="max-w-350 mx-auto px-6 sm:px-8 lg:px-14">
+    <section className="w-full bg-[#eef0f3] py-12 sm:py-14 lg:py-15">
+      <div className="max-w-450 mx-auto px-6 sm:px-8 lg:px-14">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-gray-900 tracking-tight">
             Articles & Resources

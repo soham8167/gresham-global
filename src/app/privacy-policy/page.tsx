@@ -22,7 +22,7 @@ const page = () => {
         {/* 1. Information We Collect */}
         <li>
           <span className="font-bold">Information We Collect</span>
-          <ol className="list-decimal list-outside mt-2 space-y-2 pl-5">
+          <ol className="list-decimal list-outside mt-2 space-y-2 pl-2">
             <li>
               <span className="font-extrabold">Personal Information:</span> We may collect personal
               information you provide directly, such as your name, email address, phone number, and
@@ -30,6 +30,7 @@ const page = () => {
               us.
             </li>
             <li>
+                
               <span className="font-bold">Usage Data:</span> We automatically collect information
               about your visit to our Site, including your IP address, browser type, operating
               system, pages visited, and the dates/times of your visits.
@@ -57,7 +58,7 @@ const page = () => {
               "To comply with legal obligations and protect our legal rights",
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full border border-gray-600 flex-shrink-0 inline-block" />
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full border border-gray-600 shrink-0 inline-block" />
                 <span>{item}</span>
               </li>
             ))}
@@ -87,7 +88,7 @@ const page = () => {
               },
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full border border-gray-600 flex-shrink-0 inline-block" />
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full border border-gray-600 shrink-0 inline-block" />
                 <span>
                   <span className="font-bold">{item.label}</span> {item.text}
                 </span>
@@ -126,7 +127,7 @@ const page = () => {
               },
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-2">
-                <span className="mt-1.5 w-1.5 h-1.5 rounded-full border border-gray-600 flex-shrink-0 inline-block" />
+                <span className="mt-1.5 w-1.5 h-1.5 rounded-full border border-gray-600 shrink-0 inline-block" />
                 <span>
                   <span className="font-bold">{item.label}</span> {item.text}
                 </span>

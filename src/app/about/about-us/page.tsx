@@ -6,7 +6,7 @@ const Page = () => {
   return (
     <section >
       
-     <div className="relative w-full h-[250px] sm:h-[320px] md:h-[400px] lg:h-[450px] overflow-hidden">
+     <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
          {/* Background Image */}
       <Image
         src="/images/about/about-bannerimg.webp"
@@ -43,7 +43,7 @@ const Page = () => {
       </div>
 
       {/* Right Text */}
-      <div className="space-y-6 text-gray-700 text-base sm:text-lg leading-relaxed">
+      <div className="space-y-6 text-gray-700 text-base sm:text-lg leading-relaxed lg: w-180 ">
 
         <p>
           With a focus on international education, we empower international
@@ -77,10 +77,10 @@ const Page = () => {
     </h2>
 
     {/* Founders Grid */}
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
 
       {/* Founder Card 1 - Jaspreet Singh */}
-      <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-start ">
+      <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-start lg:w-150 h-90">
         <div className="flex flex-col items-center sm:items-start shrink-0">
           <div className="w-32 h-36 sm:w-36 sm:h-40 rounded-xl overflow-hidden ">
             <Image
@@ -107,7 +107,7 @@ const Page = () => {
       </div>
 
       {/* Founder Card 2 - Jasminder Khanna */}
-      <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-start">
+      <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 flex flex-col sm:flex-row gap-6 items-start lg:w-150 h-90">
         <div className="flex flex-col items-center sm:items-start shrink-0">
           <div className="w-32 h-36 sm:w-36 sm:h-40 rounded-xl overflow-hidden ">
             <Image

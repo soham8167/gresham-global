@@ -92,3 +92,13 @@ export const fetchCareerDetails = async (id: string) => {
   return details?.docs?.[0] ?? null;
 };
 
+
+
+
+
+
+export const fetchEventBySlug = async (slug: string) => {
+  const res = await fetch(`${BASE_URL}/events?where[slug][equals]=${slug}`);
+  if (!res.ok) throw new Error("Failed to fetch event");
+  return res.json();
+};
