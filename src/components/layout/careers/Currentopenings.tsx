@@ -52,7 +52,7 @@ function JobCard({ job }: { job: Job }) {
     </div>
   );
 }
-
+ 
 export default function CurrentOpenings() {
 
   const { data, isLoading, error } = useQuery({
@@ -85,7 +85,7 @@ export default function CurrentOpenings() {
 
   return (
     <section className="bg-gray-100 py-16 md:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12"> 
 
         <div className="flex items-center justify-between mb-8 md:mb-10">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900">
@@ -109,3 +109,5 @@ export default function CurrentOpenings() {
     </section>
   );
 }
+
+

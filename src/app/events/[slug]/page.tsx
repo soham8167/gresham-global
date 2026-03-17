@@ -221,14 +221,11 @@ export default function EventDetailPage() {
         <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/30" />
       </section>
 
-      {/* ── Title + Description */}
       <section className="max-w-8xl mx-auto px-6 py-12">
-        {/* Title */}
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
           {item.title}
         </h1>
 
-        {/* Description */}
         {description && (
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
             {description}
@@ -236,14 +233,12 @@ export default function EventDetailPage() {
         )}
       </section>
 
-      {/* ── Video Section (only if hasVideo) */}
       {hasVideo && (
         <section className="max-w-7xl mx-auto px-6 pb-12">
           <YouTubeEmbed videoStr={item.video} />
         </section>
       )}
 
-      {/* ── Gallery Section (only if hasGallery) */}
       {hasGallery && (
         <section className="max-w-8xl mx-auto px-6 pb-20">
           <GallerySection gallery={item.gallery} />

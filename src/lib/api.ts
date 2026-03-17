@@ -55,45 +55,19 @@ export const fetchEvents = async () => {
   return res.json();
 };
 
-
 // JOBS
 export const fetchJobs = async () => {
   const res = await fetch(`${BASE_URL}/jobs`);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch jobs");
-  }
-
+  if (!res.ok) throw new Error("Failed to fetch jobs");
   return res.json();
 };
 
-
-// CAREER DETAILS
+// CAREER DETAILS — jobs endpoint already has all the data
 export const fetchCareerDetails = async (id: string) => {
-
-  const jobRes = await fetch(`${BASE_URL}/jobs/${id}`);
-
-  if (!jobRes.ok) {
-    throw new Error(`Failed: ${jobRes.status}`);
-  }
-
-  const job = await jobRes.json();
-
-  const detailsRes = await fetch(
-    `${BASE_URL}/career-details?where[title][equals]=${encodeURIComponent(job.title)}&limit=1`
-  );
-
-  if (!detailsRes.ok) {
-    throw new Error(`Failed: ${detailsRes.status}`);
-  }
-
-  const details = await detailsRes.json();
-
-  return details?.docs?.[0] ?? null;
+  const res = await fetch(`${BASE_URL}/jobs/${id}`);
+  if (!res.ok) throw new Error(`Failed: ${res.status}`);
+  return res.json();
 };
-
-
-
 
 
 
