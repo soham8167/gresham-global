@@ -370,7 +370,7 @@ export default function NewsDetailPage() {
       : [];
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-gray-50 ">
 
       {/* ══ MAIN IMAGE — full viewport width ══ */}
       <section className="relative w-full h-[300px] sm:h-[400px] md:h-[480px] lg:h-[540px] overflow-hidden">
@@ -388,7 +388,7 @@ export default function NewsDetailPage() {
       </section>
 
       {/* ══ TITLE + BODY — constrained width ══ */}
-      <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14">
 
         {/* ── Title block ── */}
         <div className="py-8 md:py-10 border-b border-gray-200">
