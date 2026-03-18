@@ -381,10 +381,10 @@ export default function NewsDetailPage() {
       </section>
 
       {/* ══ TITLE + BODY — constrained width ══ */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-14">
+      <div className="max-w-9xl mx-auto px-4 sm:px-8 lg:px-10">
 
         {/* ── Title block ── */}
-        <div className="py-8 md:py-10 border-b border-gray-200">
+        <div className="py-8 md:py-10  border-gray-200">
           
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
             {item.title}

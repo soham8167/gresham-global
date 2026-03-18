@@ -259,7 +259,7 @@ export default function EventDetailPage() {
           {item.title}
         </h1>
 
-        {/* ✅ description now renders because extractPlainText is called above */}
+        {/*  description now renders because extractPlainText is called above */}
         {description && (
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
             {description}

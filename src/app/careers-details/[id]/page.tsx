@@ -435,13 +435,14 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <main className="min-h-screen bg-white">
       {/* 1. Simple Hero Banner */}
-      <section className="relative w-full h-50 md:h-75">
-        <Image 
-          src="/images/careers/career-bg.jpg" 
-          alt="Banner" fill 
-          className="object-cover" 
-          priority 
-        />
+      <section className="relative w-full h-140">
+  <Image 
+    src="/images/careers/career-bg.jpg" 
+    alt="Banner" 
+    fill 
+    className="object-cover object-center" 
+    priority 
+  />
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto w-full px-6 lg:px-12">
