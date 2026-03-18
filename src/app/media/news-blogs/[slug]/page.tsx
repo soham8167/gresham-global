@@ -111,7 +111,7 @@ function useVisibleCount(): number {
     const update = () => {
       if (window.innerWidth < 640) setCount(1);
       else if (window.innerWidth < 1024) setCount(2);
-      else setCount(3);
+      else setCount(4);
     };
     update();
     window.addEventListener("resize", update);
@@ -370,11 +370,11 @@ export default function NewsDetailPage() {
 
         {/* ── Gallery ── */}
         {galleryImages.length > 0 && (
-          <div className="pb-14 px-8 sm:px-10">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">Gallery</h2>
-            <GallerySlider images={galleryImages} />
-          </div>
-        )}
+  <div className="pb-14">
+    <h2 className="text-xl font-bold text-gray-800 mb-6">Gallery</h2>
+    <GallerySlider images={galleryImages} />
+  </div>
+)}
 
         {/* ── Back link ── */}
         <div className="py-8 border-t border-gray-200">
