@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 /* ─── RICH TEXT RENDERER ─── */
@@ -25,7 +25,7 @@ function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
     const hasContent = node.children?.some(
       (c: any) => c.text || c.children?.length
     );
-    if (!hasContent) return <div className="h-3"/>;
+    if (!hasContent) return <div className="h-3" />;
     return (
       <p className="mb-5 text-gray-700 leading-[1.85] text-[15px] md:text-base text-justify w-full">
         {node.children?.map((child: any, i: number) => (
@@ -104,39 +104,79 @@ function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
   return null;
 }
 
-/* ─── GALLERY SLIDER ─── */
+/* ─── VISIBLE COUNT HOOK ─── */
+function useVisibleCount(): number {
+  const [count, setCount] = useState(3);
+  useEffect(() => {
+    const update = () => {
+      if (window.innerWidth < 640) setCount(1);
+      else if (window.innerWidth < 1024) setCount(2);
+      else setCount(3);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return count;
+}
+
+/* ─── GALLERY SLIDER — infinite strip (same engine as Articles carousel) ─── */
+const BUFFER = 3;
+
 function GallerySlider({ images }: { images: { url: string; alt: string }[] }) {
-  const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(false);
-  const [direction, setDirection] = useState<"left" | "right">("right");
-  const VISIBLE = 4;
+  const total = images.length;
+  const visibleCount = useVisibleCount();
 
-  const totalSlides = Math.ceil(images.length / VISIBLE);
+  const wrap = (i: number) => ((i % total) + total) % total;
 
-  const go = (dir: "left" | "right") => {
-    if (animating) return;
-    setDirection(dir);
-    setAnimating(true);
+  const [rawIndex, setRawIndex] = useState(BUFFER * total);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [enableTransition, setEnableTransition] = useState(true);
+
+  const stripLength = (2 * BUFFER + 1) * total;
+  const stripCards = Array.from({ length: stripLength }, (_, i) => images[wrap(i)]);
+  const trackWidthMultiple = stripLength / visibleCount;
+  const translateXPct = -(rawIndex / stripLength) * 100;
+
+  const go = (newRaw: number) => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setEnableTransition(true);
+    setRawIndex(newRaw);
     setTimeout(() => {
-      setCurrent((prev) => {
-        if (dir === "right") return (prev + 1) % totalSlides;
-        return (prev - 1 + totalSlides) % totalSlides;
+      setRawIndex((prev) => {
+        const equivalent = BUFFER * total + wrap(prev);
+        if (prev !== equivalent) {
+          setEnableTransition(false);
+          return equivalent;
+        }
+        return prev;
       });
-      setAnimating(false);
-    }, 350);
+      setIsAnimating(false);
+    }, 430);
   };
 
-  const visibleImages = images.slice(
-    current * VISIBLE,
-    current * VISIBLE + VISIBLE
-  );
+  useEffect(() => {
+    if (!enableTransition) {
+      const id = requestAnimationFrame(() => setEnableTransition(true));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [enableTransition]);
 
-  if (images.length === 0) return null;
+  const prev = () => go(rawIndex - 1);
+  const next = () => go(rawIndex + 1);
 
-  // Single image — no slider needed
-  if (images.length === 1) {
+  const dotClick = (i: number) => {
+    const current = wrap(rawIndex);
+    const forward = wrap(i - current);
+    const backward = total - forward;
+    go(rawIndex + (forward <= backward ? forward : -backward));
+  };
+
+  /* single image — no carousel needed */
+  if (total === 1) {
     return (
-      <div className="relative w-full h-64 md:h-80 rounded-xl overflow-hidden">
+      <div className="relative w-full h-72 md:h-96 rounded-2xl overflow-hidden">
         <Image
           src={images[0].url}
           alt={images[0].alt || "gallery"}
@@ -148,77 +188,77 @@ function GallerySlider({ images }: { images: { url: string; alt: string }[] }) {
   }
 
   return (
-    <div className="relative w-full">
-      {/* Slides */}
-      <div
-        className="grid gap-3 transition-all duration-350"
-        style={{
-          gridTemplateColumns: `repeat(${Math.min(VISIBLE, visibleImages.length)}, 1fr)`,
-          opacity: animating ? 0 : 1,
-          transform: animating
-            ? `translateX(${direction === "right" ? "-20px" : "20px"})`
-            : "translateX(0)",
-          transition: "opacity 0.35s ease, transform 0.35s ease",
-        }}
-      >
-        {visibleImages.map((img, i) => (
+    <>
+      <style>{`
+        .gallery-track         { transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gallery-track-instant { transition: none !important; }
+      `}</style>
+
+      <div className="relative w-full">
+
+        {/* Left Arrow */}
+        <button
+          onClick={prev}
+          disabled={isAnimating}
+          className="absolute -left-5 sm:-left-7 top-[45%] -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-gray-200 rounded-full shadow-lg flex items-center justify-center text-red-600 hover:bg-red-700 hover:text-white hover:border-red-700 transition-all duration-200 disabled:opacity-40"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        {/* Right Arrow */}
+        <button
+          onClick={next}
+          disabled={isAnimating}
+          className="absolute -right-5 sm:-right-7 top-[45%] -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white border border-gray-200 rounded-full shadow-lg flex items-center justify-center text-red-600 hover:bg-red-700 hover:text-white hover:border-red-700 transition-all duration-200 disabled:opacity-40"
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        {/* Track */}
+        <div className="overflow-hidden w-full">
           <div
-            key={`${current}-${i}`}
-            className="relative h-48 md:h-56 rounded-xl overflow-hidden group"
+            className={enableTransition ? "gallery-track flex" : "gallery-track-instant flex"}
+            style={{
+              width: `${trackWidthMultiple * 100}%`,
+              transform: `translateX(${translateXPct}%)`,
+            }}
           >
-            <Image
-              src={img.url}
-              alt={img.alt || `gallery ${i + 1}`}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
-            />
+            {stripCards.map((img, i) => (
+              <div
+                key={i}
+                style={{ width: `${(100 / visibleCount) / trackWidthMultiple}%` }}
+                className="px-2 sm:px-3 box-border"
+              >
+                <div className="relative w-full h-56 sm:h-64 md:h-72 lg:h-80 rounded-2xl overflow-hidden group">
+                  <Image
+                    src={img.url}
+                    alt={img.alt || `gallery ${i + 1}`}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                  />
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Arrow Buttons — only show if more than VISIBLE images */}
-      {images.length > VISIBLE && (
-        <>
-          <button
-            onClick={() => go("left")}
-            disabled={animating}
-            className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-red-700 hover:text-white hover:border-red-700 transition-all duration-200 disabled:opacity-40"
-          >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            onClick={() => go("right")}
-            disabled={animating}
-            className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-red-700 hover:text-white hover:border-red-700 transition-all duration-200 disabled:opacity-40"
-          >
-            <ChevronRight size={18} />
-          </button>
-        </>
-      )}
-
-      {/* Dots */}
-      {totalSlides > 1 && (
-        <div className="flex justify-center gap-2 mt-4">
-          {Array.from({ length: totalSlides }).map((_, i) => (
+        {/* Dots */}
+        <div className="flex items-center justify-center gap-2 mt-5">
+          {Array.from({ length: total }).map((_, i) => (
             <button
               key={i}
-              onClick={() => {
-                if (animating || i === current) return;
-                setDirection(i > current ? "right" : "left");
-                setAnimating(true);
-                setTimeout(() => {
-                  setCurrent(i);
-                  setAnimating(false);
-                }, 350);
-              }}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                i === current ? "w-6 bg-red-700" : "w-2 bg-gray-300 hover:bg-gray-400"
+              onClick={() => dotClick(i)}
+              className={`rounded-full transition-all duration-300 ${
+                i === wrap(rawIndex)
+                  ? "bg-red-700 w-6 h-2.5"
+                  : "bg-gray-300 hover:bg-gray-400 w-2.5 h-2.5"
               }`}
             />
           ))}
         </div>
-      )}
-    </div>
+      </div>
+    </>
   );
 }
 
@@ -257,7 +297,9 @@ export default function NewsDetailPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gray-50">
         <p className="text-red-500 text-lg font-medium">Article not found.</p>
-       
+        <Link href="/media/news-blogs" className="text-red-700 underline text-sm">
+          ← Back to News & Blogs
+        </Link>
       </div>
     );
   }
@@ -274,8 +316,8 @@ export default function NewsDetailPage() {
   return (
     <main className="min-h-screen bg-gray-50">
 
-      {/* ══ MAIN IMAGE (full width, no overlay text) ══ */}
-      <section className="relative w-full h-80 md:h-115 lg:h-130 overflow-hidden">
+      {/* ══ MAIN IMAGE — full width ══ */}
+      <section className="relative w-full h-[300px] sm:h-[400px] md:h-[480px] lg:h-[540px] overflow-hidden">
         {item.mainImage?.url ? (
           <Image
             src={item.mainImage.url}
@@ -289,18 +331,25 @@ export default function NewsDetailPage() {
         )}
       </section>
 
-      {/* ══ CONTENT WRAPPER ══ */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ══ CONTENT — wider max-width for more breathing room ══ */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-12">
 
         {/* ── Title block ── */}
         <div className="py-8 md:py-10 border-b border-gray-200">
-          
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="inline-block bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded">
+              {item.type}
+            </span>
+            <span className="text-sm text-gray-400">
+              {new Date(item.date).toDateString()}
+            </span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
             {item.title}
           </h1>
         </div>
 
-        {/* ── Rich Text Details (full width) ── */}
+        {/* ── Rich Text — full width ── */}
         <div className="py-8 md:py-10 w-full">
           <RichTextRenderer node={item.details?.root} />
         </div>
@@ -321,14 +370,22 @@ export default function NewsDetailPage() {
 
         {/* ── Gallery ── */}
         {galleryImages.length > 0 && (
-          <div className="pb-14">
-            <div className="px-6">
-              <GallerySlider images={galleryImages} />
-            </div>
+          <div className="pb-14 px-8 sm:px-10">
+            <h2 className="text-xl font-bold text-gray-800 mb-6">Gallery</h2>
+            <GallerySlider images={galleryImages} />
           </div>
         )}
 
-       
+        {/* ── Back link ── */}
+        <div className="py-8 border-t border-gray-200">
+          <Link
+            href="/media/news-blogs"
+            className="inline-flex items-center gap-2 text-red-700 text-sm font-semibold hover:gap-3 transition-all duration-200"
+          >
+            <ChevronLeft size={16} />
+            Back to News & Blogs
+          </Link>
+        </div>
 
       </div>
     </main>

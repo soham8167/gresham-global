@@ -114,7 +114,7 @@ const Carousel = ({ cards }: { cards: Article[] }) => {
 
   useEffect(() => {
     if (!enableTransition) {
-      const id = requestAnimationFrame(() => setEnableTransition(true));
+      const id = requestAnimationFrame(() => setEnableTransition(true)); 
       return () => cancelAnimationFrame(id);
     }
   }, [enableTransition]);
