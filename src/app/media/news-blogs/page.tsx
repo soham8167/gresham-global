@@ -292,8 +292,7 @@ import { Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBlogs } from "@/lib/api";
 
-
-//const CMS_URL = "https://gresham-global-cms.onrender.com";
+/* ─── TYPES ─── */
 
 interface NewsItem {
   id: string;
@@ -305,7 +304,18 @@ interface NewsItem {
   type: "news" | "blogs";
 }
 
-/* IMAGE PLACEHOLDER */
+/* ─── EXTRACT TEXT FROM PAYLOAD RICH TEXT ─── */
+
+function extractPlainText(description: any): string {
+  if (!description?.root?.children) return "";
+
+  return description.root.children
+    .flatMap((node: any) => node.children ?? [])
+    .map((child: any) => child.text ?? "")
+    .join(" ");
+}
+
+/* ─── IMAGE PLACEHOLDER ─── */
 
 function ImgPlaceholder({
   className,
@@ -336,29 +346,27 @@ function ImgPlaceholder({
   );
 }
 
-/* NEWS CARD */
+/* ─── NEWS CARD ─── */
 
 function NewsCard({ item }: { item: NewsItem }) {
   return (
     <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 duration-300">
       
       {/* Image */}
-
-      <div className="relative w-full h-52 shrink-0 overflow-hidden">
-              {item.mainImage ? (
-                <Image
-                  src={item.mainImage}
-                  alt={item.title}
-                  fill
-                  className="object-cover"
-                />
-              ) : (
-                <ImgPlaceholder className="absolute inset-0" iconSize={44} />
-              )}
-            </div> 
+      <div className="relative w-full h-52 overflow-hidden">
+        {item.mainImage ? (
+          <Image
+            src={item.mainImage}
+            alt={item.title}
+            fill
+            className="object-cover"
+          />
+        ) : (
+          <ImgPlaceholder className="absolute inset-0" iconSize={44} />
+        )}
+      </div>
 
       {/* Date */}
-
       <div className="px-5 pt-4">
         <p className="text-xs text-gray-400 font-medium">
           {item.date}
@@ -366,23 +374,20 @@ function NewsCard({ item }: { item: NewsItem }) {
       </div>
 
       {/* Title */}
-
       <div className="px-5 pt-3">
         <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2">
           {item.title}
         </h3>
       </div>
 
-      {/* Excerpt */}
-
+      {/* Details */}
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
-          {item.details}
+          {item.details || "No description available."}
         </p>
       </div>
 
       {/* Footer */}
-
       <div className="px-5 pt-4 pb-5 mt-auto">
         <hr className="border-gray-200 mb-4" />
 
@@ -403,7 +408,7 @@ function NewsCard({ item }: { item: NewsItem }) {
   );
 }
 
-/* TAB SWITCH */
+/* ─── TAB SWITCH ─── */
 
 function TabToggle({
   activeTab,
@@ -444,41 +449,47 @@ function TabToggle({
   );
 }
 
-/* MAIN PAGE */
+/* ─── MAIN PAGE ─── */
 
 export default function Page() {
+  const [activeTab, setActiveTab] = useState<"news" | "blogs">("news");
 
-  const [activeTab, setActiveTab] = useState<"news" | "blogs">("news"); 
-
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["newsBlogs"],
     queryFn: fetchNewsBlogs,
   });
 
   const items: NewsItem[] =
-  data?.docs?.map((item: any) => ({
-    id: item.id,
-    title: item.title,
-    excerpt: item.excerpt,
-    date: new Date(item.date).toDateString(),
-    mainImage: item.mainImage?.url
-      ? `${item.mainImage.url}`
-      : "",
-    slug: item.slug,
-    type: item.type,
-  })) || [];
+    data?.docs?.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      details: extractPlainText(item.details), // ✅ FIXED
+      date: new Date(item.date).toDateString(),
+      mainImage: item.mainImage?.url || "",
+      slug: item.slug,
+      type: item.type,
+    })) || [];
 
-  const displayItems = items.filter((item) => item.type === activeTab);
+  const displayItems = items.filter(
+    (item) => item.type === activeTab
+  );
 
   if (isLoading) {
     return <p className="text-center py-20">Loading...</p>;
+  }
+
+  if (error) {
+    return (
+      <p className="text-center py-20 text-red-500">
+        Error loading data
+      </p>
+    );
   }
 
   return (
     <main className="min-h-screen bg-gray-50">
 
       {/* Banner */}
-
       <section className="relative h-96">
         <Image
           src="/images/about/about-bannerimg.webp"
@@ -499,13 +510,11 @@ export default function Page() {
       </section>
 
       {/* Toggle */}
-
       <section className="max-w-7xl mx-auto px-6 pt-12 flex justify-center">
         <TabToggle activeTab={activeTab} onToggle={setActiveTab} />
       </section>
 
       {/* Cards */}
-
       <section className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayItems.map((item) => (
