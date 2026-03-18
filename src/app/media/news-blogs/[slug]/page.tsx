@@ -308,7 +308,6 @@ export default function NewsDetailPage() {
         {/* ── Video ── */}
         {item.hasVideo && item.video?.url && (
           <div className="pb-10">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Video</h2>
             <div className="relative w-full rounded-2xl overflow-hidden shadow-lg bg-black aspect-video">
               <video
                 src={item.video.url}
@@ -323,7 +322,6 @@ export default function NewsDetailPage() {
         {/* ── Gallery ── */}
         {galleryImages.length > 0 && (
           <div className="pb-14">
-            <h2 className="text-xl font-bold text-gray-800 mb-5">Gallery</h2>
             <div className="px-6">
               <GallerySlider images={galleryImages} />
             </div>
