@@ -7,9 +7,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
 
-/* ═══════════════════════════════════════════
-   RICH TEXT RENDERER
-═══════════════════════════════════════════ */
+
 function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
   if (!node) return null;
 
@@ -109,9 +107,7 @@ function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
   return null;
 }
 
-/* ═══════════════════════════════════════════
-   VISIBLE COUNT HOOK  (matches Articles file)
-═══════════════════════════════════════════ */
+
 function useVisibleCount(): number {
   const [count, setCount] = useState(4);
   useEffect(() => {
@@ -128,9 +124,6 @@ function useVisibleCount(): number {
   return count;
 }
 
-/* ═══════════════════════════════════════════
-   DOTS  (matches Articles file)
-═══════════════════════════════════════════ */
 function Dots({
   total,
   active,
@@ -157,12 +150,7 @@ function Dots({
   );
 }
 
-/* ═══════════════════════════════════════════
-   GALLERY SLIDER
-   • Infinite-strip engine identical to Articles Carousel
-   • Arrows: same SVG chevrons, same color (#E8192C / red-500), no bg circle
-   • Full bleed — stretches edge-to-edge inside its parent
-═══════════════════════════════════════════ */
+
 const BUFFER = 3;
 
 function GallerySlider({
@@ -327,9 +315,7 @@ function GallerySlider({
   );
 }
 
-/* ═══════════════════════════════════════════
-   DETAIL PAGE
-═══════════════════════════════════════════ */
+/* DETAIL PAGE */
 export default function NewsDetailPage() {
   const searchParams = useSearchParams();
   const cmsSlug = searchParams.get("ref");
@@ -402,7 +388,7 @@ export default function NewsDetailPage() {
       </section>
 
       {/* ══ TITLE + BODY — constrained width ══ */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-12">
+      <div className="max-w-8xl mx-auto px-4 sm:px-8 lg:px-12">
 
         {/* ── Title block ── */}
         <div className="py-8 md:py-10 border-b border-gray-200">
