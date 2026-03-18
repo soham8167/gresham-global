@@ -428,15 +428,15 @@ export default function NewsDetailPage() {
 
       {/* ══ GALLERY — full bleed section, matches Articles padding ══ */}
       {galleryImages.length > 0 && (
-        <section className="w-full bg-gray-50 py-10 sm:py-12">
-          <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-14">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-8 sm:mb-10">
-              Gallery
-            </h2>
-            <GallerySlider images={galleryImages} />
-          </div>
-        </section>
-      )}
+  <section className="w-full bg-gray-50 py-10 sm:py-12">
+    <div className="w-full px-10 sm:px-14 lg:px-20">
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-8 sm:mb-10">
+        Gallery
+      </h2>
+      <GallerySlider images={galleryImages} />
+    </div>
+  </section>
+)}
 
       {/* ══ BACK LINK ══ */}
       <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-12">
