@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState, useRef } from "react";
+import React, {useState} from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 /* ─── RICH TEXT RENDERER ─── */
@@ -25,7 +25,7 @@ function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
     const hasContent = node.children?.some(
       (c: any) => c.text || c.children?.length
     );
-    if (!hasContent) return <div className="h-3" />;
+    if (!hasContent) return <div className="h-3"/>;
     return (
       <p className="mb-5 text-gray-700 leading-[1.85] text-[15px] md:text-base text-justify w-full">
         {node.children?.map((child: any, i: number) => (
@@ -257,12 +257,7 @@ export default function NewsDetailPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gray-50">
         <p className="text-red-500 text-lg font-medium">Article not found.</p>
-        <Link
-          href="/media/news-blogs"
-          className="text-red-700 underline text-sm"
-        >
-          ← Back to News & Blogs
-        </Link>
+       
       </div>
     );
   }
@@ -280,7 +275,7 @@ export default function NewsDetailPage() {
     <main className="min-h-screen bg-gray-50">
 
       {/* ══ MAIN IMAGE (full width, no overlay text) ══ */}
-      <section className="relative w-full h-[320px] md:h-[460px] lg:h-[520px] overflow-hidden">
+      <section className="relative w-full h-80 md:h-115 lg:h-130 overflow-hidden">
         {item.mainImage?.url ? (
           <Image
             src={item.mainImage.url}
@@ -299,14 +294,7 @@ export default function NewsDetailPage() {
 
         {/* ── Title block ── */}
         <div className="py-8 md:py-10 border-b border-gray-200">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="inline-block bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded">
-              {item.type}
-            </span>
-            <span className="text-sm text-gray-400">
-              {new Date(item.date).toDateString()}
-            </span>
-          </div>
+          
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
             {item.title}
           </h1>
@@ -342,16 +330,7 @@ export default function NewsDetailPage() {
           </div>
         )}
 
-        {/* ── Back link ── */}
-        <div className="py-8 border-t border-gray-200">
-          <Link
-            href="/media/news-blogs"
-            className="inline-flex items-center gap-2 text-red-700 text-sm font-semibold hover:gap-3 transition-all duration-200"
-          >
-            <ChevronLeft size={16} />
-            Back to News & Blogs
-          </Link>
-        </div>
+       
 
       </div>
     </main>

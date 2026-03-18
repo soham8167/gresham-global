@@ -317,7 +317,7 @@ function extractPlainText(description: any): string {
 /* ─── IMAGE PLACEHOLDER ─── */
 function ImgPlaceholder({ className, iconSize = 40 }: { className?: string; iconSize?: number }) {
   return (
-    <div className={`bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}>
+    <div className={`bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}>
       <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="#c4c9d0" strokeWidth="1.2">
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
@@ -363,7 +363,7 @@ function NewsCard({ item }: { item: NewsItem }) {
         <hr className="border-gray-200 mb-4" />
         <div className="flex items-center justify-between">
 
-          {/* ✅ URL: /media/news-blogs/title-slug?ref=cms-slug */}
+          {/*  URL: /media/news-blogs/title-slug?ref=cms-slug */}
           <Link
             href={`/media/news-blogs/${item.titleSlug}?ref=${item.slug}`}
             className="bg-red-700 text-white text-xs font-semibold uppercase px-5 py-2.5 rounded"
@@ -420,8 +420,8 @@ export default function Page() {
       details: extractPlainText(item.details),
       date: new Date(item.date).toDateString(),
       mainImage: item.mainImage?.url || "",
-      slug: item.slug,                  // CMS slug e.g. "mmmm"
-      titleSlug: slugify(item.title),   // title slug e.g. "norwich-university..."
+      slug: item.slug,                  
+      titleSlug: slugify(item.title),   
       type: item.type,
     })) || [];
 
