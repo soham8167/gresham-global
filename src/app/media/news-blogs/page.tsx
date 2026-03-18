@@ -300,8 +300,8 @@ interface NewsItem {
   details: string;
   date: string;
   mainImage: string;
-  slug: string;       // CMS slug (used to fetch detail)
-  titleSlug: string;  // title-based slug (used in URL)
+  slug: string;       
+  titleSlug: string;
   type: "news" | "blogs";
 }
 
@@ -327,7 +327,7 @@ function ImgPlaceholder({ className, iconSize = 40 }: { className?: string; icon
   );
 }
 
-/* ─── NEWS CARD ─── */
+/*  NEWS CARD */
 function NewsCard({ item }: { item: NewsItem }) {
   return (
     <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 duration-300">
@@ -380,7 +380,7 @@ function NewsCard({ item }: { item: NewsItem }) {
   );
 }
 
-/* ─── TAB SWITCH ─── */
+/* TAB SWITCH  */
 function TabToggle({ activeTab, onToggle }: { activeTab: "news" | "blogs"; onToggle: (tab: "news" | "blogs") => void }) {
   return (
     <div className="relative flex bg-gray-100 border border-gray-200 rounded-full p-1">
@@ -404,7 +404,7 @@ function TabToggle({ activeTab, onToggle }: { activeTab: "news" | "blogs"; onTog
   );
 }
 
-/* ─── MAIN PAGE ─── */
+/* MAIN PAGE */
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"news" | "blogs">("news");
 

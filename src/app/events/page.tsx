@@ -201,7 +201,7 @@ import { fetchEvents } from "@/lib/api";
 interface EventItem {
   id: string;
   title: string;
-  excerpt: string;
+  excerpt: string; // plain text extracted from rich text
   mainImage: string;
   date: string;
   slug: string;
@@ -213,7 +213,8 @@ function extractPlainText(description: any): string {
   return description.root.children
     .flatMap((node: any) => node.children ?? [])
     .map((child: any) => child.text ?? "")
-    .join(" ");
+    .join(" ")
+    .trim();
 }
 
 // ─── Format date nicely
@@ -231,7 +232,7 @@ function formatDate(dateStr: string): string {
 function ImgPlaceholder({ className }: { className?: string }) {
   return (
     <div
-      className={`bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}
+      className={`bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}
     >
       <svg width={40} height={40} viewBox="0 0 24 24" fill="none" stroke="#c4c9d0" strokeWidth="1.2">
         <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -273,7 +274,7 @@ function EventCard({ item }: { item: EventItem }) {
         </h3>
       </div>
 
-      {/* Excerpt */}
+      {/* Excerpt — now correctly populated */}
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 line-clamp-3 leading-relaxed">
           {item.excerpt}
@@ -339,11 +340,12 @@ export default function EventsPage() {
     );
   }
 
+  // ✅ FIX: map description → excerpt so EventCard receives the text
   const events: EventItem[] =
     data?.docs?.map((item: any) => ({
       id: item.id,
       title: item.title,
-      description: extractPlainText(item.description),
+      excerpt: extractPlainText(item.description), // was mapped to "description" key before — never matched "excerpt" in EventCard
       date: item.date,
       mainImage: item.mainImage?.url || "",
       slug: item.slug,

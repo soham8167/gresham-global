@@ -7,69 +7,96 @@ import { useState } from "react";
 import { MapPin } from "lucide-react";
 import { fetchEventBySlug } from "@/lib/api";
 
+// ─── Helper: extract plain text from Payload Lexical rich text
 function extractPlainText(description: any): string {
   if (!description?.root?.children) return "";
   return description.root.children
     .flatMap((node: any) => node.children ?? [])
     .map((child: any) => child.text ?? "")
-    .join(" ");
+    .join(" ")
+    .trim();
 }
 
-
-// ─── Extract YouTube video ID from embed string or URL
+// ─── Extract YouTube video ID from URL
 function extractYouTubeId(videoStr: string): string | null {
   if (!videoStr) return null;
+  const match = videoStr.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/
+  );
+  return match ? match[1] : null;
+}
 
-  const urlPatterns = [
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-  ];
-  for (const pattern of urlPatterns) {
-    const match = videoStr.match(pattern);
-    if (match) return match[1];
+// ─── Detect if URL is a direct video file (mp4, webm, etc.)
+function isDirectVideoUrl(url: string): boolean {
+  return /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
+}
+
+// ─── Video Component — handles YouTube, mp4, and generic iframes
+function VideoEmbed({ videoStr }: { videoStr: string }) {
+  const youtubeId = extractYouTubeId(videoStr);
+
+  // YouTube embed
+  if (youtubeId) {
+    return (
+      <div
+        className="relative w-full rounded-xl overflow-hidden shadow-lg"
+        style={{ paddingBottom: "56.25%" }}
+      >
+        <iframe
+          className="absolute inset-0 w-full h-full"
+          src={`https://www.youtube.com/embed/${youtubeId}`}
+          title="Event Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
+    );
   }
 
-  if (videoStr.startsWith("http")) return null;
+  // ✅ FIX: Direct mp4 / webm video file
+  if (isDirectVideoUrl(videoStr)) {
+    return (
+      <div className="relative w-full rounded-xl overflow-hidden shadow-lg">
+        <video
+          className="w-full rounded-xl"
+          src={videoStr}
+          controls
+          playsInline
+          preload="metadata"
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    );
+  }
+
+  // Generic iframe fallback (e.g. Vimeo, etc.)
+  if (videoStr.startsWith("http")) {
+    return (
+      <div
+        className="relative w-full rounded-xl overflow-hidden shadow-lg"
+        style={{ paddingBottom: "56.25%" }}
+      >
+        <iframe
+          className="absolute inset-0 w-full h-full"
+          src={videoStr}
+          title="Event Video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
 
   return null;
 }
 
-// ─── YouTube Embed Component
-function YouTubeEmbed({ videoStr }: { videoStr: string }) {
-  const videoId = extractYouTubeId(videoStr);
-
-  if (!videoId) {
-    if (videoStr.startsWith("http")) {
-      return (
-        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-          <iframe
-            className="absolute inset-0 w-full h-full rounded-xl"
-            src={videoStr}
-            title="Event Video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
-        </div>
-      );
-    }
-    return null;
-  }
-
-  return (
-    <div className="relative w-full rounded-xl overflow-hidden shadow-lg" style={{ paddingBottom: "56.25%" }}>
-      <iframe
-        className="absolute inset-0 w-full h-full"
-        src={`https://www.youtube.com/embed/${videoId}`}
-        title="Event Video"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
-    </div>
-  );
-}
-
 // ─── Gallery with Location Filter
 function GallerySection({ gallery }: { gallery: any[] }) {
-  const locations = ["All Cities", ...Array.from(new Set(gallery.map((g) => g.location).filter(Boolean)))];
+  const locations = [
+    "All Cities",
+    ...Array.from(new Set(gallery.map((g) => g.location).filter(Boolean))),
+  ];
   const [activeLocation, setActiveLocation] = useState("All Cities");
 
   const filtered =
@@ -91,7 +118,6 @@ function GallerySection({ gallery }: { gallery: any[] }) {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
     } catch {
-      // Fallback: open in new tab if fetch fails (e.g. cross-origin)
       window.open(imageUrl, "_blank");
     }
   };
@@ -130,7 +156,7 @@ function GallerySection({ gallery }: { gallery: any[] }) {
               className="object-cover"
             />
 
-            {/* Download Button — top-right on hover */}
+            {/* Download Button */}
             <button
               onClick={(e) => handleDownload(g.images?.url, g.location, e)}
               className="absolute top-2 right-2 z-10 bg-white/90 hover:bg-white text-gray-800 rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 shadow-md"
@@ -153,9 +179,9 @@ function GallerySection({ gallery }: { gallery: any[] }) {
               </svg>
             </button>
 
-            {/* Location label — bottom on hover */}
+            {/* Location label */}
             {g.location && (
-              <div className="absolute bottom-0 inset-x-0 bg-linear-to-t from-black/60 to-transparent px-2 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <div className="flex items-center gap-1">
                   <MapPin size={10} className="text-white" />
                   <span className="text-white text-[10px] font-medium">{g.location}</span>
@@ -201,14 +227,20 @@ export default function EventDetailPage() {
   }
 
   const item = data.docs[0];
+
+  // ✅ FIX: extract plain text from the Lexical rich text object
   const description = extractPlainText(item.description);
+
   const hasVideo = item.hasVideo && item.video;
   const hasGallery = item.hasGallery && item.gallery?.length > 0;
 
   return (
     <main className="min-h-screen bg-white">
-      {/* ── Hero Banner Image */}
-      <section className="relative w-full overflow-hidden bg-gray-900" style={{ height: "60vh", minHeight: "320px" }}>
+      {/* ── Hero Banner */}
+      <section
+        className="relative w-full overflow-hidden bg-gray-900"
+        style={{ height: "60vh", minHeight: "320px" }}
+      >
         {item.mainImage?.url && (
           <Image
             src={item.mainImage.url}
@@ -218,14 +250,16 @@ export default function EventDetailPage() {
             className="object-cover opacity-90"
           />
         )}
-        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
       </section>
 
+      {/* ── Title + Description */}
       <section className="max-w-8xl mx-auto px-6 py-12">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
           {item.title}
         </h1>
 
+        {/* ✅ description now renders because extractPlainText is called above */}
         {description && (
           <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
             {description}
@@ -233,12 +267,14 @@ export default function EventDetailPage() {
         )}
       </section>
 
+      {/* ── Video */}
       {hasVideo && (
         <section className="max-w-7xl mx-auto px-6 pb-12">
-          <YouTubeEmbed videoStr={item.video} />
+          <VideoEmbed videoStr={item.video} />
         </section>
       )}
 
+      {/* ── Gallery */}
       {hasGallery && (
         <section className="max-w-8xl mx-auto px-6 pb-20">
           <GallerySection gallery={item.gallery} />

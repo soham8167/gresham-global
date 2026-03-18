@@ -333,7 +333,6 @@ export default function NewsDetailPage() {
 
   const item = data?.docs?.find((doc: any) => doc.slug === cmsSlug);
 
-  /* ── Loading ── */
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -345,7 +344,6 @@ export default function NewsDetailPage() {
     );
   }
 
-  /* ── Not found ── */
   if (error || !item) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gray-50">
@@ -415,6 +413,7 @@ export default function NewsDetailPage() {
       </div>
 
       {/* ══ GALLERY — full bleed section, matches Articles padding ══ */}
+
       {galleryImages.length > 0 && (
   <section className="w-full bg-gray-50 py-10 sm:py-12">
     <div className="w-full px-10 sm:px-14 lg:px-20">
