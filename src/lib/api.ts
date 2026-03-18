@@ -23,12 +23,18 @@ export const fetchMediaNews = async () => {
 // NEWS & BLOGS
 export const fetchNewsBlogs = async () => {
   const res = await fetch(`${BASE_URL}/news-blogs`);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch news and blogs");
-  }
-
+  if (!res.ok) throw new Error("Failed to fetch news and blogs");
   return res.json();
+};
+
+// Fetch single item — we get all and filter by CMS slug
+export const fetchNewsBlogBySlug = async (cmsSlug: string) => {
+  const res = await fetch(`${BASE_URL}/news-blogs`);
+  if (!res.ok) throw new Error("Failed to fetch");
+  const data = await res.json();
+  const item = data?.docs?.find((doc: any) => doc.slug === cmsSlug);
+  if (!item) throw new Error("Not found");
+  return item;
 };
 
 

@@ -291,24 +291,23 @@ import { useState } from "react";
 import { Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchNewsBlogs } from "@/lib/api";
+import { slugify } from "@/lib/slugify";
 
 /* ─── TYPES ─── */
-
 interface NewsItem {
   id: string;
   title: string;
   details: string;
   date: string;
   mainImage: string;
-  slug: string;
+  slug: string;       // CMS slug (used to fetch detail)
+  titleSlug: string;  // title-based slug (used in URL)
   type: "news" | "blogs";
 }
 
 /* ─── EXTRACT TEXT FROM PAYLOAD RICH TEXT ─── */
-
 function extractPlainText(description: any): string {
   if (!description?.root?.children) return "";
-
   return description.root.children
     .flatMap((node: any) => node.children ?? [])
     .map((child: any) => child.text ?? "")
@@ -316,28 +315,10 @@ function extractPlainText(description: any): string {
 }
 
 /* ─── IMAGE PLACEHOLDER ─── */
-
-function ImgPlaceholder({
-  className,
-  iconSize = 40,
-}: {
-  className?: string;
-  iconSize?: number;
-}) {
+function ImgPlaceholder({ className, iconSize = 40 }: { className?: string; iconSize?: number }) {
   return (
-    <div
-      className={`bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center ${
-        className ?? ""
-      }`}
-    >
-      <svg
-        width={iconSize}
-        height={iconSize}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#c4c9d0"
-        strokeWidth="1.2"
-      >
+    <div className={`bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}>
+      <svg width={iconSize} height={iconSize} viewBox="0 0 24 24" fill="none" stroke="#c4c9d0" strokeWidth="1.2">
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
         <polyline points="21 15 16 10 5 21" />
@@ -347,20 +328,14 @@ function ImgPlaceholder({
 }
 
 /* ─── NEWS CARD ─── */
-
 function NewsCard({ item }: { item: NewsItem }) {
   return (
     <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl hover:-translate-y-2 duration-300">
-      
+
       {/* Image */}
       <div className="relative w-full h-52 overflow-hidden">
         {item.mainImage ? (
-          <Image
-            src={item.mainImage}
-            alt={item.title}
-            fill
-            className="object-cover"
-          />
+          <Image src={item.mainImage} alt={item.title} fill className="object-cover" />
         ) : (
           <ImgPlaceholder className="absolute inset-0" iconSize={44} />
         )}
@@ -368,16 +343,12 @@ function NewsCard({ item }: { item: NewsItem }) {
 
       {/* Date */}
       <div className="px-5 pt-4">
-        <p className="text-xs text-gray-400 font-medium">
-          {item.date}
-        </p>
+        <p className="text-xs text-gray-400 font-medium">{item.date}</p>
       </div>
 
       {/* Title */}
       <div className="px-5 pt-3">
-        <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2">
-          {item.title}
-        </h3>
+        <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2">{item.title}</h3>
       </div>
 
       {/* Details */}
@@ -390,10 +361,11 @@ function NewsCard({ item }: { item: NewsItem }) {
       {/* Footer */}
       <div className="px-5 pt-4 pb-5 mt-auto">
         <hr className="border-gray-200 mb-4" />
-
         <div className="flex items-center justify-between">
+
+          {/* ✅ URL: /media/news-blogs/title-slug?ref=cms-slug */}
           <Link
-            href={`/media/${item.slug}`}
+            href={`/media/news-blogs/${item.titleSlug}?ref=${item.slug}`}
             className="bg-red-700 text-white text-xs font-semibold uppercase px-5 py-2.5 rounded"
           >
             Read More
@@ -409,39 +381,22 @@ function NewsCard({ item }: { item: NewsItem }) {
 }
 
 /* ─── TAB SWITCH ─── */
-
-function TabToggle({
-  activeTab,
-  onToggle,
-}: {
-  activeTab: "news" | "blogs";
-  onToggle: (tab: "news" | "blogs") => void;
-}) {
+function TabToggle({ activeTab, onToggle }: { activeTab: "news" | "blogs"; onToggle: (tab: "news" | "blogs") => void }) {
   return (
     <div className="relative flex bg-gray-100 border border-gray-200 rounded-full p-1">
-      
       <span
         className="absolute top-1 bottom-1 rounded-full bg-red-700 transition-all"
-        style={{
-          width: "50%",
-          left: activeTab === "news" ? "0%" : "50%",
-        }}
+        style={{ width: "50%", left: activeTab === "news" ? "0%" : "50%" }}
       />
-
       <button
         onClick={() => onToggle("news")}
-        className={`relative z-10 px-6 py-2 text-sm font-semibold ${
-          activeTab === "news" ? "text-white" : "text-gray-600"
-        }`}
+        className={`relative z-10 px-6 py-2 text-sm font-semibold ${activeTab === "news" ? "text-white" : "text-gray-600"}`}
       >
         News
       </button>
-
       <button
         onClick={() => onToggle("blogs")}
-        className={`relative z-10 px-6 py-2 text-sm font-semibold ${
-          activeTab === "blogs" ? "text-white" : "text-gray-600"
-        }`}
+        className={`relative z-10 px-6 py-2 text-sm font-semibold ${activeTab === "blogs" ? "text-white" : "text-gray-600"}`}
       >
         Blogs
       </button>
@@ -450,7 +405,6 @@ function TabToggle({
 }
 
 /* ─── MAIN PAGE ─── */
-
 export default function Page() {
   const [activeTab, setActiveTab] = useState<"news" | "blogs">("news");
 
@@ -463,48 +417,29 @@ export default function Page() {
     data?.docs?.map((item: any) => ({
       id: item.id,
       title: item.title,
-      details: extractPlainText(item.details), // ✅ FIXED
+      details: extractPlainText(item.details),
       date: new Date(item.date).toDateString(),
       mainImage: item.mainImage?.url || "",
-      slug: item.slug,
+      slug: item.slug,                  // CMS slug e.g. "mmmm"
+      titleSlug: slugify(item.title),   // title slug e.g. "norwich-university..."
       type: item.type,
     })) || [];
 
-  const displayItems = items.filter(
-    (item) => item.type === activeTab
-  );
+  const displayItems = items.filter((item) => item.type === activeTab);
 
-  if (isLoading) {
-    return <p className="text-center py-20">Loading...</p>;
-  }
-
-  if (error) {
-    return (
-      <p className="text-center py-20 text-red-500">
-        Error loading data
-      </p>
-    );
-  }
+  if (isLoading) return <p className="text-center py-20">Loading...</p>;
+  if (error) return <p className="text-center py-20 text-red-500">Error loading data</p>;
 
   return (
     <main className="min-h-screen bg-gray-50">
 
       {/* Banner */}
       <section className="relative h-96">
-        <Image
-          src="/images/about/about-bannerimg.webp"
-          alt="banner"
-          fill
-          className="object-cover"
-        />
-
+        <Image src="/images/about/about-bannerimg.webp" alt="banner" fill className="object-cover" />
         <div className="absolute inset-0 bg-black/40" />
-
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-6">
-            <h1 className="text-white text-5xl font-bold mt-28">
-              News and Blogs
-            </h1>
+            <h1 className="text-white text-5xl font-bold mt-28">News and Blogs</h1>
           </div>
         </div>
       </section>
