@@ -298,7 +298,7 @@ import { fetchNewsBlogs } from "@/lib/api";
 interface NewsItem {
   id: string;
   title: string;
-  excerpt: string;
+  details: string;
   date: string;
   mainImage: string;
   slug: string;
@@ -377,7 +377,7 @@ function NewsCard({ item }: { item: NewsItem }) {
 
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
-          {item.excerpt}
+          {item.details}
         </p>
       </div>
 

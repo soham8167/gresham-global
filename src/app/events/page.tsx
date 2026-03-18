@@ -343,7 +343,7 @@ export default function EventsPage() {
     data?.docs?.map((item: any) => ({
       id: item.id,
       title: item.title,
-      excerpt: extractPlainText(item.description),
+      description: extractPlainText(item.description),
       date: item.date,
       mainImage: item.mainImage?.url || "",
       slug: item.slug,
