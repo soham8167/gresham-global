@@ -294,7 +294,7 @@ function GallerySlider({
                 }}
                 className="px-2 sm:px-3 box-border"
               >
-                <div className="relative w-full h-42 sm:h-48 md:h-56 lg:h-64 overflow-hidden rounded-2xl bg-gray-100">
+                <div className="relative w-full h-60 sm:h-48 md:h-56 lg:h-84 overflow-hidden rounded-2xl bg-gray-100">
                   <Image
                     src={img.url}
                     alt={img.alt || `gallery ${i + 1}`}
@@ -350,12 +350,7 @@ export default function NewsDetailPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gray-50">
         <p className="text-red-500 text-lg font-medium">Article not found.</p>
-        <Link
-          href="/media/news-blogs"
-          className="text-red-700 underline text-sm"
-        >
-          ← Back to News & Blogs
-        </Link>
+       
       </div>
     );
   }
@@ -392,14 +387,7 @@ export default function NewsDetailPage() {
 
         {/* ── Title block ── */}
         <div className="py-8 md:py-10 border-b border-gray-200">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="inline-block bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded">
-              {item.type}
-            </span>
-            <span className="text-sm text-gray-400">
-              {new Date(item.date).toDateString()}
-            </span>
-          </div>
+          
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
             {item.title}
           </h1>
@@ -437,19 +425,6 @@ export default function NewsDetailPage() {
     </div>
   </section>
 )}
-
-      {/* ══ BACK LINK ══ */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-12">
-        <div className="py-8 border-t border-gray-200">
-          <Link
-            href="/media/news-blogs"
-            className="inline-flex items-center gap-2 text-red-700 text-sm font-semibold hover:gap-3 transition-all duration-200"
-          >
-            <ChevronLeft size={16} />
-            Back to News & Blogs
-          </Link>
-        </div>
-      </div>
 
     </main>
   );
