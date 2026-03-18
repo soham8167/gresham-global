@@ -89,8 +89,8 @@ const GlobeIcon = () => (
 
 const Services = () => {
   return (
-    <section className="relative bg-gray-100 overflow-hidden py-12 md:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="relative bg-gray-100 overflow-hidden py-12 md:py-16 ">
+      <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <h2 className="text-5xl lg:text-7xl font-bold text-center mb-10 md:mb-16">
           Services
         </h2>

@@ -368,7 +368,7 @@ export default function NewsDetailPage() {
     <main className="min-h-screen bg-gray-50 ">
 
       {/* ══ MAIN IMAGE — full viewport width ══ */}
-      <section className="relative w-full h-[300px] sm:h-[400px] md:h-[480px] lg:h-[540px] overflow-hidden">
+      <section className="relative w-full h-75 sm:h-100 md:h-120 lg:h-135 overflow-hidden">
         {item.mainImage?.url ? (
           <Image
             src={item.mainImage.url}
@@ -418,9 +418,6 @@ export default function NewsDetailPage() {
       {galleryImages.length > 0 && (
   <section className="w-full bg-gray-50 py-10 sm:py-12">
     <div className="w-full px-10 sm:px-14 lg:px-20">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-8 sm:mb-10">
-        Gallery
-      </h2>
       <GallerySlider images={galleryImages} />
     </div>
   </section>
