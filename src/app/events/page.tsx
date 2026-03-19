@@ -205,42 +205,33 @@ const getImageUrl = (url?: string): string => {
   return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
 };
 
-/* ─── Types ─── */
+/* ─── TYPES ─── */
 interface EventItem {
   id: string;
   title: string;
-  excerpt: string;
+  excerpt: string;       // plain text for card preview
+  description: string;   // raw HTML for detail page
   mainImage: string;
   date: string;
   slug: string;
 }
 
-/* ─── DESCRIPTION EXTRACTOR ─── */
-// ✅ handles BOTH formats:
-// 1. HTML string: "<p><span>some text</span></p>"
-// 2. Lexical object: { root: { children: [...] } }
-function extractDescription(description: any): string {
-  if (!description) return "";
-
-  // ✅ Format 1: plain string or HTML string
-  if (typeof description === "string") {
-    // strip HTML tags and return plain text
-    return description.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
-  }
-
-  // ✅ Format 2: Lexical rich text object
-  if (description?.root?.children) {
-    return description.root.children
-      .flatMap((node: any) => node.children ?? [])
-      .map((child: any) => child.text ?? "")
-      .join(" ")
-      .trim();
-  }
-
-  return "";
+/* ─── EXTRACT PLAIN TEXT FROM HTML STRING ─── */
+// Used only for card excerpt (line-clamp preview)
+function htmlToPlainText(html: string): string {
+  if (!html) return "";
+  return html
+    .replace(/<[^>]*>/g, "")   // strip all HTML tags
+    .replace(/&nbsp;/g, " ")   // replace &nbsp; with space
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, " ")      // collapse multiple spaces
+    .trim();
 }
 
-/* ─── Format date ─── */
+/* ─── FORMAT DATE ─── */
 function formatDate(dateStr: string): string {
   if (!dateStr) return "";
   return new Date(dateStr).toLocaleDateString("en-GB", {
@@ -250,7 +241,7 @@ function formatDate(dateStr: string): string {
   });
 }
 
-/* ─── Image Placeholder ─── */
+/* ─── IMAGE PLACEHOLDER ─── */
 function ImgPlaceholder({ className }: { className?: string }) {
   return (
     <div className={`bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}>
@@ -263,7 +254,7 @@ function ImgPlaceholder({ className }: { className?: string }) {
   );
 }
 
-/* ─── Event Card ─── */
+/* ─── EVENT CARD ─── */
 function EventCard({ item }: { item: EventItem }) {
   return (
     <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
@@ -295,7 +286,7 @@ function EventCard({ item }: { item: EventItem }) {
         </h3>
       </div>
 
-      {/* Excerpt */}
+      {/* Excerpt — plain text only for preview */}
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 line-clamp-3 leading-relaxed">
           {item.excerpt || "No description available."}
@@ -321,7 +312,7 @@ function EventCard({ item }: { item: EventItem }) {
   );
 }
 
-/* ─── Main Page ─── */
+/* ─── MAIN PAGE ─── */
 export default function EventsPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["events"],
@@ -364,10 +355,11 @@ export default function EventsPage() {
     data?.docs?.map((item: any) => ({
       id: item.id,
       title: item.title,
-      //  FIXED: extractDescription handles both HTML string and Lexical object
-      excerpt: extractDescription(item.description),
+      // ✅ plain text for card preview (line-clamp)
+      excerpt: htmlToPlainText(item.description),
+      // ✅ raw HTML preserved for detail page
+      description: item.description || "",
       date: item.date,
-      //  FIXED: getImageUrl handles Cloudinary URLs + old Render paths
       mainImage: getImageUrl(item.mainImage?.url),
       slug: item.slug,
     })) || [];

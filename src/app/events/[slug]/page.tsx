@@ -15,25 +15,70 @@ const getImageUrl = (url?: string): string => {
   return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
 };
 
-
-function extractDescription(description: any): string {
-  if (!description) return "";
-
-  // Format 1: plain string or HTML string
-  if (typeof description === "string") {
-    return description.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
-  }
-
-  //  Format 2: Lexical rich text object
-  if (description?.root?.children) {
-    return description.root.children
-      .flatMap((node: any) => node.children ?? [])
-      .map((child: any) => child.text ?? "")
-      .join(" ")
-      .trim();
-  }
-
-  return "";
+/* ─── HTML DESCRIPTION RENDERER ─── */
+// ✅ Renders the raw HTML from QuillEditor with bold, links, italic etc.
+// Scoped styles so Quill HTML looks correct inside the page
+function HtmlDescription({ html }: { html: string }) {
+  if (!html) return null;
+  return (
+    <>
+      <style>{`
+        .quill-content p {
+          margin-bottom: 1rem;
+          color: #4b5563;
+          font-size: 1rem;
+          line-height: 1.75;
+        }
+        .quill-content strong {
+          font-weight: 700;
+          color: #111827;
+        }
+        .quill-content em {
+          font-style: italic;
+        }
+        .quill-content u {
+          text-decoration: underline;
+        }
+        .quill-content a {
+          color: #b91c1c;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+        .quill-content a:hover {
+          color: #7f1d1d;
+        }
+        .quill-content ul {
+          list-style: disc;
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .quill-content ol {
+          list-style: decimal;
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+        }
+        .quill-content li {
+          margin-bottom: 0.25rem;
+          color: #4b5563;
+          line-height: 1.7;
+        }
+        .quill-content h1 { font-size: 1.875rem; font-weight: 700; margin: 1.5rem 0 0.75rem; color: #111827; }
+        .quill-content h2 { font-size: 1.5rem;   font-weight: 700; margin: 1.25rem 0 0.5rem; color: #1f2937; }
+        .quill-content h3 { font-size: 1.25rem;  font-weight: 600; margin: 1rem 0 0.5rem;   color: #1f2937; }
+        .quill-content blockquote {
+          border-left: 4px solid #e5e7eb;
+          padding-left: 1rem;
+          margin: 1rem 0;
+          color: #6b7280;
+          font-style: italic;
+        }
+      `}</style>
+      <div
+        className="quill-content"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </>
+  );
 }
 
 /* ─── YouTube ID extractor ─── */
@@ -148,7 +193,6 @@ function GallerySection({ gallery }: { gallery: any[] }) {
       {/* Gallery Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
         {filtered.map((g: any) => {
-          // ✅ FIXED: resolve gallery image URLs through getImageUrl
           const imgUrl = getImageUrl(g.images?.url);
           if (!imgUrl) return null;
 
@@ -159,7 +203,7 @@ function GallerySection({ gallery }: { gallery: any[] }) {
               style={{ aspectRatio: "4/3" }}
             >
               <Image
-                src={imgUrl} // ✅ fixed
+                src={imgUrl}
                 alt={g.location || "Event photo"}
                 fill
                 className="object-cover"
@@ -195,7 +239,7 @@ function GallerySection({ gallery }: { gallery: any[] }) {
   );
 }
 
-/* ─── Main Detail Page ─── */
+/* ─── MAIN DETAIL PAGE ─── */
 export default function EventDetailPage() {
   const { slug } = useParams();
 
@@ -228,11 +272,10 @@ export default function EventDetailPage() {
 
   const item = data.docs[0];
 
-  //  FIXED: handles both HTML string and Lexical object
-  const description = extractDescription(item.description);
+  // ✅ raw HTML — passed directly to HtmlDescription
+  const descriptionHtml: string = item.description || "";
 
-  //  FIXED: mainImage can be a string ID (not populated) or an object
-  // only use it if it's a populated object with a url
+  // ✅ mainImage — only use if populated object
   const mainImageUrl =
     typeof item.mainImage === "object" && item.mainImage !== null
       ? getImageUrl(item.mainImage.url)
@@ -249,7 +292,6 @@ export default function EventDetailPage() {
         className="relative w-full overflow-hidden bg-gray-900"
         style={{ height: "60vh", minHeight: "320px" }}
       >
-        {/*  FIXED: only render Image if we have a valid URL */}
         {mainImageUrl ? (
           <Image
             src={mainImageUrl}
@@ -270,12 +312,8 @@ export default function EventDetailPage() {
           {item.title}
         </h1>
 
-        {/*  FIXED: description now correctly extracted from both formats */}
-        {description && (
-          <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-            {description}
-          </p>
-        )}
+        {/* ✅ FIXED: renders full HTML with bold, italic, links, lists etc. */}
+        <HtmlDescription html={descriptionHtml} />
       </section>
 
       {/* Video */}
