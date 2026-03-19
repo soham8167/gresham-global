@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "gresham-global-cms.onrender.com",
-        pathname: "/media/**", // ✅ FIXED
+        pathname: "/media/**",
       },
     ],
   },
