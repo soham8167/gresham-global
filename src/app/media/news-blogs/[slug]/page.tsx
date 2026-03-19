@@ -444,9 +444,12 @@ import { ChevronLeft } from "lucide-react";
 /* ✅ IMAGE HELPER */
 const BASE_URL = "https://gresham-global-cms.onrender.com";
 
-const getImageUrl = (url: string) => {
-  if (!url) return "";
-  if (url.startsWith("http")) return url; // already full URL
+const getImageUrl = (url?: string) => {
+  if (!url) return null;
+
+  // already full URL
+  if (url.startsWith("http")) return url;
+
   return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
 };
 
@@ -549,22 +552,6 @@ function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
 }
 
 /* -------------------- SLIDER -------------------- */
-function useVisibleCount(): number {
-  const [count, setCount] = useState(4);
-  useEffect(() => {
-    const update = () => {
-      if (window.innerWidth < 640) setCount(1);
-      else if (window.innerWidth < 1024) setCount(2);
-      else if (window.innerWidth < 1280) setCount(3);
-      else setCount(4);
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-  return count;
-}
-
 function GallerySlider({
   images,
 }: {
@@ -575,7 +562,17 @@ function GallerySlider({
   if (total === 1) {
     return (
       <div className="relative w-full h-80 rounded-2xl overflow-hidden">
-        <Image src={images[0].url} alt={images[0].alt} fill className="object-cover" />
+        {images[0].url ? (
+          <Image
+            src={images[0].url}
+            alt={images[0].alt}
+            fill
+            unoptimized
+            className="object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200" />
+        )}
       </div>
     );
   }
@@ -584,12 +581,17 @@ function GallerySlider({
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {images.map((img, i) => (
         <div key={i} className="relative h-60 rounded-xl overflow-hidden">
-          <Image
-            src={img.url}
-            alt={img.alt}
-            fill
-            className="object-cover"
-          />
+          {img.url ? (
+            <Image
+              src={img.url}
+              alt={img.alt}
+              fill
+              unoptimized   // 🔥 VERY IMPORTANT
+              className="object-cover"
+            />
+          ) : (
+            <div className="w-full h-full bg-gray-200" />
+          )}
         </div>
       ))}
     </div>
@@ -601,7 +603,7 @@ export default function NewsDetailPage() {
   const searchParams = useSearchParams();
   const cmsSlug = searchParams.get("ref");
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["newsBlogs"],
     queryFn: async () => {
       const res = await fetch(
@@ -617,21 +619,28 @@ export default function NewsDetailPage() {
 
   const galleryImages =
     item.gallery?.map((g: any) => ({
-      url: getImageUrl(g.images?.url),
+      url: getImageUrl(g.images?.url) || "",
       alt: g.images?.alt || "",
     })) || [];
 
+  const mainImage = getImageUrl(item.mainImage?.url);
+
   return (
     <main>
-
       {/* MAIN IMAGE */}
       <div className="relative w-full h-96">
-        <Image
-          src={getImageUrl(item.mainImage?.url)}
-          alt={item.title}
-          fill
-          className="object-cover"
-        />
+        {mainImage ? (
+          <Image
+            src={mainImage}
+            alt={item.title}
+            fill
+            priority
+            unoptimized   // 🔥 IMPORTANT
+            className="object-cover"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-300" />
+        )}
       </div>
 
       <h1>{item.title}</h1>
