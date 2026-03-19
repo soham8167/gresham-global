@@ -197,43 +197,63 @@ import { Share2, Calendar } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchEvents } from "@/lib/api";
 
-// ─── Types
+/* ─── IMAGE HELPER ─── */
+const BASE_URL = "https://gresham-global-cms.onrender.com";
+const getImageUrl = (url?: string): string => {
+  if (!url) return "";
+  if (url.startsWith("http")) return url;
+  return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
+};
+
+/* ─── Types ─── */
 interface EventItem {
   id: string;
   title: string;
-  excerpt: string; // plain text extracted from rich text
+  excerpt: string;
   mainImage: string;
   date: string;
   slug: string;
 }
 
-// ─── Helper: extract plain text from Payload Lexical rich text
-function extractPlainText(description: any): string {
-  if (!description?.root?.children) return "";
-  return description.root.children
-    .flatMap((node: any) => node.children ?? [])
-    .map((child: any) => child.text ?? "")
-    .join(" ")
-    .trim();
+/* ─── DESCRIPTION EXTRACTOR ─── */
+// ✅ handles BOTH formats:
+// 1. HTML string: "<p><span>some text</span></p>"
+// 2. Lexical object: { root: { children: [...] } }
+function extractDescription(description: any): string {
+  if (!description) return "";
+
+  // ✅ Format 1: plain string or HTML string
+  if (typeof description === "string") {
+    // strip HTML tags and return plain text
+    return description.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
+  }
+
+  // ✅ Format 2: Lexical rich text object
+  if (description?.root?.children) {
+    return description.root.children
+      .flatMap((node: any) => node.children ?? [])
+      .map((child: any) => child.text ?? "")
+      .join(" ")
+      .trim();
+  }
+
+  return "";
 }
 
-// ─── Format date nicely
+/* ─── Format date ─── */
 function formatDate(dateStr: string): string {
   if (!dateStr) return "";
-  const date = new Date(dateStr);
-  return date.toLocaleDateString("en-GB", {
+  return new Date(dateStr).toLocaleDateString("en-GB", {
     day: "2-digit",
     month: "short",
     year: "numeric",
   });
 }
 
-// ─── Image Placeholder
+/* ─── Image Placeholder ─── */
 function ImgPlaceholder({ className }: { className?: string }) {
   return (
-    <div
-      className={`bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}
-    >
+    <div className={`bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}>
       <svg width={40} height={40} viewBox="0 0 24 24" fill="none" stroke="#c4c9d0" strokeWidth="1.2">
         <rect x="3" y="3" width="18" height="18" rx="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
@@ -243,10 +263,11 @@ function ImgPlaceholder({ className }: { className?: string }) {
   );
 }
 
-// ─── Event Card
+/* ─── Event Card ─── */
 function EventCard({ item }: { item: EventItem }) {
   return (
     <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+
       {/* Image */}
       <div className="relative w-full h-52 shrink-0 overflow-hidden">
         {item.mainImage ? (
@@ -274,10 +295,10 @@ function EventCard({ item }: { item: EventItem }) {
         </h3>
       </div>
 
-      {/* Excerpt — now correctly populated */}
+      {/* Excerpt */}
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 line-clamp-3 leading-relaxed">
-          {item.excerpt}
+          {item.excerpt || "No description available."}
         </p>
       </div>
 
@@ -286,7 +307,7 @@ function EventCard({ item }: { item: EventItem }) {
         <hr className="border-gray-200 mb-4" />
         <div className="flex items-center justify-between">
           <Link
-            href={`/events/${item.slug}`}
+            href={`/events/${encodeURIComponent(item.slug)}`}
             className="bg-red-700 hover:bg-red-800 text-white text-xs font-bold uppercase px-5 py-2.5 rounded transition-colors duration-200"
           >
             Read More
@@ -300,7 +321,7 @@ function EventCard({ item }: { item: EventItem }) {
   );
 }
 
-// ─── Main Page
+/* ─── Main Page ─── */
 export default function EventsPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["events"],
@@ -310,7 +331,6 @@ export default function EventsPage() {
   if (isLoading) {
     return (
       <main className="min-h-screen bg-gray-50">
-        {/* Skeleton Banner */}
         <div className="w-full h-80 bg-gray-300 animate-pulse" />
         <section className="max-w-7xl mx-auto px-6 py-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -340,19 +360,21 @@ export default function EventsPage() {
     );
   }
 
-  // ✅ FIX: map description → excerpt so EventCard receives the text
   const events: EventItem[] =
     data?.docs?.map((item: any) => ({
       id: item.id,
       title: item.title,
-      excerpt: extractPlainText(item.description), // was mapped to "description" key before — never matched "excerpt" in EventCard
+      //  FIXED: extractDescription handles both HTML string and Lexical object
+      excerpt: extractDescription(item.description),
       date: item.date,
-      mainImage: item.mainImage?.url || "",
+      //  FIXED: getImageUrl handles Cloudinary URLs + old Render paths
+      mainImage: getImageUrl(item.mainImage?.url),
       slug: item.slug,
     })) || [];
 
   return (
     <main className="min-h-screen bg-gray-50">
+
       {/* Banner */}
       <section>
         <div className="relative w-full h-80 overflow-hidden">
@@ -384,6 +406,7 @@ export default function EventsPage() {
           </div>
         )}
       </section>
+
     </main>
   );
 }
