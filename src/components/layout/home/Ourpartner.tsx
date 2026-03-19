@@ -298,7 +298,7 @@ const OurPartner = () => {
 
       {/* Carousel */}
       <div className="relative w-full">
-
+ 
         {/* Three-column grid — peek cards stay static, only center animates */}
         <div
           className="grid items-stretch"

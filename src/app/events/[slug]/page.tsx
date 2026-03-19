@@ -16,7 +16,7 @@ const getImageUrl = (url?: string): string => {
 };
 
 /* ─── HTML DESCRIPTION RENDERER ─── */
-// ✅ Renders the raw HTML from QuillEditor with bold, links, italic etc.
+//  Renders the raw HTML from QuillEditor with bold, links, italic etc.
 // Scoped styles so Quill HTML looks correct inside the page
 function HtmlDescription({ html }: { html: string }) {
   if (!html) return null;
@@ -224,7 +224,7 @@ function GallerySection({ gallery }: { gallery: any[] }) {
 
               {/* Location label */}
               {g.location && (
-                <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-2 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <div className="absolute bottom-0 inset-x-0 bg-linear-to-t from-black/60 to-transparent px-2 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                   <div className="flex items-center gap-1">
                     <MapPin size={10} className="text-white" />
                     <span className="text-white text-[10px] font-medium">{g.location}</span>
@@ -272,10 +272,10 @@ export default function EventDetailPage() {
 
   const item = data.docs[0];
 
-  // ✅ raw HTML — passed directly to HtmlDescription
+  //  raw HTML — passed directly to HtmlDescription
   const descriptionHtml: string = item.description || "";
 
-  // ✅ mainImage — only use if populated object
+  //  mainImage — only use if populated object
   const mainImageUrl =
     typeof item.mainImage === "object" && item.mainImage !== null
       ? getImageUrl(item.mainImage.url)
@@ -303,7 +303,7 @@ export default function EventDetailPage() {
         ) : (
           <div className="absolute inset-0 bg-gray-800" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-linear-to-b from-black/10 via-transparent to-black/30" />
       </section>
 
       {/* Title + Description */}
@@ -312,7 +312,7 @@ export default function EventDetailPage() {
           {item.title}
         </h1>
 
-        {/* ✅ FIXED: renders full HTML with bold, italic, links, lists etc. */}
+        {/*  FIXED: renders full HTML with bold, italic, links, lists etc. */}
         <HtmlDescription html={descriptionHtml} />
       </section>
 
