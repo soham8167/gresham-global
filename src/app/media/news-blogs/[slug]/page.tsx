@@ -441,19 +441,18 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
 
-/* ✅ IMAGE HELPER */
+/* ─── CONSTANTS ─── */
 const BASE_URL = "https://gresham-global-cms.onrender.com";
 
-const getImageUrl = (url?: string) => {
-  if (!url) return null;
-
-  // already full URL
+/* ─── IMAGE HELPER ─── */
+const getImageUrl = (url?: string): string => {
+  if (!url) return "";
   if (url.startsWith("http")) return url;
-
+  // transform /api/media/file/xxx → /media/xxx
   return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
 };
 
-/* -------------------- RICH TEXT -------------------- */
+/* ─── RICH TEXT RENDERER ─── */
 function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
   if (!node) return null;
 
@@ -551,21 +550,21 @@ function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
   return null;
 }
 
-/* -------------------- SLIDER -------------------- */
+/* ─── GALLERY GRID ─── */
 function GallerySlider({
   images,
 }: {
   images: { url: string; alt: string }[];
 }) {
-  const total = images.length;
+  if (!images.length) return null;
 
-  if (total === 1) {
+  if (images.length === 1) {
     return (
       <div className="relative w-full h-80 rounded-2xl overflow-hidden">
         {images[0].url ? (
           <Image
             src={images[0].url}
-            alt={images[0].alt}
+            alt={images[0].alt || "Gallery image"}
             fill
             unoptimized
             className="object-cover"
@@ -584,9 +583,9 @@ function GallerySlider({
           {img.url ? (
             <Image
               src={img.url}
-              alt={img.alt}
+              alt={img.alt || `Gallery image ${i + 1}`}
               fill
-              unoptimized   // 🔥 VERY IMPORTANT
+              unoptimized
               className="object-cover"
             />
           ) : (
@@ -598,12 +597,12 @@ function GallerySlider({
   );
 }
 
-/* -------------------- PAGE -------------------- */
+/* ─── DETAIL PAGE ─── */
 export default function NewsDetailPage() {
   const searchParams = useSearchParams();
   const cmsSlug = searchParams.get("ref");
 
-  const { data } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["newsBlogs"],
     queryFn: async () => {
       const res = await fetch(
@@ -613,29 +612,48 @@ export default function NewsDetailPage() {
     },
   });
 
+  if (isLoading) return <p className="text-center py-20">Loading...</p>;
+  if (error)
+    return (
+      <p className="text-center py-20 text-red-500">Error loading data</p>
+    );
+
   const item = data?.docs?.find((doc: any) => doc.slug === cmsSlug);
 
-  if (!item) return <p>Not found</p>;
+  if (!item)
+    return <p className="text-center py-20 text-gray-500">Article not found</p>;
 
-  const galleryImages =
+  // ✅ FIX: resolve every image URL through getImageUrl
+  const mainImage = getImageUrl(item.mainImage?.url);
+
+  const galleryImages: { url: string; alt: string }[] =
     item.gallery?.map((g: any) => ({
-      url: getImageUrl(g.images?.url) || "",
+      url: getImageUrl(g.images?.url),
       alt: g.images?.alt || "",
     })) || [];
 
-  const mainImage = getImageUrl(item.mainImage?.url);
-
   return (
     <main>
-      {/* MAIN IMAGE */}
-      <div className="relative w-full h-96">
+      {/* Back link */}
+      <div className="max-w-5xl mx-auto px-6 pt-6">
+        <Link
+          href="/media/news-blogs"
+          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-red-700 transition-colors"
+        >
+          <ChevronLeft size={16} />
+          Back to News &amp; Blogs
+        </Link>
+      </div>
+
+      {/* Main image */}
+      <div className="relative w-full h-72 sm:h-96 mt-4">
         {mainImage ? (
           <Image
             src={mainImage}
-            alt={item.title}
+            alt={item.title || "Article image"}
             fill
             priority
-            unoptimized   // 🔥 IMPORTANT
+            unoptimized // ✅ required for external images not going through Next.js optimizer
             className="object-cover"
           />
         ) : (
@@ -643,12 +661,24 @@ export default function NewsDetailPage() {
         )}
       </div>
 
-      <h1>{item.title}</h1>
+      {/* Content */}
+      <div className="max-w-5xl mx-auto px-6 py-10">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+          {item.title}
+        </h1>
 
-      <RichTextRenderer node={item.details?.root} />
+        <RichTextRenderer node={item.details?.root} />
 
-      {/* GALLERY */}
-      <GallerySlider images={galleryImages} />
+        {/* Gallery */}
+        {galleryImages.length > 0 && (
+          <div className="mt-10">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Gallery
+            </h2>
+            <GallerySlider images={galleryImages} />
+          </div>
+        )}
+      </div>
     </main>
   );
 }

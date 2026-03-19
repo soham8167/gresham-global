@@ -30,11 +30,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    unoptimized: true, // disables Next.js image optimization — fixes all external image loading
     remotePatterns: [
       {
         protocol: "https",
         hostname: "gresham-global-cms.onrender.com",
-        pathname: "/media/**",
+        pathname: "/**", // allow ALL paths from this host
       },
     ],
   },
