@@ -8,6 +8,15 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
 
 
+
+const BASE_URL = "https://gresham-global-cms.onrender.com";
+
+const getImageUrl = (url: string) => {
+  if (!url) return "";
+  return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
+};
+
+
 function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
   if (!node) return null;
 
@@ -295,14 +304,14 @@ function GallerySlider({
                 className="px-2 sm:px-3 box-border"
               >
                 <div className="relative w-full h-60 sm:h-48 md:h-56 lg:h-84 overflow-hidden rounded-2xl bg-gray-100">
-                  <Image
-                    src={img.url}
-                    alt={img.alt || `gallery ${i + 1}`}
-                    fill
-                    className="object-cover hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width:640px) 100vw,(max-width:1024px) 50vw,(max-width:1280px) 33vw,25vw"
-                  />
-                </div>
+  <Image
+    src={`https://gresham-global-cms.onrender.com${img.url.replace("/api/media/file", "/media")}`}
+    alt={img.alt || `gallery ${i + 1}`}
+    fill
+    className="object-cover hover:scale-105 transition-transform duration-500"
+    sizes="(max-width:640px) 100vw,(max-width:1024px) 50vw,(max-width:1280px) 33vw,25vw"
+  />
+</div>
               </div>
             ))}
           </div>
@@ -357,7 +366,7 @@ export default function NewsDetailPage() {
   const galleryImages: { url: string; alt: string }[] =
     item.hasGallery && item.gallery?.length > 0
       ? item.gallery.map((g: any) => ({
-          url: g.images?.url || "",
+         url: g.images?.url ? getImageUrl(g.images.url) : "",
           alt: g.images?.alt || "gallery image",
         }))
       : [];
@@ -369,7 +378,8 @@ export default function NewsDetailPage() {
       <section className="relative w-full h-75 sm:h-100 md:h-120 lg:h-135 overflow-hidden">
         {item.mainImage?.url ? (
           <Image
-            src={item.mainImage.url}
+            // src={item.mainImage.url}
+            src={getImageUrl(item.mainImage.url)}
             alt={item.title}
             fill
             priority
@@ -404,7 +414,7 @@ export default function NewsDetailPage() {
                 src={item.video.url}
                 controls
                 className="w-full h-full object-contain"
-                poster={item.mainImage?.url || undefined}
+                poster={item.mainImage?.url ? getImageUrl(item.mainImage.url) : undefined}
               />
             </div>
           </div>
