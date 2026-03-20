@@ -6,8 +6,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { MapPin } from "lucide-react";
 import { fetchEventBySlug } from "@/lib/api";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-/* ─── IMAGE HELPER ─── */
+/* IMAGE HELPER  */
 const BASE_URL = "https://gresham-global-cms.onrender.com";
 const getImageUrl = (url?: string): string => {
   if (!url) return "";
@@ -15,9 +17,7 @@ const getImageUrl = (url?: string): string => {
   return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
 };
 
-/* ─── HTML DESCRIPTION RENDERER ─── */
-//  Renders the raw HTML from QuillEditor with bold, links, italic etc.
-// Scoped styles so Quill HTML looks correct inside the page
+
 function HtmlDescription({ html }: { html: string }) {
   if (!html) return null;
   return (
@@ -101,7 +101,7 @@ function VideoEmbed({ videoStr }: { videoStr: string }) {
 
   if (youtubeId) {
     return (
-      <div className="relative w-full rounded-xl overflow-hidden shadow-lg" style={{ paddingBottom: "56.25%" }}>
+      <div className="relative w-full h-64 md:h-80 lg:h-150 rounded-xl overflow-hidden shadow-lg">
         <iframe
           className="absolute inset-0 w-full h-full"
           src={`https://www.youtube.com/embed/${youtubeId}`}
@@ -115,23 +115,11 @@ function VideoEmbed({ videoStr }: { videoStr: string }) {
 
   if (isDirectVideoUrl(videoStr)) {
     return (
-      <div className="relative w-full rounded-xl overflow-hidden shadow-lg">
-        <video className="w-full rounded-xl" src={videoStr} controls playsInline preload="metadata">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    );
-  }
-
-  if (videoStr.startsWith("http")) {
-    return (
-      <div className="relative w-full rounded-xl overflow-hidden shadow-lg" style={{ paddingBottom: "56.25%" }}>
-        <iframe
-          className="absolute inset-0 w-full h-full"
+      <div className="relative w-full h-64 md:h-80 lg:h-162.5 rounded-xl overflow-hidden shadow-lg">
+        <video
+          className="w-full h-full object-cover"
           src={videoStr}
-          title="Event Video"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
+          controls
         />
       </div>
     );
@@ -239,6 +227,50 @@ function GallerySection({ gallery }: { gallery: any[] }) {
   );
 }
 
+
+
+
+
+function EventsDetailSkeleton() {
+  return (
+    <SkeletonTheme baseColor="#e5e7eb" highlightColor="#f3f4f6">
+      <main className="min-h-screen bg-gray-50">
+
+        {/* Hero image placeholder — matches section h-75 sm:h-100 md:h-120 lg:h-135 */}
+        <section className="relative w-full h-75 sm:h-100 md:h-120 lg:h-135 overflow-hidden">
+          <Skeleton height="100%" borderRadius={0} />
+        </section>
+
+        {/* Title + Body */}
+        <div className="max-w-9xl mx-auto px-4 sm:px-8 lg:px-10">
+
+          {/* Title block */}
+          <div className="py-8 md:py-10">
+            <Skeleton height={36} width="65%" borderRadius={6} />
+          </div>
+
+          {/* Body paragraphs */}
+          <div className="py-8 md:py-10 w-full space-y-3">
+            <Skeleton count={2} height={15} borderRadius={4} />
+            <Skeleton width="80%" height={15} borderRadius={4} />
+
+            <div className="pt-4" />
+            <Skeleton count={3} height={15} borderRadius={4} />
+            <Skeleton width="55%" height={15} borderRadius={4} />
+
+            <div className="pt-4" />
+            <Skeleton count={3} height={15} borderRadius={4} />
+            <Skeleton width="70%" height={15} borderRadius={4} />
+          </div>
+
+        </div>
+      </main>
+    </SkeletonTheme>
+  );
+}
+
+
+
 /* ─── MAIN DETAIL PAGE ─── */
 export default function EventDetailPage() {
   const { slug } = useParams();
@@ -248,19 +280,7 @@ export default function EventDetailPage() {
     queryFn: () => fetchEventBySlug(slug as string),
   });
 
-  if (isLoading) {
-    return (
-      <main className="min-h-screen bg-white">
-        <div className="w-full h-[60vh] bg-gray-200 animate-pulse" />
-        <div className="max-w-4xl mx-auto px-6 py-12 space-y-4">
-          <div className="h-8 bg-gray-200 rounded animate-pulse w-2/3" />
-          <div className="h-4 bg-gray-200 rounded animate-pulse" />
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-5/6" />
-          <div className="h-4 bg-gray-200 rounded animate-pulse w-4/6" />
-        </div>
-      </main>
-    );
-  }
+  if (isLoading) return <EventsDetailSkeleton/>;
 
   if (error || !data?.docs?.[0]) {
     return (
@@ -318,7 +338,7 @@ export default function EventDetailPage() {
 
       {/* Video */}
       {hasVideo && (
-        <section className="max-w-7xl mx-auto px-6 pb-12">
+        <section className="max-w-8xl mx-auto px-6 pb-12">
           <VideoEmbed videoStr={item.video} />
         </section>
       )}

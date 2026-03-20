@@ -7,7 +7,7 @@ import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300","400","500","600","700"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const inter = Inter({
@@ -20,7 +20,6 @@ export const metadata = {
   description: "Professional Corporate Website",
 };
 
-
 export default function RootLayout({
   children,
 }: {
@@ -28,12 +27,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-     <body className={`${poppins.className} font-sans antialiased bg-white text-gray-900`}>
-        <Navbar />
-       <ReactQueryProvider>
-    {children}
-  </ReactQueryProvider>
-        <Footer />
+      <body className={`${poppins.className} font-sans antialiased bg-white text-gray-900 overflow-x-hidden`}>
+        <ReactQueryProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </ReactQueryProvider>
       </body>
     </html>
   );

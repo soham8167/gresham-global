@@ -437,20 +437,20 @@
 
 "use client";
 
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import { ChevronLeft } from "lucide-react";
 
 /* ─── IMAGE HELPER ─── */
 const BASE_URL = "https://gresham-global-cms.onrender.com";
 
 const getImageUrl = (url?: string): string => {
   if (!url) return "";
-  if (url.startsWith("http")) return url; // ✅ Cloudinary URLs pass straight through
-  return `${BASE_URL}${url.replace("/api/media/file", "/media")}`; // ✅ fix old Render paths
+  if (url.startsWith("http")) return url;
+  return `${BASE_URL}${url.replace("/api/media/file", "/media")}`;
 };
 
 /* ─── RICH TEXT RENDERER ─── */
@@ -525,8 +525,8 @@ function RichTextRenderer({ node }: { node: any }): React.ReactElement | null {
 
   if (node.type === "link") {
     return (
-      <a
-        href={node.fields?.url || "#"}
+      
+      <a  href={node.fields?.url || "#"}
         target={node.fields?.newTab ? "_blank" : "_self"}
         rel="noopener noreferrer"
         className="text-red-700 underline underline-offset-2 hover:text-red-900 transition-colors"
@@ -752,6 +752,45 @@ function GallerySlider({
   );
 }
 
+/* ─── DETAIL PAGE SKELETON ─── */
+function NewsDetailSkeleton() {
+  return (
+    <SkeletonTheme baseColor="#e5e7eb" highlightColor="#f3f4f6">
+      <main className="min-h-screen bg-gray-50">
+
+        {/* Hero image placeholder — matches section h-75 sm:h-100 md:h-120 lg:h-135 */}
+        <section className="relative w-full h-75 sm:h-100 md:h-120 lg:h-135 overflow-hidden">
+          <Skeleton height="100%" borderRadius={0} />
+        </section>
+
+        {/* Title + Body */}
+        <div className="max-w-9xl mx-auto px-4 sm:px-8 lg:px-10">
+
+          {/* Title block */}
+          <div className="py-8 md:py-10">
+            <Skeleton height={36} width="65%" borderRadius={6} />
+          </div>
+
+          {/* Body paragraphs */}
+          <div className="py-8 md:py-10 w-full space-y-3">
+            <Skeleton count={2} height={15} borderRadius={4} />
+            <Skeleton width="80%" height={15} borderRadius={4} />
+
+            <div className="pt-4" />
+            <Skeleton count={3} height={15} borderRadius={4} />
+            <Skeleton width="55%" height={15} borderRadius={4} />
+
+            <div className="pt-4" />
+            <Skeleton count={3} height={15} borderRadius={4} />
+            <Skeleton width="70%" height={15} borderRadius={4} />
+          </div>
+
+        </div>
+      </main>
+    </SkeletonTheme>
+  );
+}
+
 /* ─── DETAIL PAGE ─── */
 export default function NewsDetailPage() {
   const searchParams = useSearchParams();
@@ -770,17 +809,10 @@ export default function NewsDetailPage() {
 
   const item = data?.docs?.find((doc: any) => doc.slug === cmsSlug);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-red-700 border-t-transparent rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Loading article...</p>
-        </div>
-      </div>
-    );
-  }
+  // ── Loading state ──
+  if (isLoading) return <NewsDetailSkeleton />;
 
+  // ── Error / not found ──
   if (error || !item) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-gray-50">
@@ -789,13 +821,12 @@ export default function NewsDetailPage() {
     );
   }
 
-  // ✅ resolve all image URLs through getImageUrl
   const mainImageUrl = getImageUrl(item.mainImage?.url);
 
   const galleryImages: { url: string; alt: string }[] =
     item.hasGallery && item.gallery?.length > 0
       ? item.gallery.map((g: any) => ({
-          url: getImageUrl(g.images?.url), // ✅ fixed
+          url: getImageUrl(g.images?.url),
           alt: g.images?.alt || "gallery image",
         }))
       : [];
@@ -805,16 +836,14 @@ export default function NewsDetailPage() {
 
       {/* Main Image */}
       <section className="relative w-full h-75 sm:h-100 md:h-120 lg:h-135 overflow-hidden">
-        {mainImageUrl ? (
+        {mainImageUrl && (
           <Image
-            src={mainImageUrl} // ✅ fixed
+            src={mainImageUrl}
             alt={item.title}
             fill
             priority
             className="object-cover"
           />
-        ) : (
-          <div className="absolute inset-0 bg-gray-300" />
         )}
       </section>
 
@@ -828,7 +857,9 @@ export default function NewsDetailPage() {
         </div>
 
         <div className="py-8 md:py-10 w-full">
-          <RichTextRenderer node={item.details?.root} />
+          {item?.details?.root ? (
+            <RichTextRenderer node={item.details.root} />
+          ) : null}
         </div>
 
         {/* Video */}
@@ -839,7 +870,7 @@ export default function NewsDetailPage() {
                 src={item.video.url}
                 controls
                 className="w-full h-full object-contain"
-                poster={mainImageUrl || undefined} // ✅ fixed
+                poster={mainImageUrl || undefined}
               />
             </div>
           </div>

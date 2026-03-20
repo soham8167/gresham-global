@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { fetchJobs } from "@/lib/api";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -21,9 +22,9 @@ function JobCardSkeleton() {
   return (
     <div className="flex flex-col bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
       {/* Title */}
-      <Skeleton height={22} width="75%" borderRadius={4} className="mb-4" />
+      <Skeleton height={24} width="75%" borderRadius={4} className="mb-4" />
 
-      {/* "Job Description:" label */}
+      {/* Label */}
       <Skeleton height={13} width="40%" borderRadius={3} className="mb-3" />
 
       {/* List items */}
@@ -34,7 +35,7 @@ function JobCardSkeleton() {
         <Skeleton height={13} width="65%" borderRadius={3} />
       </div>
 
-      {/* Apply Now button */}
+      {/* Button */}
       <Skeleton height={38} width={110} borderRadius={8} />
     </div>
   );
@@ -79,8 +80,8 @@ function JobCard({ job }: { job: Job }) {
   );
 }
 
-/*  MAIN COMPONENT */
-export default function CurrentOpenings() {
+/* ─── MAIN PAGE ─── */
+export default function AllOpeningsPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["jobs"],
     queryFn: fetchJobs,
@@ -98,40 +99,48 @@ export default function CurrentOpenings() {
     })) || [];
 
   return (
-    <section className="bg-gray-100 py-16 md:py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12">
+    <main className="min-h-screen bg-gray-50">
 
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8 md:mb-10">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900">
-            Current Openings
-          </h2>
-          <Link
-            href="/all-openings"
-            className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-6 py-3 rounded-lg"
-          >
-            View All
-          </Link>
+      {/* Banner */}
+      <section>
+        <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
+          <Image
+            src="/images/careers/career-bg.jpg"
+            alt="Careers Banner"
+            fill
+            priority
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/50" />
+          <div className="absolute inset-0 flex items-center">
+            <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
+              <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl mt-28 leading-tight">
+                All Openings
+              </h1>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Grid */}
+      {/* Jobs Grid */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 md:py-20">
         {error ? (
           <p className="text-center py-10 text-red-500">Error loading jobs</p>
         ) : (
           <SkeletonTheme baseColor="#e5e7eb" highlightColor="#f3f4f6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
               {isLoading
-                ? Array.from({ length: 3 }).map((_, i) => (
+                ? Array.from({ length: 6 }).map((_, i) => (
                     <JobCardSkeleton key={i} />
                   ))
-                : jobs.slice(0, 3).map((job) => (
+                : jobs.map((job) => (
                     <JobCard key={job.id} job={job} />
                   ))}
             </div>
           </SkeletonTheme>
         )}
+      </section>
 
-      </div>
-    </section>
+    </main>
   );
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -18,45 +19,56 @@ export default function Navbar() {
 
   const isItemActive = (item: (typeof navigation)[number]) => {
     if (item.href === "/" && pathname === "/") return true;
-    if (item.href && item.href !== "/" && pathname.startsWith(item.href)) return true;
-    if (item.children?.some((child) => pathname === child.href || pathname.startsWith(child.href ?? "___"))) return true;
+    if (item.href && item.href !== "/" && pathname.startsWith(item.href))
+      return true;
+    if (
+      item.children?.some(
+        (child) =>
+          pathname === child.href || pathname.startsWith(child.href ?? "___"),
+      )
+    )
+      return true;
     return false;
   };
 
   return (
     <header className="border-b bg-white sticky top-0 z-50 w-full">
-      <div className="w-full flex items-center justify-between h-16 sm:h-18 md:h-20 px-4 sm:px-6 lg:px-10 xl:px-16">
-
+      <div className="w-full flex items-center justify-between h-16 nav:h-20 px-4 nav:px-5 lg:px-10 xl:px-16">
         {/* Logo */}
-        <Link href="/" className="shrink-0">
+        <Link href="/" className="shrink-0 nav:pl-15  lg:pl-10 xl:pl-16">
           <Image
             src="/images/logo/logo.png"
-            width={200}
-            height={120}
+            width={320}
+            height={200}
             alt="Gresham Global Logo"
-            className="h-10 sm:h-12 md:h-14 w-auto"
+            // className="h-10 nav:h-10 lg:h-14 xl:h-14 w-auto relative left-4 "
+            className="h-10 nav:h-14 lg:h-16 xl:h-20 w-auto relative left-4"
             priority
           />
         </Link>
 
         {/* DESKTOP NAV */}
-        <nav className="hidden md:flex items-center gap-0">
-
-          <div className="flex items-center divide-x divide-gray-900">
+        <nav className="hidden nav:flex items-center gap-0 flex-1 justify-center min-w-0 ">
+          <div className="flex items-center divide-x divide-gray-900 min-w-0">
             {navigation.map((item) => {
               const active = isItemActive(item);
 
               return (
-                <div key={item.label} className="relative px-4 lg:px-6 xl:px-7 group">
+                <div
+                  key={item.label}
+                  className="relative px-2.5 lg:px-5 xl:px-6 group shrink-0 "
+                >
                   <div
                     className={`
-                      flex items-center gap-1 text-sm lg:text-lg font-medium transition-colors duration-200 cursor-pointer
-                      pb-1
-                      ${active
-                        ? "text-red-600 border-b-2 border-red-600"
-                        : "text-gray-800 hover:text-red-600 border-b-2 border-transparent"
-                      }
-                    `}
+    flex items-center gap-0.5 font-medium transition-colors duration-200 cursor-pointer
+    pb-1 whitespace-nowrap
+    text-sm lg:text-base xl:text-lg
+    ${
+      active
+        ? "text-red-600 border-b-2 border-red-600"
+        : "text-gray-800 hover:text-red-600 border-b-2 border-transparent"
+    }
+  `}
                   >
                     {item.href && !item.children ? (
                       <Link href={item.href}>{item.label}</Link>
@@ -68,8 +80,8 @@ export default function Navbar() {
 
                     {item.children && (
                       <ChevronDown
-                        size={20}
-                        className="mt-0.5 shrink-0 transition-transform duration-200 group-hover:rotate-180"
+                        size={15}
+                        className="mt-0.5 shrink-0 transition-transform duration-200 group-hover:rotate-180 "
                       />
                     )}
                   </div>
@@ -79,7 +91,9 @@ export default function Navbar() {
                     <div className="absolute left-0 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                       <div className="w-56 bg-white shadow-lg rounded-md border border-gray-200 py-2">
                         {item.children.map((child) => {
-                          const childActive = pathname === child.href || pathname.startsWith(child.href ?? "___");
+                          const childActive =
+                            pathname === child.href ||
+                            pathname.startsWith(child.href ?? "___");
                           return (
                             <Link
                               key={child.label}
@@ -103,42 +117,45 @@ export default function Navbar() {
           </div>
 
           {/* LinkedIn Icon */}
-          <div className="pl-5 lg:pl-7 shrink-0">
+          <div className="hidden xl2:flex pl-2 lg:pl-4 xl:pl-6 shrink-0">
             <Link href="" target="_blank" rel="noopener noreferrer">
               <Image
                 src="/images/home/linkedinRound.webp"
                 alt="LinkedIn"
                 width={40}
                 height={40}
-                className="h-8 lg:h-9 w-auto cursor-pointer hover:opacity-80 transition-opacity"
+                className="h-7 lg:h-8 xl:h-9 w-auto cursor-pointer hover:opacity-80 transition-opacity "
               />
             </Link>
           </div>
-
         </nav>
 
         {/* MOBILE MENU BUTTON */}
         <button
           onClick={() => setMenuOpen(true)}
-          className="md:hidden cursor-pointer p-1"
+          className="nav:hidden cursor-pointer p-1"
           aria-label="Open menu"
         >
           <Menu size={28} />
         </button>
-
       </div>
 
       {/* MOBILE OVERLAY */}
       <div
-        onClick={() => { setMenuOpen(false); setOpenDropdown(null); }}
-        className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 md:hidden ${
-          menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+        onClick={() => {
+          setMenuOpen(false);
+          setOpenDropdown(null);
+        }}
+        className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 nav:hidden ${
+          menuOpen
+            ? "opacity-100 visible"
+            : "opacity-0 invisible pointer-events-none"
         }`}
       />
 
       {/* MOBILE SIDEBAR */}
       <div
-        className={`fixed top-0 left-0 h-full w-[85%] sm:w-[320px] bg-white z-50 shadow-xl transform transition-transform duration-300 md:hidden ${
+        className={`fixed top-0 left-0 h-full w-[85%] sm:w-[320px] bg-white z-50 shadow-xl transform transition-transform duration-300 nav:hidden ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -153,7 +170,10 @@ export default function Navbar() {
           />
           <button
             className="cursor-pointer p-1"
-            onClick={() => { setMenuOpen(false); setOpenDropdown(null); }}
+            onClick={() => {
+              setMenuOpen(false);
+              setOpenDropdown(null);
+            }}
             aria-label="Close menu"
           >
             <X size={24} />
@@ -166,13 +186,13 @@ export default function Navbar() {
             const active = isItemActive(item);
             const isOpen = openDropdown === item.label;
             const childCount = item.children?.length ?? 0;
-            // Each child is ~44px tall
             const dropdownHeight = childCount * 44;
 
             return (
-              <div key={item.label} className="border-b border-gray-100 last:border-0 pb-1">
-
-                {/* Main Item Row */}
+              <div
+                key={item.label}
+                className="border-b border-gray-100 last:border-0 pb-1"
+              >
                 <div
                   className={`flex items-center justify-between py-3 cursor-pointer ${
                     active ? "text-red-600" : "text-gray-800"
@@ -199,9 +219,11 @@ export default function Navbar() {
                       {item.label}
                     </Link>
                   ) : (
-                    <span className={`text-base sm:text-lg font-medium ${
-                      active ? "text-red-600" : "text-gray-800"
-                    }`}>
+                    <span
+                      className={`text-base sm:text-lg font-medium ${
+                        active ? "text-red-600" : "text-gray-800"
+                      }`}
+                    >
                       {item.label}
                     </span>
                   )}
@@ -216,20 +238,26 @@ export default function Navbar() {
                   )}
                 </div>
 
-                {/* Dropdown Children — height-based animation so all items show */}
                 {item.children && (
                   <div
                     className="overflow-hidden transition-all duration-300 ease-in-out"
-                    style={{ maxHeight: isOpen ? `${dropdownHeight + 16}px` : "0px" }}
+                    style={{
+                      maxHeight: isOpen ? `${dropdownHeight + 16}px` : "0px",
+                    }}
                   >
                     <div className="pl-4 pb-2 flex flex-col">
                       {item.children.map((child) => {
-                        const childActive = pathname === child.href || pathname.startsWith(child.href ?? "___");
+                        const childActive =
+                          pathname === child.href ||
+                          pathname.startsWith(child.href ?? "___");
                         return (
                           <Link
                             key={child.label}
                             href={child.href!}
-                            onClick={() => { setMenuOpen(false); setOpenDropdown(null); }}
+                            onClick={() => {
+                              setMenuOpen(false);
+                              setOpenDropdown(null);
+                            }}
                             className={`py-2.5 text-sm sm:text-base border-b border-gray-50 last:border-0 transition-colors ${
                               childActive
                                 ? "text-red-600 font-semibold"
@@ -243,14 +271,17 @@ export default function Navbar() {
                     </div>
                   </div>
                 )}
-
               </div>
             );
           })}
 
-          {/* LinkedIn in mobile sidebar */}
           <div className="pt-4">
-            <Link href="" target="_blank" rel="noopener noreferrer" className="inline-block">
+            <Link
+              href=""
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
               <Image
                 src="/images/home/linkedinRound.webp"
                 alt="LinkedIn"
@@ -261,7 +292,6 @@ export default function Navbar() {
             </Link>
           </div>
         </div>
-
       </div>
     </header>
   );

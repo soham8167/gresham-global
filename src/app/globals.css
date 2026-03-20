@@ -1,2 +1,6 @@
 @import "tailwindcss";
+@custom-variant nav (@media (width >= 1022px));
+@custom-variant xl2 (@media (width >= 1140px));
+
+
 

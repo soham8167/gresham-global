@@ -6,9 +6,18 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+       screens: {
+      nav: '1022px',   // ← add this one line
+    },
+    },
   },
   plugins: [
     require('@tailwindcss/typography'), 
   ],
 };
+
+
+
+
+

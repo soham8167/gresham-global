@@ -1,26 +1,24 @@
-
 "use client"
 
 import Image from "next/image";
 import Link from "next/link";
 import { Share2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import {  fetchPublications } from "@/lib/api";
+import { fetchPublications } from "@/lib/api";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-// ─── Types 
+// ─── Types
 interface NewsItem {
   id: number;
   title: string;
   excerpt: string;
-  mainImage: string;       
-  tag:string;  
+  mainImage: string;
+  tag: string;
   slug: string;
 }
 
-
-
-
-// ─── Image Placeholder 
+// ─── Image Placeholder
 function ImgPlaceholder({
   className,
   iconSize = 40,
@@ -30,7 +28,7 @@ function ImgPlaceholder({
 }) {
   return (
     <div
-      className={`bg-linear-to-br from-gray-200 to-gray-300  flex items-center justify-center ${className ?? ""}`}
+      className={`bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center ${className ?? ""}`}
     >
       <svg
         width={iconSize}
@@ -48,12 +46,49 @@ function ImgPlaceholder({
   );
 }
 
-// ─── News Card 
+// ─── Skeleton Card
+function PublicationCardSkeleton() {
+  return (
+    <div className="flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden">
+      {/* Image */}
+      <Skeleton height={208} borderRadius={0} />
+
+      {/* Title – two lines */}
+      <div className="px-5 pt-3 space-y-1.5">
+        <Skeleton height={16} borderRadius={3} />
+        <Skeleton height={16} width="70%" borderRadius={3} />
+      </div>
+
+      {/* Excerpt – three lines */}
+      <div className="px-5 pt-2 flex-1 space-y-1.5">
+        <Skeleton height={13} borderRadius={3} />
+        <Skeleton height={13} borderRadius={3} />
+        <Skeleton height={13} width="60%" borderRadius={3} />
+      </div>
+
+      {/* Tag */}
+      <div className="px-5 pt-2">
+        <Skeleton height={13} width="45%" borderRadius={3} />
+      </div>
+
+      {/* Footer */}
+      <div className="px-5 pt-4 pb-5 mt-auto">
+        <hr className="border-gray-200 mb-4" />
+        <div className="flex items-center justify-between">
+          <Skeleton width={100} height={36} borderRadius={4} />
+          <Skeleton circle width={36} height={36} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── News Card
 function NewsCard({ item }: { item: NewsItem }) {
   return (
-    <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:-translate-y-2 transition-shadow duration-300 ">
+    <div className="group flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:-translate-y-2 transition-shadow duration-300">
 
-      {/* 1. Main Image (top) */}
+      {/* Main Image */}
       <div className="relative w-full h-52 shrink-0 overflow-hidden">
         {item.mainImage ? (
           <Image
@@ -67,30 +102,28 @@ function NewsCard({ item }: { item: NewsItem }) {
         )}
       </div>
 
-
-
-      
-
-      {/* 4. Title */}
+      {/* Title */}
       <div className="px-5 pt-3">
-        <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2  transition-colors duration-300">
+        <h3 className="text-[15px] font-bold text-red-700 leading-snug line-clamp-2 transition-colors duration-300">
           {item.title}
         </h3>
       </div>
 
-      {/* 5. Excerpt */}
+      {/* Excerpt */}
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
           {item.excerpt}
         </p>
       </div>
+
+      {/* Tag */}
       <div className="px-5 pt-2 flex-1">
-        <p className="text-sm text-gray-900 leading-relaxed line-clamp-3"> 
-        Tags:  {item.tag}
+        <p className="text-sm text-gray-900 leading-relaxed line-clamp-3">
+          Tags: {item.tag}
         </p>
       </div>
 
-      {/* 6. Divider + Read More + Share */}
+      {/* Footer */}
       <div className="px-5 pt-4 pb-5 mt-auto">
         <hr className="border-gray-200 mb-4" />
         <div className="flex items-center justify-between">
@@ -112,39 +145,27 @@ function NewsCard({ item }: { item: NewsItem }) {
   );
 }
 
-// ─── Main Page 
-export default function Page () {
-
- const { data, isLoading, error } = useQuery({
+// ─── Main Page
+export default function Page() {
+  const { data, isLoading, error } = useQuery({
     queryKey: ["publications"],
     queryFn: fetchPublications,
   });
 
-  if (isLoading) {
-    return <p className="text-center py-20">Loading media...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center py-20">Error loading media</p>;
-  }
-
-  // Convert Payload data to your UI format
   const newsItems: NewsItem[] =
-  data?.docs?.map((item: any) => ({
-    id: item.id,
-    title: item.title,
-    excerpt: item.excerpt,
-    tag: item.tag,
-    mainImage: item.mainImage?.url || "",
-    
-
-    slug: item.slug,
-  })) || []; 
+    data?.docs?.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      excerpt: item.excerpt,
+      tag: item.tag,
+      mainImage: item.mainImage?.url || "",
+      slug: item.slug,
+    })) || [];
 
   return (
     <main className="min-h-screen bg-gray-50">
 
-      {/* ── Banner */}
+      {/* Banner */}
       <section>
         <div className="relative w-full h-62.5 sm:h-80 md:h-100 lg:h-112.5 overflow-hidden">
           <Image
@@ -158,23 +179,32 @@ export default function Page () {
           <div className="absolute inset-0 flex items-center">
             <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
               <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">
-               Publications
+                Publications
               </h1>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Cards Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 md:py-20 ">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 ">
-          {newsItems.map((item) => (
-            <NewsCard key={item.id} item={item} />
-          ))}
-        </div>
+      {/* Cards Grid */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 lg:px-12 py-14 md:py-20">
+        {error ? (
+          <p className="text-center py-20 text-red-500">Error loading publications</p>
+        ) : (
+          <SkeletonTheme baseColor="#e5e7eb" highlightColor="#f3f4f6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {isLoading
+                ? Array.from({ length: 6 }).map((_, i) => (
+                    <PublicationCardSkeleton key={i} />
+                  ))
+                : newsItems.map((item) => (
+                    <NewsCard key={item.id} item={item} />
+                  ))}
+            </div>
+          </SkeletonTheme>
+        )}
       </section>
 
     </main>
   );
-};
-
+}
