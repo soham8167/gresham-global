@@ -26,7 +26,7 @@ interface EventItem {
   slug: string;
 }
 
-/* ─── EXTRACT PLAIN TEXT FROM HTML STRING ─── */
+
 function htmlToPlainText(html: string): string {
   if (!html) return "";
   return html
@@ -62,7 +62,6 @@ function ImgPlaceholder({ className }: { className?: string }) {
     </div>
   );
 }
-
 /* ─── EVENT CARD ─── */
 function EventCard({ item }: { item: EventItem }) {
   return (
