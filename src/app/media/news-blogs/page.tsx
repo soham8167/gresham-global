@@ -220,7 +220,6 @@ export default function Page() {
     })) || [];
 
   const displayItems = items.filter((item) => item.type === activeTab);
-
   return (
     <main className="min-h-screen bg-gray-50">
 

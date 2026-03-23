@@ -1,12 +1,9 @@
-
-
 const BASE_URL =
   process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
     ? process.env.NEXT_PUBLIC_LOCAL_URL
     : process.env.NEXT_PUBLIC_BASE_URL;
 
 console.log("API BASE URL:", BASE_URL);
-
 
 // MEDIA NEWS
 export const fetchMediaNews = async () => {
@@ -15,10 +12,8 @@ export const fetchMediaNews = async () => {
   if (!res.ok) {
     throw new Error("Failed to fetch media news");
   }
-
   return res.json();
 };
-
 
 // NEWS & BLOGS
 export const fetchNewsBlogs = async () => {
@@ -64,7 +59,7 @@ export const fetchEvents = async () => {
 // JOBS
 export const fetchJobs = async () => {
   const res = await fetch(`${BASE_URL}/jobs`);
-  if (!res.ok) throw new Error("Failed to fetch jobs");
+  if (!res.ok) throw new Error("Failed to fetch jobs"); 
   return res.json();
 };
 

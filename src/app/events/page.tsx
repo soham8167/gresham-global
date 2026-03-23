@@ -125,6 +125,7 @@ export default function EventsPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["events"],
     queryFn: fetchEvents,
+    
   });
 
   if (isLoading) {

@@ -6,7 +6,7 @@ import Image from "next/image";
 interface Article {
   id: number;
   image: string;
-  sourceLogo?: string;
+  sourceLogo?: string; 
   sourceColor: string;
   title: string;
   href?: string;

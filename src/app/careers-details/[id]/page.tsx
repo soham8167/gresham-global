@@ -10,7 +10,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton"
 import "react-loading-skeleton/dist/skeleton.css"
 
 interface CareerDetail {
-  title: string
+  title: string 
   university: string
   location: string
   jobType: string

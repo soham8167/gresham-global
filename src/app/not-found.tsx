@@ -3,38 +3,32 @@ import Image from "next/image";
 
 export default function NotFound() {
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 text-center">
+    <main className="min-h-screen bg-[#E82020] flex flex-col items-center justify-center px-6 text-center">
 
-      {/* Logo */}
-      <div className="mb-8">
+      {/* Eye GIF only */}
+      <div className="mb-15">
         <Image
-          src="/images/logo/logo.png"
-          alt="Gresham Global Logo"
-          width={200}
-          height={80}
-          className="h-14 w-auto mx-auto"
+          src="/images/home/404-eye-animation.gif"
+          alt="404 eye animation"
+          width={400}
+          height={200}
+          className="w-auto mx-auto"
+          style={{ height: "clamp(120px, 20vw, 320px)" }}
+          unoptimized
         />
       </div>
 
-      {/* 404 */}
-      <h1 className="text-8xl sm:text-9xl font-extrabold text-red-600 leading-none mb-4">
-        404
-      </h1>
-
-      {/* Message */}
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
-        Page Not Found
-      </h2>
-      <p className="text-gray-500 text-base sm:text-lg max-w-md mb-10">
-        The page you are looking for does not exist or has been moved.
+      {/* Subtitle */}
+      <p className="text-white text-base sm:text-lg max-w-md mb-8 font-medium">
+        Your curiosity led you to an undiscovered page.
       </p>
 
-      {/* Back home button */}
+      {/* Button */}
       <Link
         href="/"
-        className="inline-block bg-red-600 hover:bg-red-700 text-white text-sm font-bold px-8 py-3 rounded-lg transition-colors duration-300"
+        className="inline-block bg-white text-black text-sm font-bold px-8 py-3 rounded-lg hover:text-red-700 transition-colors duration-300"
       >
-        Back to Home
+        Homepage
       </Link>
 
     </main>

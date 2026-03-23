@@ -9,7 +9,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 interface Job {
   id: string;
   title: string;
-  university: string;
+  university: string; 
   location: string;
   jobType: string;
   workEx: string;
