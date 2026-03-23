@@ -12,7 +12,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 interface NewsItem {
   id: number;
   title: string;
-  excerpt: string;
+  summary: string;
   mainImage: string;
   tag: string;
   slug: string;
@@ -112,7 +112,7 @@ function NewsCard({ item }: { item: NewsItem }) {
       {/* Excerpt */}
       <div className="px-5 pt-2 flex-1">
         <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
-          {item.excerpt}
+          {item.summary}
         </p>
       </div>
 
@@ -128,7 +128,7 @@ function NewsCard({ item }: { item: NewsItem }) {
         <hr className="border-gray-200 mb-4" />
         <div className="flex items-center justify-between">
           <Link
-            href={`/publications/${item.slug}`}
+            href={`/publications/${encodeURIComponent(item.title)}`}
             className="inline-block bg-red-700 text-white text-xs font-semibold uppercase tracking-wider px-5 py-2.5 rounded transition-colors duration-300"
           >
             Read More
@@ -156,7 +156,7 @@ export default function Page() {
     data?.docs?.map((item: any) => ({
       id: item.id,
       title: item.title,
-      excerpt: item.excerpt,
+      summary: item.summary,
       tag: item.tag,
       mainImage: item.mainImage?.url || "",
       slug: item.slug,
@@ -198,7 +198,7 @@ export default function Page() {
                     <PublicationCardSkeleton key={i} />
                   ))
                 : newsItems.map((item) => (
-                    <NewsCard key={item.id} item={item} />
+                    <NewsCard key={item.id} item={item} /> 
                   ))}
             </div>
           </SkeletonTheme>
