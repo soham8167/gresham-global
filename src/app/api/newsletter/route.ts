@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
         <div style="font-family:sans-serif;max-width:520px;margin:auto;padding:32px;border:1px solid #eee;border-radius:12px;">
           <h2 style="color:#dc2626;">Welcome to Gresham Global!</h2>
           <p>Thank you for subscribing to our newsletter.</p>
-          <p>You'll be the first to hear about our latest updates, news, and insights.</p>
           <br/>
           <p style="color:#888;font-size:13px;">If you didn't subscribe, you can safely ignore this email.</p>
           <p style="color:#888;font-size:13px;">© ${new Date().getFullYear()} Gresham Global. All rights reserved.</p>
