@@ -1,7 +1,4 @@
-
-
 "use client";
-
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useSearchParams } from "next/navigation";
