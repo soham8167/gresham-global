@@ -1,20 +1,30 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
-const services = [
-  "Research & Assessment",
-  "In-Country Representation",
-  "Academic Collaborations",
-  "Admissions Compliance",
-  " Strategic Marketing",
-  "Operational Support",
-  "Others",
+const SERVICE_OPTIONS = [
+  { value: "Research & Assessment",     label: "Research & Assessment" },
+  { value: "In-Country Representation", label: "In-Country Representation" },
+  { value: "Academic Collaborations",   label: "Academic Collaborations" },
+  { value: "Admissions Compliance",     label: "Admissions Compliance" },
+  { value: "Strategic Marketing",       label: "Strategic Marketing" },
+  { value: "Operational Support",       label: "Operational Support" },
+  { value: "Others",                    label: "Others" },
 ];
 
+type StatusState = { type: "success" | "error"; text: string } | null;
+
+function StatusMessage({ status }: { status: StatusState }) {
+  if (!status) return null;
+  return (
+    <p className={`text-sm font-medium mt-1 ${status.type === "success" ? "text-green-400" : "text-red-400"}`}>
+      {status.type === "success" ? "✓ " : "✕ "}{status.text}
+    </p>
+  );
+}
+
 const page = () => {
-  const [selectedService, setSelectedService] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -23,10 +33,66 @@ const page = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // ── Multi-select state ──
+  const [servicesOpen, setServicesOpen]         = useState(false);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const servicesRef = useRef<HTMLDivElement>(null);
+
+  // ── Submit state ──
+  const [contactLoading, setContactLoading] = useState(false);
+  const [contactStatus,  setContactStatus]  = useState<StatusState>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) {
+        setServicesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const toggleService = (value: string) =>
+    setSelectedServices((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
+
+  const servicesLabel =
+    selectedServices.length === 0
+      ? "Select Services"
+      : SERVICE_OPTIONS.filter((o) => selectedServices.includes(o.value))
+          .map((o) => o.label)
+          .join(", ");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // handle form submission
+    setContactLoading(true);
+    setContactStatus(null);
+    try {
+      const res  = await fetch("/api/contact", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ ...formData, services: selectedServices }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setContactStatus({ type: "success", text: "Message sent!" });
+        setFormData({ fullName: "", email: "", designation: "", organisation: "", message: "" });
+        setSelectedServices([]);
+        setTimeout(() => setContactStatus(null), 3000);
+      } else {
+        setContactStatus({ type: "error", text: data.error || "Submission failed." });
+      }
+    } catch {
+      setContactStatus({ type: "error", text: "Network error. Please try again." });
+    } finally {
+      setContactLoading(false);
+    }
   };
+
+  const inputClass =
+    "w-full bg-[#2e2e2e] text-white placeholder-gray-400 text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 focus:ring-red-500 transition";
 
   return (
     <section>
@@ -64,7 +130,7 @@ const page = () => {
 
               {/* Address */}
               <div className="flex items-start gap-4">
-                <div className="w-22 h-22 rounded-xl bg-white   flex items-center justify-center shrink-0">
+                <div className="w-22 h-22 rounded-xl bg-white flex items-center justify-center shrink-0">
                   <Image
                     src="/images/contact/Group1.png"
                     alt="Address"
@@ -132,68 +198,105 @@ const page = () => {
               </h3>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+
                 <input
                   type="text"
                   placeholder="Full Name"
+                  required
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="w-full bg-[#2e2e2e] text-white placeholder-gray-400 text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 focus:ring-red-500 transition"
+                  disabled={contactLoading}
+                  className={`${inputClass} disabled:opacity-60`}
                 />
                 <input
                   type="email"
                   placeholder="Email ID"
+                  required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full bg-[#2e2e2e] text-white placeholder-gray-400 text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 focus:ring-red-500 transition"
+                  disabled={contactLoading}
+                  className={`${inputClass} disabled:opacity-60`}
                 />
                 <input
                   type="text"
                   placeholder="Designation"
                   value={formData.designation}
                   onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                  className="w-full bg-[#2e2e2e] text-white placeholder-gray-400 text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 focus:ring-red-500 transition"
+                  disabled={contactLoading}
+                  className={`${inputClass} disabled:opacity-60`}
                 />
                 <input
                   type="text"
                   placeholder="Organisation"
                   value={formData.organisation}
                   onChange={(e) => setFormData({ ...formData, organisation: e.target.value })}
-                  className="w-full bg-[#2e2e2e] text-white placeholder-gray-400 text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 focus:ring-red-500 transition"
+                  disabled={contactLoading}
+                  className={`${inputClass} disabled:opacity-60`}
                 />
 
-                {/* Select Services */}
-                <div className="relative">
-                  <select
-                    value={selectedService}
-                    onChange={(e) => setSelectedService(e.target.value)}
-                    className="w-full bg-[#2e2e2e] text-gray-400 text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 focus:ring-red-500 transition appearance-none cursor-pointer"
+                {/* ── Multi-select Services Dropdown ── */}
+                <div className="relative" ref={servicesRef}>
+                  <button
+                    type="button"
+                    onClick={() => setServicesOpen((prev) => !prev)}
+                    disabled={contactLoading}
+                    className={`${inputClass} flex items-center justify-between text-left disabled:opacity-60`}
                   >
-                    <option value="" disabled>Select Services</option>
-                    {services.map((s) => (
-                      <option key={s} value={s} className="text-white bg-[#2e2e2e]">{s}</option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <span className={`truncate ${selectedServices.length === 0 ? "text-gray-400" : "text-white"}`}>
+                      {servicesLabel}
+                    </span>
+                    <svg
+                      width="12" height="12" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" strokeWidth="2.5"
+                      className={`shrink-0 ml-2 text-gray-400 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+                    >
                       <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                  </div>
+                  </button>
+
+                  {servicesOpen && (
+                    <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-50 bg-[#2e2e2e] border border-[#444] rounded-lg shadow-2xl overflow-hidden">
+                      {SERVICE_OPTIONS.map((option) => {
+                        const checked = selectedServices.includes(option.value);
+                        return (
+                          <label
+                            key={option.value}
+                            className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-[#3a3a3a] transition border-b border-[#3a3a3a] last:border-0"
+                          >
+                            <input
+                              type="checkbox"
+                              value={option.value}
+                              checked={checked}
+                              onChange={() => toggleService(option.value)}
+                              className="w-4 h-4 rounded accent-red-600 cursor-pointer shrink-0"
+                            />
+                            <span className="text-[13.5px] text-gray-200">{option.label}</span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 <textarea
                   placeholder="Message"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  disabled={contactLoading}
                   rows={4}
-                  className="w-full bg-[#2e2e2e] text-white placeholder-gray-400 text-sm px-4 py-3 rounded-lg outline-none focus:ring-1 focus:ring-red-500 transition resize-y"
+                  className={`${inputClass} resize-y disabled:opacity-60`}
                 />
+
+                <StatusMessage status={contactStatus} />
 
                 <button
                   type="submit"
-                  className="w-fit bg-white hover:bg-gray-100 text-gray-900 text-sm font-extrabold px-8 py-3 rounded-lg transition-colors duration-300 mt-1"
+                  disabled={contactLoading}
+                  className="w-fit bg-white hover:bg-gray-100 text-gray-900 text-sm font-extrabold px-8 py-3 rounded-lg transition-colors duration-300 mt-1 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Submit
+                  {contactLoading ? "Sending..." : "Submit"}
                 </button>
+
               </form>
             </div>
 

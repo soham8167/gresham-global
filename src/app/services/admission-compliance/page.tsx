@@ -3,17 +3,17 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useState,useRef,useEffect } from "react"
 
 
-const services = [
-  'Research & Assessment',
-  'In-Country Representation',
-  'Academic Collaborations',
-  ' Admissions Compliance',
-  'Strategic Marketing',
-  ' Operational Support',
-  'Others',
+const SERVICE_OPTIONS = [
+  { value: "Research & Assessment",     label: "Research & Assessment" },
+  { value: "In-Country Representation", label: "In-Country Representation" },
+  { value: "Academic Collaborations",   label: "Academic Collaborations" },
+  { value: "Admissions Compliance",     label: "Admissions Compliance" },
+  { value: "Strategic Marketing",       label: "Strategic Marketing" },
+  { value: "Operational Support",       label: "Operational Support" },
+  { value: "Others",                    label: "Others" },
 ]
 
 // ── All 6 services with their routes 
@@ -54,6 +54,19 @@ const serviceCards = [
   
 ]
 
+
+type StatusState = { type: "success" | "error"; text: string } | null
+
+function StatusMessage({ status }: { status: StatusState }) {
+  if (!status) return null
+  return (
+    <p className={`text-sm font-medium mt-1 ${status.type === "success" ? "text-green-600" : "text-red-600"}`}>
+      {status.type === "success" ? "✓ " : "✕ "}{status.text}
+    </p>
+  )
+}
+
+
 const page = () => {
   const pathname = usePathname()
 
@@ -66,13 +79,84 @@ const page = () => {
       service: '',
       message: '',
     })
+
+
+     // ── Multi-select state ──
+      const [servicesOpen, setServicesOpen]         = useState(false)
+      const [selectedServices, setSelectedServices] = useState<string[]>([])
+      const servicesRef = useRef<HTMLDivElement>(null)
+    
+      // ── Submit state ──
+      const [contactLoading, setContactLoading] = useState(false)
+      const [contactStatus,  setContactStatus]  = useState<StatusState>(null)
+    
+      // Close dropdown on outside click
+      useEffect(() => {
+        const handler = (e: MouseEvent) => {
+          if (servicesRef.current && !servicesRef.current.contains(e.target as Node)) {
+            setServicesOpen(false)
+          }
+        }
+        document.addEventListener("mousedown", handler)
+        return () => document.removeEventListener("mousedown", handler)
+      }, [])
+    
+      // Reset form when modal closes
+      useEffect(() => {
+        if (!formOpen) {
+          setFormData({ name: "", email: "", designation: "", organisation: "",  service: "",message: "" })
+          setSelectedServices([])
+          setContactStatus(null)
+          setServicesOpen(false)
+        }
+      }, [formOpen])
+    
+      const toggleService = (value: string) =>
+        setSelectedServices((prev) =>
+          prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+        )
+    
+      const servicesLabel =
+        selectedServices.length === 0
+          ? "Select Services"
+          : SERVICE_OPTIONS.filter((o) => selectedServices.includes(o.value))
+              .map((o) => o.label)
+              .join(", ")
+
   
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      // backend integration to be added later
+    const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setContactLoading(true)
+    setContactStatus(null)
+    try {
+      const res  = await fetch("/api/contact", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ ...formData, fullName: formData.name, services: selectedServices }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setContactStatus({ type: "success", text: "Message sent! We'll get back to you soon." })
+        setFormData({ name: "", email: "", designation: "", organisation: "", service: "", message: "" })
+        setSelectedServices([])
+        setTimeout(() => {
+          setContactStatus(null)
+          setFormOpen(false)
+        }, 3000)
+      } else {
+        setContactStatus({ type: "error", text: data.error || "Submission failed." })
+      }
+    } catch {
+      setContactStatus({ type: "error", text: "Network error. Please try again." })
+    } finally {
+      setContactLoading(false)
     }
+  }
   // Filter out the current page so it never shows in the explore list
   const otherServices = allServices.filter((s) => s.href !== pathname)
+
+  const inputClass =
+    "w-full border border-gray-300 rounded px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 transition-all"
 
   return (
     <section>
@@ -186,6 +270,8 @@ const page = () => {
           </div>
 
       </div>
+
+
               <div
         onClick={() => setFormOpen(false)}
         aria-hidden="true"
@@ -263,40 +349,67 @@ const page = () => {
               />
 
               {/* Select Services */}
-              <div className="relative">
-                <select
-                  value={formData.service}
-                  onChange={e => setFormData({ ...formData, service: e.target.value })}
-                  className="w-full border border-gray-300 rounded px-4 py-3 text-sm bg-white appearance-none focus:outline-none focus:ring-1 focus:ring-gray-400 transition-all cursor-pointer text-gray-400"
+               <div className="relative" ref={servicesRef}>
+                <button
+                  type="button"
+                  onClick={() => setServicesOpen((prev) => !prev)}
+                  disabled={contactLoading}
+                  className={`${inputClass} flex items-center justify-between text-left disabled:opacity-60`}
                 >
-                  <option value="" disabled>Select Services</option>
-                  {services.map(s => (
-                    <option key={s} value={s} className="text-gray-800">{s}</option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                  <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  <span className={`truncate ${selectedServices.length === 0 ? "text-gray-400" : "text-gray-800"}`}>
+                    {servicesLabel}
+                  </span>
+                  <svg
+                    width="12" height="7" viewBox="0 0 12 7" fill="none"
+                    className={`shrink-0 ml-2 transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
+                  >
+                    <path d="M1 1L6 6L11 1" stroke="#aaa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                </div>
+                </button>
+
+                {servicesOpen && (
+                  <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-50 bg-white border border-gray-300 rounded-lg shadow-xl overflow-hidden">
+                    {SERVICE_OPTIONS.map((option) => {
+                      const checked = selectedServices.includes(option.value)
+                      return (
+                        <label
+                          key={option.value}
+                          className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 transition border-b border-gray-100 last:border-0"
+                        >
+                          <input
+                            type="checkbox"
+                            value={option.value}
+                            checked={checked}
+                            onChange={() => toggleService(option.value)}
+                            className="w-4 h-4 rounded accent-red-600 cursor-pointer shrink-0"
+                          />
+                          <span className="text-[13.5px] text-gray-700">{option.label}</span>
+                        </label>
+                      )
+                    })}
+                  </div>
+                )}
               </div>
 
               {/* Message */}
-              <textarea
+             <textarea
                 rows={5}
                 placeholder="Message"
                 value={formData.message}
-                onChange={e => setFormData({ ...formData, message: e.target.value })}
-                className="w-full border border-gray-300 rounded px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 transition-all resize-none"
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                disabled={contactLoading}
+                className={`${inputClass} resize-none disabled:opacity-60`}
               />
 
+                 <StatusMessage status={contactStatus} />
               {/* Submit Button */}
-              <div className="flex justify-center pt-2 pb-2">
+               <div className="flex justify-center pt-2 pb-2">
                 <button
                   type="submit"
-                  className="bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold text-sm px-12 py-3 rounded transition-all duration-200"
+                  disabled={contactLoading}
+                  className="bg-red-600 hover:bg-red-700 active:scale-95 text-white font-semibold text-sm px-12 py-3 rounded transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Submit
+                  {contactLoading ? "Sending..." : "Submit"}
                 </button>
               </div>
 

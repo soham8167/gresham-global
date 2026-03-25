@@ -59,7 +59,7 @@ function WhyCard({ card }: { card: (typeof whyCards)[0] }) {
         group-hover:bg-white/90 transition-colors duration-300
       ">
         {card.icon ? (
-          <div className="relative w-7 h-7">
+          <div className="relative w-7 h-7"> 
             <Image
               src={card.icon}
               alt={card.title}
