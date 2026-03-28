@@ -148,7 +148,7 @@ function NewsCard({ item }: { item: NewsItem }) {
 // ─── Main Page
 export default function Page() {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["publications"],
+    queryKey: ["publications"], 
     queryFn: fetchPublications,
   });
 
@@ -178,7 +178,7 @@ export default function Page() {
           <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/25 to-transparent" />
           <div className="absolute inset-0 flex items-center">
             <div className="max-w-7xl mx-auto w-full px-6 md:px-12">
-              <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-9 leading-tight">
+              <h1 className="text-white font-extrabold text-4xl sm:text-5xl md:text-6xl lg:text-7xl mt-28 -ml-2 leading-tight">
                 Publications
               </h1>
             </div>

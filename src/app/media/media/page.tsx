@@ -15,7 +15,7 @@ interface NewsItem {
   title: string;
   excerpt: string;
   date: string;
-  mainImage: string;
+  mainImage: string; 
   publicationLogo: string;
   slug: string;
 }

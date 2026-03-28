@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
 
     // Notification email → team
     await transporter.sendMail({
-      from:    `"Gresham Global Website" <${process.env.SMTP_FROM}>`,
+      from:    `"Gresham Global Website" <${process.env.SMTP_FROM}>`, 
       to:      process.env.SMTP_FROM,
       subject: `New Contact Form Submission — ${fullName}`,
       html: `
